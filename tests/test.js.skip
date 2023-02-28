@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+const { Uint64BE } = require('int64-buffer');
+const t2lib = require('../dist/cjs/index');
+
+const innerArgs = {
+    name: 'Ethereum',
+    description: 'Ethereum token wrapper; 1 #ETH = 1GWEI',
+    url: 'https://ethereum.org/it/',
+    max_units: new Uint64BE('ffffffffffffffff', 16),
+    fees: [0, 1],
+    fixed_fees: 0,
+    fees_account: '#Affidaty',
+};
+const innerArgsBytes = t2lib.Utils.objectToBytes(innerArgs);
+
+const args = {
+    target: '#ETH',
+    method: 'init',
+    contract: Buffer.from('1220f24353dad66c0aea2894956d6d8be2e209d87d7f3c1ff85b92e4bd611087d032', 'hex'),
+    args: Buffer.from(innerArgsBytes),
+};
+
+const argsBytes = t2lib.Utils.objectToBytes(args);
+
+console.log('[', Array.apply([], argsBytes).join(', '), ']');
+console.log(Buffer.from(argsBytes).toString('hex'));

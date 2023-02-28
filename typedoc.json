@@ -1,0 +1,15 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "entryPoints": ["./src/main.ts"],
+    "tsconfig": "./tsconfig.json",
+    "out": "docs/generated",
+    "emit": "docs",
+    "name": "T2Lib Core Documentation",
+    "theme": "default",
+    "darkHighlightTheme": "dark-plus",
+    "excludePrivate": true,
+    "externalPattern": [
+        "**/node_modules/**"
+    ],
+    "excludeExternals": true
+}
