@@ -1,6 +1,6 @@
 import {
     AESKey,
-} from '../index';
+} from '../../src/cryptography/AES';
 
 describe('AES', () => {
     it('test1', async () => {

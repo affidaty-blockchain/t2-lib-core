@@ -1,4 +1,5 @@
 import Alea from 'alea';
+import { hexEncode } from '../binConversions';
 import { modInv } from '../bigIntModArith/index';
 import { IEllipticCurveParams } from './baseTypes';
 
@@ -78,7 +79,7 @@ export function genSeededECKeys(
 
     while (!found) {
         const bytes = getSeededBytes(nextSeed, byteLength);
-        const number = BigInt(`0x${Buffer.from(bytes).toString('hex')}`);
+        const number = BigInt(`0x${hexEncode(bytes)}`);
         if (number >= BigInt(0) && number < curveParams.n) {
             found = true;
             d = number;

@@ -1,3 +1,8 @@
+export const NOT_DEC = 'Incorrect decimal string.';
+export const NOT_HEX = 'Incorrect hex string.';
+export const NOT_B58 = 'Incorrect base58 string.';
+export const NOT_B64 = 'Incorrect base64 string.';
+export const NOT_B64URL = 'Incorrect base64url string.';
 export const KEY_PARAMS_NOT_SET = 'You must set key params first';
 export const KEY_PARAMS_REDEFINITION = 'Key parameters cannot be redefined.';
 export const NO_PREDEF_KEY_PARAMS_ID = 'No predefined params for given paramsId.';

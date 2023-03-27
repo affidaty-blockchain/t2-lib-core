@@ -1,4 +1,3 @@
-import { stringToArrayBuffer, arrayBufferToString } from '../../src/binConversions';
 import { AESPassEncrypt, AESPassDecrypt } from '../../src/cryptography/AES';
 
 describe('Testing AES cryptography', () => {
@@ -7,9 +6,10 @@ describe('Testing AES cryptography', () => {
     it('testing password encryption', async () => {
         const encryptedData = await AESPassEncrypt(
             password,
-            new Uint8Array(stringToArrayBuffer(testData)),
+            new TextEncoder().encode(testData),
         );
-        const decryptedData = arrayBufferToString(await AESPassDecrypt(password, encryptedData));
+        const decryptedData = new TextDecoder()
+            .decode(await AESPassDecrypt(password, encryptedData));
         expect(decryptedData).toEqual(testData);
     });
 });

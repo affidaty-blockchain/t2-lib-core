@@ -2,10 +2,13 @@ import { Key as UtilKey } from 'js-crypto-key-utils';
 import { modPow } from '../bigIntModArith';
 import * as baseTypes from './baseTypes';
 import * as Errors from '../errors';
+import {
+    hexDecode,
+    hexEncode,
+} from '../binConversions';
 import { Subtle } from './webCrypto';
 import {
     similarArrays,
-    padStrWithZeroes,
     concatBytes,
 } from '../utils';
 import {
@@ -424,7 +427,7 @@ export function decompressRawCurvePoint(
 ): Uint8Array {
     const u8CompPubKey = new Uint8Array(compPubKey);
     // isolating X bytes
-    const x = BigInt(`0x${Buffer.from(u8CompPubKey.subarray(1)).toString('hex')}`);
+    const x = BigInt(`0x${hexEncode(u8CompPubKey.subarray(1))}`);
     // getting Y parity value
     const signY = BigInt(u8CompPubKey[0] - 2);
 
@@ -451,8 +454,8 @@ export function decompressRawCurvePoint(
     if ((y % BigInt(2)) !== signY) {
         y = p - y;
     }
-    const fullCurvePointHex = `04${padStrWithZeroes(x.toString(16), 96)}${padStrWithZeroes(y.toString(16), 96)}`;
-    return new Uint8Array(Buffer.from(fullCurvePointHex, 'hex'));
+    const fullCurvePointHex = `04${x.toString(16).padStart(96)}${y.toString(16).padStart(96)}`;
+    return hexDecode(fullCurvePointHex);
 }
 
 export function isCompressedCurvePoint(curvePoint: Uint8Array | ArrayBufferLike): boolean {

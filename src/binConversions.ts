@@ -1,167 +1,117 @@
-import { encode as b58Encode, decode as b58Decode } from 'bs58';
-import { Buffer } from 'buffer';
+/* eslint no-bitwise: 0 */
+import { encode as bs58Enc, decode as bs58Dec } from 'bs58';
+import * as Errors from './errors';
+import { base64Dec, base64Enc } from './base64';
+
+export const regexDigits = /^[-0-9]*$/g;
+export const regexHex = /^[0-9A-Fa-f]*$/g;
+export const regexBase58 = /^[1-9A-HJ-NP-Za-km-z]*$/g;
+export const regexBase64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/g;
+export const regexBase64Url = /^[A-Za-z0-9\-_]*$/g;
 
 /**
-* Converts a given ArrayBuffer to Buffer
+* Encodes binary data as hex string
 *
-* @param arrayBuffer - ArrayBuffer object with data to convert
-* @return - data converted to Buffer object
+* @param data - Binary data to encode
+* @returns - hex string encoding data
 */
-export function arrayBufferToBuffer(arrayBuffer: ArrayBuffer): Buffer {
-    return Buffer.from(arrayBuffer);
+export function hexEncode(data: Uint8Array): string {
+    if (data.length <= 0) return '';
+    return data.reduce((acc: string, val: number) => {
+        return `${acc}${val.toString(16).padStart(2, '0')}`;
+    }, '');
 }
 
 /**
-* Converts a given Buffer to ArrayBuffer
+* Decodes binary data from hex string. Throws if string is not a valid hex.
 *
-* @param buffer - Buffer object with data to convert
-* @return - data converted to an ArrayBuffer object
+* @param data - Binary data to encode
+* @returns - hex string encoding data
 */
-export function bufferToArrayBuffer(buffer: Buffer): ArrayBuffer {
-    const arrayBuffer = new ArrayBuffer(buffer.length);
-    const arrayBufferView = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < buffer.length; i += 1) {
-        arrayBufferView[i] = buffer[i];
-    }
-    return arrayBuffer;
+export function hexDecode(hexStr: string): Uint8Array {
+    if (hexStr.length <= 0) return new Uint8Array(0);
+    if (!hexStr.match(regexHex)) throw new Error(Errors.NOT_HEX);
+    return new Uint8Array(
+        hexStr
+            .padStart(hexStr.length + (hexStr.length % 2), '0')
+            .toLowerCase()
+            .match(/.{1,2}/g)!
+            .map((byte: string) => { return parseInt(byte, 16); }),
+    );
 }
 
 /**
-* Encodes buffer as base64 string
+* Encodes binary data as base58 string
 *
-* @param buffer - Binary data to encode
-* @returns - Base64 encoded string
+* @param data - Binary data to encode
+* @returns - base58 string encoding data
 */
-export function bufferToBase64(buffer: Buffer): string {
-    return buffer.toString('base64');
+export function b58Encode(data: Uint8Array): string {
+    if (data.length <= 0) return '';
+    return bs58Enc(data);
 }
 
 /**
-* Decodes base64 string to Buffer
+* Decodes binary data from base58 string. Throws if string is not a valid base58.
 *
-* @param base64String - base64 source string
-* @returns - binary data decoded from input string
+* @param data - Binary data to encode
+* @returns - base58 string encoding data
 */
-export function base64ToBuffer(base64String: string): Buffer {
-    return Buffer.from(base64String, 'base64');
+export function b58Decode(b58Str: string): Uint8Array {
+    if (b58Str.length <= 0) return new Uint8Array(0);
+    if (!b58Str.match(regexBase58)) throw new Error(Errors.NOT_B58);
+    return bs58Dec(b58Str);
 }
 
 /**
-* Encodes buffer as base64url string
+* Encodes binary data as base64 string
 *
-* @param buffer - Binary data to encode
-* @returns - Base64url encoded string
+* @param data - Binary data to encode
+* @returns - base64 string encoding data
 */
-export function bufferToBase64url(buffer: Buffer): string {
-    return buffer.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+export function b64Encode(data: Uint8Array): string {
+    if (data.length <= 0) return '';
+    return base64Enc(data);
 }
 
 /**
-* Decodes base64url string to Buffer
+* Decodes binary data from base64 string. Throws if string is not a valid base64.
 *
-* @param base64urlString - base64url source string
-* @returns - binary data decoded from input string
+* @param data - Binary data to encode
+* @returns - base64 string encoding data
 */
-export function base64urlToBuffer(base64urlString: string): Buffer {
-    return Buffer.from(base64urlString.replace(/-/g, '+').replace(/_/g, '/'), 'base64');
+export function b64Decode(b58Str: string): Uint8Array {
+    if (b58Str.length <= 0) return new Uint8Array([]);
+    if (!b58Str.match(regexBase64)) throw new Error(Errors.NOT_B64);
+    return base64Dec(b58Str);
 }
 
 /**
-* Encodes buffer as base58 string
+* Encodes binary data as base64url string
 *
-* @param buffer - Binary data to encode
-* @returns - Base58 encoded string
+* @param data - Binary data to encode
+* @returns - base64url string encoding data
 */
-export function bufferToBase58(buffer: Buffer): string {
-    return b58Encode(new Uint8Array(buffer));
+export function b64UrlEncode(data: Uint8Array): string {
+    if (data.length <= 0) return '';
+    const b64 = base64Enc(data);
+    const pIdx = b64.indexOf('='); // padding index
+    return b64.replace(/[+]/g, '-').replace(/[/]/g, '_').substring(0, pIdx >= 0 ? pIdx : undefined);
 }
 
 /**
-* Decodes base58 string to Buffer
+* Decodes binary data from base64url string. Throws if string is not a valid base64url.
 *
-* @param base58String - base58 source string
-* @returns - binary data decoded from input string
+* @param data - Binary data to encode
+* @returns - base64url string encoding data
 */
-export function base58ToBuffer(base58String: string): Buffer {
-    return Buffer.from(b58Decode(base58String));
-}
-
-/**
-* Encodes ArrayBuffer as base64 string
-*
-* @param arrayBuffer - Binary data to encode
-* @returns - Base64 encoded string
-*/
-export function arrayBufferToBase64(arrayBuffer: ArrayBuffer): string {
-    return arrayBufferToBuffer(arrayBuffer).toString('base64');
-}
-
-/**
-* Decodes base64 string to ArrayBuffer
-*
-* @param base64String - base64 source string
-* @returns - binary data decoded from input string
-*/
-export function base64ToArrayBuffer(base64String: string): ArrayBuffer {
-    return bufferToArrayBuffer(Buffer.from(base64String, 'base64'));
-}
-
-/**
-* Encodes ArrayBuffer as base64url string
-*
-* @param arrayBuffer - Binary data to encode
-* @returns - Base64url encoded string
-*/
-export function arrayBufferToBase64url(arrayBuffer: ArrayBuffer): string {
-    return bufferToBase64url(arrayBufferToBuffer(arrayBuffer));
-}
-
-/**
-* Decodes base64url string to ArrayBuffer
-*
-* @param base64urlString - base64url source string
-* @returns - binary data decoded from input string
-*/
-export function base64urlToArrayBuffer(base64urlString: string): ArrayBuffer {
-    return bufferToArrayBuffer(base64urlToBuffer(base64urlString));
-}
-
-/**
-* Encodes ArrayBuffer as base58 string
-*
-* @param arrayBuffer - Binary data to encode
-* @returns - Base58 encoded string
-*/
-export function arrayBufferToBase58(arrayBuffer: ArrayBuffer): string {
-    return bufferToBase58(arrayBufferToBuffer(arrayBuffer));
-}
-
-/**
-* Decodes base58 string to ArrayBuffer
-*
-* @param base58String - base58 source string
-* @returns - binary data decoded from input string
-*/
-export function base58ToArrayBuffer(base58String: string): ArrayBuffer {
-    return bufferToArrayBuffer(base58ToBuffer(base58String));
-}
-
-/**
- * Converts an ArrayBuffer to a string
- * @param arrayBuffer - initial ArrayBuffer
- * @returns - resulting string
- */
-export function arrayBufferToString(arrayBuffer: ArrayBuffer): string {
-    const b = Buffer.from(arrayBuffer);
-    return b.toString();
-}
-
-/**
- * Converts a string to an ArrayBuffer
- * @param str - initial string
- * @returns - resulting ArrayBuffer
- */
-export function stringToArrayBuffer(str: string): ArrayBuffer {
-    const b = Buffer.from(str);
-    return new Uint8Array(b).buffer;
+export function b64UrlDecode(b58UrlStr: string): Uint8Array {
+    if (b58UrlStr.length <= 0) return new Uint8Array([]);
+    if (!b58UrlStr.match(regexBase64Url)) throw new Error(Errors.NOT_B64URL);
+    return b64Decode(
+        b58UrlStr
+            .replace(/[-]/g, '+')
+            .replace(/[_]/g, '/')
+            .padEnd(Math.ceil(b58UrlStr.length / 4) * 4, '='),
+    );
 }

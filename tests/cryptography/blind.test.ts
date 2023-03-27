@@ -1,5 +1,5 @@
-import { toBigIntBE, toBufferBE } from 'bigint-buffer';
-import { RSAKeyPair } from '../src/cryptography/RSAKeyPair';
+import { RSAKeyPair } from '../../src/cryptography/RSAKeyPair';
+import { hexDecode, hexEncode } from '../../src/binConversions';
 import {
     getFactor,
     applyBlinding,
@@ -8,7 +8,7 @@ import {
     blindSign,
     encrypt,
     decrypt,
-} from '../src/cryptography/RSABlindSignature';
+} from '../../src/cryptography/RSABlindSignature';
 
 // !!!!!!!IMPORTANT: message max safe size in bytes = keySizeBytes - 1
 // !!!!!!!IMPORTANT: salt max safe size in bytes = keySizeBytes - messageSizeBytes -1
@@ -16,9 +16,9 @@ import {
 describe('testing blind signature', () => {
     const rsaKeyPair = new RSAKeyPair();
 
-    const message = new Uint8Array(Buffer.from('122022264e20bc0cf4b49a7e7c9b4a0e427605a2e04a05255ee50cec3666d0cbbc1b', 'hex'));
+    const message = hexDecode('122022264e20bc0cf4b49a7e7c9b4a0e427605a2e04a05255ee50cec3666d0cbbc1b');
     // salt that server will apply to blinded message from client before signing it.
-    const salt = new Uint8Array(Buffer.from('e52858b19cfe12e4742b55e1ad239e849818fb1c8ff1b47c64dbad50c361e9d2183750a8ca713fe806df5b40f30bca4128d1147412715462df570e144ea3a9ccfd999a677e313d19f1d560bbe9d96baba4fd8e0f92ba587d63c17bb5d9', 'hex'));
+    const salt = hexDecode('e52858b19cfe12e4742b55e1ad239e849818fb1c8ff1b47c64dbad50c361e9d2183750a8ca713fe806df5b40f30bca4128d1147412715462df570e144ea3a9ccfd999a677e313d19f1d560bbe9d96baba4fd8e0f92ba587d63c17bb5d9');
 
     it('init', async () => {
         await expect(rsaKeyPair.generate()).resolves.toBeTruthy();
@@ -59,10 +59,13 @@ describe('testing blind signature', () => {
             pubKey,
             (message.byteLength + salt.byteLength),
         );
-        const plainSaltedMessage = new Uint8Array(toBufferBE(
-            (toBigIntBE(Buffer.from(message)) * toBigIntBE(Buffer.from(salt))),
-            (message.byteLength + salt.byteLength),
-        ));
+
+        const plainSaltedMessage = hexDecode(
+            (
+                BigInt(`0x${hexEncode(message)}`)
+                * BigInt(`0x${hexEncode(salt)}`)
+            ).toString(16).padStart((message.byteLength + salt.byteLength) * 2),
+        );
         expect(decryptedUnblindedSaltedSignature).toEqual(plainSaltedMessage);
         const plainSaltedSignature = await encrypt(
             plainSaltedMessage,

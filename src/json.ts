@@ -1,82 +1,61 @@
-import { Int64BE, Uint64BE } from 'int64-buffer';
+import * as Errors from './errors';
+
 import { objectToBytes } from './utils';
 
 import {
-    base58ToBuffer,
-    base64ToBuffer,
+    regexDigits,
+    regexHex,
+    hexDecode,
+    b58Decode,
+    b64Decode,
+    b64UrlDecode,
 } from './binConversions';
-
-const regexDigits = /^[-0-9]*$/g;
-const regexHex = /^[0-9A-Fa-f]*$/g;
-const regexBase58 = /^[1-9A-HJ-NP-Za-km-z]*$/g;
-const regexBase64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/g;
 
 export const customValueProcessors: {[key: string]: {[key: string]: (value: string) => any}} = {
     bin: {
         utf8: (val: string) => {
-            return Buffer.from(val, 'utf8');
+            return new TextEncoder().encode(val);
         },
         hex: (val: string) => {
-            if (!val.match(regexHex)) {
-                throw new Error('Value is not a hexadecimal string.');
-            }
-            const tempVal = val.length % 2 ? `0${val}` : val;
-            return Buffer.from(tempVal, 'hex');
+            return hexDecode(val);
         },
         b58: (val: string) => {
-            if (!val.match(regexBase58)) {
-                throw new Error('Value is not a base58 string.');
-            }
-            return base58ToBuffer(val);
+            return b58Decode(val);
         },
         b64: (val: string) => {
-            if (!val.match(regexBase64)) {
-                throw new Error('Value is not a base64 string.');
-            }
-            return base64ToBuffer(val);
+            return b64Decode(val);
         },
-    },
-    i64: {
-        dec: (val: string) => {
-            if (!val.match(regexDigits)) {
-                throw new Error('Value is not a decimal string.');
-            }
-            return new Int64BE(val, 10);
-        },
-        hex: (val: string) => {
-            if (!val.match(regexHex)) {
-                throw new Error('Value is not a hexadecimal string.');
-            }
-            const tempVal = val.length % 2 ? `0${val}` : val;
-            if (tempVal.length > 16) {
-                throw new Error('Hexadecimal strings for 64-bit numbers must be at most 16 chars long.');
-            }
-            return new Int64BE(tempVal, 16);
+        b64url: (val: string) => {
+            return b64UrlDecode(val);
         },
     },
     u64: {
         dec: (val: string) => {
             if (!val.match(regexDigits)) {
-                throw new Error('Value is not a decimal string.');
+                throw new Error(Errors.NOT_DEC);
             }
-            return new Uint64BE(val, 10);
+            const result = BigInt(val);
+            if (result < BigInt(0) || result > BigInt('0xffffffffffffffff')) {
+                throw new Error('Value out of bounds.');
+            }
+            return result;
         },
         hex: (val: string) => {
             if (!val.match(regexHex)) {
-                throw new Error('Value is not a hexadecimal string.');
+                throw new Error(Errors.NOT_HEX);
             }
             const tempVal = val.length % 2 ? `0${val}` : val;
             if (tempVal.length > 16) {
                 throw new Error('Hexadecimal strings for 64-bit numbers must be at most 16 chars long.');
             }
-            return new Uint64BE(tempVal, 16);
+            return BigInt(`0x${tempVal}`);
         },
     },
 };
 
 export const customKeyProcessors: {[key: string]: (value: string) => any} = {
     msgpack: (val: any) => {
-        return Buffer.from(objectToBytes(val));
+        return objectToBytes(val);
     },
 };
 

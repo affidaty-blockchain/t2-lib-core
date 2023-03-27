@@ -1,42 +1,106 @@
-import * as t2lib from '../index';
+import {
+    Errors,
+    hexEncode,
+    hexDecode,
+    b58Encode,
+    b58Decode,
+    b64Encode,
+    b64Decode,
+    b64UrlEncode,
+    b64UrlDecode,
+} from '../index';
 
-describe('Testing conversions', () => {
-    const testArrayBuffer = new ArrayBuffer(2);
-    const testArrayBufferView = new Uint8Array(testArrayBuffer);
-    testArrayBufferView[0] = 0xf9;
-    testArrayBufferView[1] = 0xa7;
-    const testBuffer = Buffer.from([0xf9, 0xa7]);
-    const testB64 = '+ac=';
-    const testB64url = '-ac';
-    const testB58 = 'Kzv';
-    it('Buffer<->ArrayBuffer', () => {
-        expect(t2lib.binConversions.bufferToArrayBuffer(testBuffer))
-            .toEqual(testArrayBuffer);
-        expect(t2lib.binConversions.arrayBufferToBuffer(testBuffer))
-            .toEqual(testBuffer);
+describe('hex conversions', () => {
+    test('bin -> hex', () => {
+        expect(hexEncode(new Uint8Array([]))).toEqual('');
+        expect(hexEncode(new Uint8Array([0]))).toEqual('00');
+        expect(hexEncode(new Uint8Array([0, 0]))).toEqual('0000');
+        expect(hexEncode(new Uint8Array([15, 0, 255, 0, 15]))).toEqual('0f00ff000f');
     });
-    it('Buffer<->Base64', () => {
-        expect(t2lib.binConversions.bufferToBase64(testBuffer)).toEqual(testB64);
-        expect(t2lib.binConversions.base64ToBuffer(testB64)).toEqual(testBuffer);
+    test('hex -> bin', () => {
+        expect(() => { hexDecode('ff00ff-'); }).toThrowError(Errors.NOT_HEX);
+        expect(() => { hexDecode('-ff00ff'); }).toThrowError(Errors.NOT_HEX);
+        expect(() => { hexDecode('ff0-0ff'); }).toThrowError(Errors.NOT_HEX);
+        expect(() => { hexDecode('-ff0-0ff-'); }).toThrowError(Errors.NOT_HEX);
+        expect(hexDecode('')).toEqual(new Uint8Array());
+        expect(hexDecode('0')).toEqual(new Uint8Array([0]));
+        expect(hexDecode('00')).toEqual(new Uint8Array([0]));
+        expect(hexDecode('000')).toEqual(new Uint8Array([0, 0]));
+        expect(hexDecode('0000')).toEqual(new Uint8Array([0, 0]));
+        expect(hexDecode('00102030405060708090a0b0c0d0e0fff')).toEqual(new Uint8Array(
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 255],
+        ));
     });
-    it('Buffer<->Base64url', () => {
-        expect(t2lib.binConversions.bufferToBase64url(testBuffer)).toEqual(testB64url);
-        expect(t2lib.binConversions.base64urlToBuffer(testB64url)).toEqual(testBuffer);
+});
+
+describe('b58 conversions', () => {
+    test('bin -> b58', () => {
+        expect(b58Encode(new Uint8Array([]))).toEqual('');
+        expect(b58Encode(new Uint8Array([0]))).toEqual('1');
+        expect(b58Encode(new Uint8Array([0, 0]))).toEqual('11');
+        expect(b58Encode(new Uint8Array([255, 0]))).toEqual('LQX');
+        expect(b58Encode(new Uint8Array([0, 255]))).toEqual('15Q');
+        expect(b58Encode(new Uint8Array([0xf9, 0xa7]))).toEqual('Kzv');
     });
-    it('Buffer<->Base58', () => {
-        expect(t2lib.binConversions.bufferToBase58(testBuffer)).toEqual(testB58);
-        expect(t2lib.binConversions.base58ToBuffer(testB58)).toEqual(testBuffer);
+    test('b58 -> bin', () => {
+        expect(() => { b58Decode('-18DfbjXLth7APvt3qQPgxn'); }).toThrowError(Errors.NOT_B58);
+        expect(() => { b58Decode('18DfbjXLth7APvt3qQPgxn-'); }).toThrowError(Errors.NOT_B58);
+        expect(() => { b58Decode('18DfbjXLth-7APvt3qQPgxn'); }).toThrowError(Errors.NOT_B58);
+        expect(() => { b58Decode('-18Dfb-jXLth7APv-t3qQPgxn-'); }).toThrowError(Errors.NOT_B58);
+        expect(b58Decode('')).toEqual(new Uint8Array());
+        expect(b58Decode('Kzv')).toEqual(new Uint8Array([0xf9, 0xa7]));
+        expect(b58Decode('18DfbjXLth7APvt3qQPgxn')).toEqual(new Uint8Array(
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 255],
+        ));
     });
-    it('ArrayBuffer<->Base64', () => {
-        expect(t2lib.binConversions.arrayBufferToBase64(testArrayBuffer)).toEqual(testB64);
-        expect(t2lib.binConversions.base64ToArrayBuffer(testB64)).toEqual(testArrayBuffer);
+});
+
+describe('b64 conversions', () => {
+    test('bin -> b64', () => {
+        expect(b64Encode(new Uint8Array([]))).toEqual('');
+        expect(b64Encode(new Uint8Array([0]))).toEqual('AA==');
+        expect(b64Encode(new Uint8Array([0, 0]))).toEqual('AAA=');
+        expect(b64Encode(new Uint8Array([255, 0]))).toEqual('/wA=');
+        expect(b64Encode(new Uint8Array([0, 255]))).toEqual('AP8=');
+        expect(b64Encode(new Uint8Array([0xf9, 0xa7]))).toEqual('+ac=');
+        expect(b64Encode(new Uint8Array([60, 60, 63, 63, 63, 62, 62]))).toEqual('PDw/Pz8+Pg==');
     });
-    it('ArrayBuffer<->Base64url', () => {
-        expect(t2lib.binConversions.arrayBufferToBase64url(testArrayBuffer)).toEqual(testB64url);
-        expect(t2lib.binConversions.base64urlToArrayBuffer(testB64url)).toEqual(testArrayBuffer);
+    test('b64 -> bin', () => {
+        expect(() => { b64Decode('?AAECAwQFBgcICQoLDA0OD/8='); }).toThrowError(Errors.NOT_B64);
+        expect(() => { b64Decode('AAECAwQFBgcICQoLDA0OD/8=?'); }).toThrowError(Errors.NOT_B64);
+        expect(() => { b64Decode('AAECAwQFBg?cICQoLDA0OD/8='); }).toThrowError(Errors.NOT_B64);
+        expect(() => { b64Decode('?AAECAwQFBgcICQoLD?A0OD/8=?'); }).toThrowError(Errors.NOT_B64);
+        expect(b64Decode('')).toEqual(new Uint8Array());
+        expect(b64Decode('+ac=')).toEqual(new Uint8Array([0xf9, 0xa7]));
+        expect(b64Decode('AAECAwQFBgcICQoLDA0OD/8=')).toEqual(new Uint8Array(
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 255],
+        ));
+        expect(b64Decode('PDw/Pz8+Pg==')).toEqual(new Uint8Array([60, 60, 63, 63, 63, 62, 62]));
     });
-    it('ArrayBuffer<->Base58', () => {
-        expect(t2lib.binConversions.arrayBufferToBase58(testArrayBuffer)).toEqual(testB58);
-        expect(t2lib.binConversions.base58ToArrayBuffer(testB58)).toEqual(testArrayBuffer);
+});
+
+describe('b64url conversions', () => {
+    test('bin -> b64url', () => {
+        expect(b64UrlEncode(new Uint8Array([]))).toEqual('');
+        expect(b64UrlEncode(new Uint8Array([0]))).toEqual('AA');
+        expect(b64UrlEncode(new Uint8Array([0, 0]))).toEqual('AAA');
+        expect(b64UrlEncode(new Uint8Array([255, 0]))).toEqual('_wA');
+        expect(b64UrlEncode(new Uint8Array([0, 255]))).toEqual('AP8');
+        expect(b64UrlEncode(new Uint8Array([0xf9, 0xa7]))).toEqual('-ac');
+        expect(b64UrlEncode(new Uint8Array([60, 60, 63, 63, 63, 62, 62]))).toEqual('PDw_Pz8-Pg');
+    });
+    test('b64url -> bin', () => {
+        expect(() => { b64UrlDecode('PDw/Pz8-Pg'); }).toThrowError(Errors.NOT_B64URL);
+        expect(() => { b64UrlDecode('?PDw_Pz8-Pg'); }).toThrowError(Errors.NOT_B64URL);
+        expect(() => { b64UrlDecode('PDw_Pz8+Pg'); }).toThrowError(Errors.NOT_B64URL);
+        expect(() => { b64UrlDecode('PDw_Pz?8-Pg'); }).toThrowError(Errors.NOT_B64URL);
+        expect(() => { b64UrlDecode('PDw_Pz8-Pg=='); }).toThrowError(Errors.NOT_B64URL);
+        expect(() => { b64UrlDecode('PDw_Pz8-Pg?'); }).toThrowError(Errors.NOT_B64URL);
+        expect(b64UrlDecode('')).toEqual(new Uint8Array());
+        expect(b64UrlDecode('-ac')).toEqual(new Uint8Array([0xf9, 0xa7]));
+        expect(b64UrlDecode('AAECAwQFBgcICQoLDA0OD_8')).toEqual(new Uint8Array(
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 255],
+        ));
+        expect(b64UrlDecode('PDw_Pz8-Pg')).toEqual(new Uint8Array([60, 60, 63, 63, 63, 62, 62]));
     });
 });

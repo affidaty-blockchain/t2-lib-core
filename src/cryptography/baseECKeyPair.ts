@@ -1,7 +1,9 @@
 import { Subtle } from './webCrypto';
 import * as Errors from '../errors';
-import { bufferToBase64url } from '../binConversions';
-import { padStrWithZeroes } from '../utils';
+import {
+    hexDecode,
+    b64UrlEncode,
+} from '../binConversions';
 import {
     IKeyPairParams,
 } from './baseTypes';
@@ -91,9 +93,9 @@ export class BaseECKeyPair implements IBaseECKeyPair {
                                         this.keyPairParams.privateKey.genAlgorithm!.namedCurve
                                     ];
                                     const { x, y, d } = genSeededECKeys(curveParams, secret);
-                                    jwk.x = bufferToBase64url(Buffer.from(padStrWithZeroes(x.toString(16), curveParams.keyLength / 4), 'hex'));
-                                    jwk.y = bufferToBase64url(Buffer.from(padStrWithZeroes(y.toString(16), curveParams.keyLength / 4), 'hex'));
-                                    jwk.d = bufferToBase64url(Buffer.from(padStrWithZeroes(d.toString(16), curveParams.keyLength / 4), 'hex'));
+                                    jwk.x = b64UrlEncode(hexDecode(x.toString(16).padStart(curveParams.keyLength / 4, '0')));
+                                    jwk.y = b64UrlEncode(hexDecode(y.toString(16).padStart(curveParams.keyLength / 4, '0')));
+                                    jwk.d = b64UrlEncode(hexDecode(d.toString(16).padStart(curveParams.keyLength / 4, '0')));
                                     this.privateKey.setJWK(jwk)
                                         .then((setJwkResult) => {
                                             if (!setJwkResult) {

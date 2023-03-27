@@ -1,6 +1,5 @@
-import { toBigIntBE, toBufferBE } from 'bigint-buffer';
 import { modInv, modPow } from '../bigIntModArith';
-import { base64urlToArrayBuffer, base64urlToBuffer } from '../binConversions';
+import { b64UrlDecode, hexDecode, hexEncode } from '../binConversions';
 import { IJwk } from './baseTypes';
 import { RSAOAEP384KeyPairParams as defaultRSAParams } from './cryptoDefaults';
 import { RSAKey } from './RSAKey';
@@ -26,17 +25,13 @@ export function getRSAKeyComponents(inKey: RSAKey): Promise<IKeyComponents> {
         inKey.getJWK()
             .then((inKeyJWK) => {
                 const resultObj: IKeyComponents = {
-                    exp: new Uint8Array(
-                        base64urlToArrayBuffer(
-                            inKey.type === 'private'
-                                ? inKeyJWK.d!
-                                : inKeyJWK.e!,
-                        ),
+                    exp: b64UrlDecode(
+                        inKey.type === 'private'
+                            ? inKeyJWK.d!
+                            : inKeyJWK.e!,
                     ),
-                    mod: new Uint8Array(
-                        base64urlToArrayBuffer(
-                            inKeyJWK.n!,
-                        ),
+                    mod: b64UrlDecode(
+                        inKeyJWK.n!,
                     ),
                 };
                 return resolve(resultObj);
@@ -57,8 +52,8 @@ function getRSAKeyComponentsBigInt(inKey: RSAKey): Promise<IKeyComponentsBigInt>
         getRSAKeyComponents(inKey)
             .then((keyComponents: IKeyComponents) => {
                 const result: IKeyComponentsBigInt = {
-                    mod: toBigIntBE(Buffer.from(keyComponents.mod)),
-                    exp: toBigIntBE(Buffer.from(keyComponents.exp)),
+                    mod: BigInt(`0x${hexEncode(keyComponents.mod)}`),
+                    exp: BigInt(`0x${hexEncode(keyComponents.exp)}`),
                 };
                 return resolve(result);
             })
@@ -90,10 +85,8 @@ export function getFactor(inKey: RSAKey): Promise<Uint8Array> {
             .then(() => {
                 tempRsaKeyPair.privateKey.getJWK()
                     .then((tempPrivKeyJWK: IJwk) => {
-                        const blindingFactor = new Uint8Array(
-                            base64urlToBuffer(
-                                tempPrivKeyJWK.p!,
-                            ),
+                        const blindingFactor = b64UrlDecode(
+                            tempPrivKeyJWK.p!,
                         );
                         return resolve(blindingFactor);
                     })
@@ -122,14 +115,14 @@ export function applyBlinding(
     return new Promise((resolve, reject) => {
         getRSAKeyComponentsBigInt(inKey)
             .then((inKeyComponents) => {
-                const data: bigint = toBigIntBE(Buffer.from(inData));
+                const data: bigint = BigInt(`0x${hexEncode(inData)}`);
                 const inKeyLength: number = inKey.keyParams.genAlgorithm!.modulusLength!;
                 const inKeyExponent: bigint = inKeyComponents.exp;
                 const inKeyModulo: bigint = inKeyComponents.mod;
-                const factor: bigint = toBigIntBE(Buffer.from(blindingFactor));
+                const factor: bigint = BigInt(`0x${hexEncode(blindingFactor)}`);
                 const factorModPow: bigint = modPow(factor, inKeyExponent, inKeyModulo);
                 const result: bigint = (data * factorModPow) % inKeyModulo;
-                return resolve(new Uint8Array(toBufferBE(result, inKeyLength / 8)));
+                return resolve(hexDecode(result.toString(16).padStart(Math.floor(inKeyLength / 4), '0')));
             })
             .catch((error: any) => {
                 return reject(error);
@@ -152,13 +145,13 @@ export function removeBlinding(
     return new Promise((resolve, reject) => {
         getRSAKeyComponentsBigInt(inKey)
             .then((inKeyComponents) => {
-                const data = toBigIntBE(Buffer.from(inData));
+                const data = BigInt(`0x${hexEncode(inData)}`);
                 const inKeyLength: number = inKey.keyParams.genAlgorithm!.modulusLength!;
                 const inKeyModulo: bigint = inKeyComponents.mod;
-                const factor: bigint = toBigIntBE(Buffer.from(blindingFactor));
+                const factor: bigint = BigInt(`0x${hexEncode(blindingFactor)}`);
                 const factorModInv: bigint = modInv(factor, inKeyModulo);
                 const result = (data * factorModInv) % inKeyModulo;
-                return resolve(new Uint8Array(toBufferBE(result, inKeyLength / 8)));
+                return resolve(hexDecode(result.toString(16).padStart(Math.floor(inKeyLength / 4), '0')));
             })
             .catch((error: any) => {
                 return reject(error);
@@ -181,12 +174,12 @@ export function addSalt(
     return new Promise((resolve, reject) => {
         getRSAKeyComponentsBigInt(inKey)
             .then((key) => {
-                const data: bigint = toBigIntBE(Buffer.from(inData));
-                const salt: bigint = toBigIntBE(Buffer.from(inSalt));
+                const data: bigint = BigInt(`0x${hexEncode(inData)}`);
+                const salt: bigint = BigInt(`0x${hexEncode(inSalt)}`);
                 const modulo: bigint = key.mod;
                 const KeyByteLength: number = inKey.keyParams.genAlgorithm!.modulusLength! / 8;
                 const result = (data * salt) % modulo;
-                return resolve(new Uint8Array(toBufferBE(result, KeyByteLength)));
+                return resolve(hexDecode(result.toString(16).padStart(KeyByteLength * 2, '0')));
             })
             .catch((error: any) => {
                 return reject(error);
@@ -195,21 +188,21 @@ export function addSalt(
 }
 
 function transcryptDataBlock(
-    dataBlock: Buffer,
+    dataBlock: Uint8Array,
     exponent: bigint,
     modulo: bigint,
     length: number,
-): Buffer {
-    return toBufferBE(modPow(toBigIntBE(dataBlock), exponent, modulo), length);
+): Uint8Array {
+    return hexDecode(modPow(BigInt(`0x${hexEncode(dataBlock)}`), exponent, modulo).toString(16).padStart(length * 2, '0'));
 }
 
 function rsaTranscrypt(
-    inData: Buffer,
+    inData: Uint8Array,
     key: RSAKey,
     mode: TOpMode,
     outDataTotBytes?: number,
     customInDataBlockBytes?: number,
-): Promise<Buffer> {
+): Promise<Uint8Array> {
     return new Promise((resolve, reject) => {
         key.getJWK()
             .then((keyJWK) => {
@@ -231,9 +224,9 @@ function rsaTranscrypt(
                 }
                 let nInBlocks = Math.floor(inDataTotBytes / inDataBlockBytes);
                 nInBlocks = inDataTotBytes % inDataBlockBytes ? nInBlocks + 1 : nInBlocks;
-                let outData = Buffer.from([]);
-                const keyExponent: bigint = toBigIntBE(base64urlToBuffer(key.type === 'private' ? keyJWK.d! : keyJWK.e!));
-                const keyModulo: bigint = toBigIntBE(base64urlToBuffer(keyJWK.n!));
+                let outData = new Uint8Array([]);
+                const keyExponent: bigint = BigInt(`0x${hexEncode(b64UrlDecode(key.type === 'private' ? keyJWK.d! : keyJWK.e!))}`);
+                const keyModulo: bigint = BigInt(`0x${hexEncode(b64UrlDecode(keyJWK.n!))}`);
                 for (let blockIndex = 0; blockIndex < nInBlocks; blockIndex += 1) {
                     const inBlock = (blockIndex === nInBlocks - 1)
                         ? inData.slice(inDataBlockBytes * blockIndex)
@@ -262,7 +255,10 @@ function rsaTranscrypt(
                             % outDataBlockBytes,
                         );
                     }
-                    outData = Buffer.concat([outData, outBlock]);
+                    const _temp = new Uint8Array(outData.length + outBlock.length);
+                    _temp.set(outData);
+                    _temp.set(outBlock, outData.length);
+                    outData = _temp;
                 }
                 return resolve(outData);
             })
@@ -278,9 +274,9 @@ export function encrypt(
     customInDataBlockSize?: number,
 ): Promise<Uint8Array> {
     return new Promise((resolve, reject) => {
-        rsaTranscrypt(Buffer.from(inData), key, 'enc', undefined, customInDataBlockSize)
+        rsaTranscrypt(inData, key, 'enc', undefined, customInDataBlockSize)
             .then((outData) => {
-                return resolve(new Uint8Array(outData));
+                return resolve(outData);
             })
             .catch((error: any) => {
                 return reject(error);
@@ -294,9 +290,9 @@ export function decrypt(
     outDataTotBytes?: number,
 ): Promise<Uint8Array> {
     return new Promise((resolve, reject) => {
-        rsaTranscrypt(Buffer.from(inData), key, 'dec', outDataTotBytes)
+        rsaTranscrypt(inData, key, 'dec', outDataTotBytes)
             .then((outData) => {
-                return resolve(new Uint8Array(outData));
+                return resolve(outData);
             })
             .catch((error: any) => {
                 return reject(error);

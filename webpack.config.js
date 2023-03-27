@@ -24,11 +24,6 @@ module.exports = {
             window: false,
         },
     },
-    plugins: [
-        new webpack.ProvidePlugin({
-            Buffer: ['buffer', 'Buffer'],
-        }),
-    ],
     module: {
         rules: [
             // All files with a '.ts' extension will be handled by 'ts-loader'.
