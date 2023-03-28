@@ -12,6 +12,7 @@ import {
 const defOptions = {
     useBigInt64: true,
     ignoreUndefined: true,
+    initialBufferSize: 0,
 };
 
 /** Serializes any javascript object into an array of bytes */

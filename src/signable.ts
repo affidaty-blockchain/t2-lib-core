@@ -305,7 +305,7 @@ export class Signable {
                     verifyDataSignature(
                         publicKey,
                         dataToVerify,
-                        this._signature,
+                        this.signature,
                         this._signHashAlg,
                     )
                         .then((result: boolean) => {

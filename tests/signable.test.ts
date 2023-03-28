@@ -52,10 +52,13 @@ describe('signable', () => {
 
     it('to/from bytes', async () => {
         const bytes = await s.toBytes();
-        const s2 = new Signable();
-        await expect(s2.fromBytes(bytes)).resolves.toBeTruthy();
-        expect(s2).toEqual(s);
-        await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
+        const s3 = new Signable();
+        await expect(s3.fromBytes(bytes)).resolves.toBeTruthy();
+        const s3Bytes = await s3.toBytes();
+        expect(bytes).toEqual(s3Bytes);
+        expect(s3).toEqual(s);
+        await s3.verifySignature(ecdsa.publicKey);
+        await expect(s3.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
     });
 
     it('to/from base58', async () => {
