@@ -1,4 +1,4 @@
-import { arrayBufferToBase58, base58ToArrayBuffer } from './binConversions';
+import { b58Encode, b58Decode } from './binConversions';
 import { objectToBytes, bytesToObject } from './utils';
 import { TKeyGenAlgorithmValidHashValues } from './cryptography/baseTypes';
 import { signData, verifyDataSignature } from './cryptography/base';
@@ -19,27 +19,15 @@ export interface ISignableObjectNoTag {
     signature?: Uint8Array;
 }
 
-// exported for usage in Client class
-export interface ISignableObjectWithBuffer {
-    type: string;
-    data: any;
-    signature?: Buffer;
-}
-
-export interface ISignableObjectWithBufferNoTag {
-    data: any;
-    signature?: Buffer;
-}
-
 export interface ISignableUnnamedObject extends Array<any> {
     [0]: string;
     [1]: any,
-    [2]?: Buffer;
+    [2]?: Uint8Array;
 }
 
 export interface ISignableUnnamedObjectNoTag extends Array<any> {
     [0]: any,
-    [1]?: Buffer;
+    [1]?: Uint8Array;
 }
 
 /**
@@ -50,7 +38,7 @@ export class Signable {
 
     protected _data: any = {};
 
-    protected _signature: Buffer = Buffer.from([]);
+    protected _signature: Uint8Array = new Uint8Array([]);
 
     protected _signHashAlg: TKeyGenAlgorithmValidHashValues;
 
@@ -66,6 +54,11 @@ export class Signable {
         this._typeTag = typeTag;
     }
 
+    setTypeTag(typeTag: string) {
+        this.typeTag = typeTag;
+        return this;
+    }
+
     /** Data to sign */
     public get data(): any {
         return this._data;
@@ -76,6 +69,12 @@ export class Signable {
         this._data = newData;
     }
 
+    /** Data to sign */
+    setData(newData: any) {
+        this.data = newData;
+        return this;
+    }
+
     /** Data signature */
     public get signature(): Uint8Array {
         return new Uint8Array(this._signature);
@@ -83,7 +82,13 @@ export class Signable {
 
     /** Data signature */
     public set signature(signature: Uint8Array) {
-        this._signature = Buffer.from(signature);
+        this._signature = signature;
+    }
+
+    /** Data signature */
+    setSignature(signature: Uint8Array) {
+        this.signature = signature;
+        return this;
     }
 
     protected toUnnamedObject(): Promise<ISignableUnnamedObject> {
@@ -117,39 +122,20 @@ export class Signable {
         });
     }
 
-    protected toObjectWithBuffers(): Promise<ISignableObjectWithBuffer> {
-        return new Promise((resolve, reject) => {
-            this.toUnnamedObject()
-                .then((unnamedObj: ISignableUnnamedObject) => {
-                    const resultObj: ISignableObjectWithBuffer = {
-                        type: unnamedObj[0],
-                        data: unnamedObj[1],
-                    };
-                    if (unnamedObj[2]) {
-                        resultObj.signature = unnamedObj[2];
-                    }
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
     /**
      * Serializes signable to a simple object with named properties
      * @returns - object, throws otherwise
      */
     public toObject(): Promise<ISignableObject> {
         return new Promise((resolve, reject) => {
-            this.toObjectWithBuffers()
-                .then((withBuffers: ISignableObjectWithBuffer) => {
+            this.toUnnamedObject()
+                .then((unnamedObj: ISignableUnnamedObject) => {
                     const resultObj: ISignableObject = {
-                        type: withBuffers.type,
-                        data: withBuffers.data,
+                        type: unnamedObj[0],
+                        data: unnamedObj[1],
                     };
-                    if (withBuffers.signature) {
-                        resultObj.signature = new Uint8Array(withBuffers.signature);
+                    if (unnamedObj[2]) {
+                        resultObj.signature = unnamedObj[2];
                     }
                     return resolve(resultObj);
                 })
@@ -183,7 +169,7 @@ export class Signable {
         return new Promise((resolve, reject) => {
             this.toBytes()
                 .then((bytes: Uint8Array) => {
-                    return resolve(arrayBufferToBase58(bytes.buffer));
+                    return resolve(b58Encode(bytes));
                 })
                 .catch((error: any) => {
                     return reject(error);
@@ -222,7 +208,12 @@ export class Signable {
         });
     }
 
-    protected fromObjectWithBuffers(passedObj: ISignableObjectWithBuffer): Promise<boolean> {
+    /**
+     * Tries to deserialize a signable from object with named properties.
+     * @param object - object to try to deserialize signable from
+     * @returns - true on success, throws otherwise
+     */
+    public fromObject(passedObj: ISignableObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedArg: ISignableUnnamedObject = [
                 passedObj.type,
@@ -232,30 +223,6 @@ export class Signable {
                 unnamedArg[2] = passedObj.signature;
             }
             this.fromUnnamedObject(unnamedArg)
-                .then((result: boolean) => {
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Tries to deserialize a signable from object with named properties.
-     * @param object - object to try to deserialize signable from
-     * @returns - true on success, throws otherwise
-     */
-    public fromObject(object: ISignableObject): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            const withBuffersArg: ISignableObjectWithBuffer = {
-                type: object.type,
-                data: object.data,
-            };
-            if (object.signature) {
-                withBuffersArg.signature = Buffer.from(object.signature);
-            }
-            this.fromObjectWithBuffers(withBuffersArg)
                 .then((result: boolean) => {
                     return resolve(result);
                 })
@@ -290,7 +257,7 @@ export class Signable {
      */
     public fromBase58(b58: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            this.fromBytes(new Uint8Array(base58ToArrayBuffer(b58)))
+            this.fromBytes(b58Decode(b58))
                 .then((result) => {
                     return resolve(result);
                 })
@@ -312,7 +279,7 @@ export class Signable {
                     const bytesToSign: Uint8Array = objectToBytes(unnamedObject[1]);
                     signData(privateKey, bytesToSign, this._signHashAlg)
                         .then((signature: Uint8Array) => {
-                            this._signature = Buffer.from(signature);
+                            this._signature = signature;
                             return resolve(true);
                         })
                         .catch((error: any) => {
@@ -338,7 +305,7 @@ export class Signable {
                     verifyDataSignature(
                         publicKey,
                         dataToVerify,
-                        new Uint8Array(this._signature),
+                        this._signature,
                         this._signHashAlg,
                     )
                         .then((result: boolean) => {

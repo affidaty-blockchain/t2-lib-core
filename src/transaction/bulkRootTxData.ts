@@ -1,5 +1,4 @@
 import {
-    TTxSchemaType,
     TxSchemas,
     SCHEMA_TO_TYPE_TAG_MAP,
     ICommonParentTxDataUnnamedObject,
@@ -7,7 +6,6 @@ import {
 import {
     BaseTxData,
     IBaseTxDataUnnamedObject,
-    IBaseTxDataObjectWithBuffers,
     IBaseTxDataObject,
     IBaseTxDataPublicKeyUnnamedObject,
 } from './baseTxData';
@@ -19,7 +17,7 @@ export interface TEmptyBulkRootTxDataUnnamedObject extends ICommonParentTxDataUn
     /** Max fuel that consumable by this transaction */
     [1]: number;
     /** Nonce */
-    [2]: Buffer;
+    [2]: Uint8Array;
     /** Network name */
     [4]: string;
     /** Signer's public key */
@@ -31,13 +29,13 @@ export class BulkRootTxData extends BaseTxData {
         return DEFAULT_SCHEMA;
     }
 
-    constructor(schema: TTxSchemaType = DEFAULT_SCHEMA) {
+    constructor(schema: string = DEFAULT_SCHEMA) {
         super(schema);
     }
 
     public isEmpty(): boolean {
-        if ((!this._account || !this._account.length)
-            && (!this._contract || !this._contract.byteLength)
+        if ((!this.target || !this.target.length)
+            && (!this.smartContractHash || !this.smartContractHash.byteLength)
             && (!this.smartContractMethod || !this.smartContractMethod.length)
             && (!this.smartContractMethodArgsBytes || !this.smartContractMethodArgsBytes.byteLength)
         ) {
@@ -48,9 +46,9 @@ export class BulkRootTxData extends BaseTxData {
 
     public toUnnamedObject(): Promise<any> {
         return new Promise((resolve, reject) => {
-            if (this.isEmpty() && this._schema !== EMPTY_SCHEMA) {
-                this._schema = EMPTY_SCHEMA;
-                this._typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(EMPTY_SCHEMA)!;
+            if (this.isEmpty() && this.schema !== EMPTY_SCHEMA) {
+                this.schema = EMPTY_SCHEMA;
+                this.typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(EMPTY_SCHEMA)!;
             }
             super.toUnnamedObject()
                 .then((superResult: IBaseTxDataUnnamedObject) => {
@@ -71,11 +69,11 @@ export class BulkRootTxData extends BaseTxData {
         });
     }
 
-    public toObjectWithBuffers(): Promise<any> {
+    public toObject(): Promise<any> {
         return new Promise((resolve, reject) => {
-            if (this.isEmpty() && this._schema !== EMPTY_SCHEMA) {
-                this._schema = EMPTY_SCHEMA;
-                this._typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(EMPTY_SCHEMA)!;
+            if (this.isEmpty() && this.schema !== EMPTY_SCHEMA) {
+                this.schema = EMPTY_SCHEMA;
+                this.typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(EMPTY_SCHEMA)!;
             }
             this.toUnnamedObject()
                 .then((unnamedObject: any) => {
@@ -114,49 +112,6 @@ export class BulkRootTxData extends BaseTxData {
         });
     }
 
-    public toObject(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            if (this.isEmpty() && this._schema !== EMPTY_SCHEMA) {
-                this._schema = EMPTY_SCHEMA;
-                this._typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(EMPTY_SCHEMA)!;
-            }
-            this.toObjectWithBuffers()
-                .then((objBuffers: any) => {
-                    if (this.isEmpty()) {
-                        return resolve({
-                            schema: objBuffers.schema,
-                            maxFuel: objBuffers.maxFuel,
-                            nonce: new Uint8Array(objBuffers.nonce),
-                            network: objBuffers.network,
-                            caller: {
-                                type: objBuffers.caller.type,
-                                curve: objBuffers.caller.curve,
-                                value: new Uint8Array(objBuffers.caller.value),
-                            },
-                        });
-                    }
-                    return resolve({
-                        schema: objBuffers.schema,
-                        account: objBuffers.account,
-                        maxFuel: objBuffers.maxFuel,
-                        nonce: new Uint8Array(objBuffers.nonce),
-                        network: objBuffers.network,
-                        contract: objBuffers.contract ? new Uint8Array(objBuffers.contract) : null,
-                        method: objBuffers.method,
-                        caller: {
-                            type: objBuffers.caller.type,
-                            curve: objBuffers.caller.curve,
-                            value: new Uint8Array(objBuffers.caller.value),
-                        },
-                        args: new Uint8Array(objBuffers.args),
-                    });
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
     public fromUnnamedObject(passedObj: any): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const tempPassedObj: IBaseTxDataUnnamedObject = passedObj.length > 5
@@ -173,31 +128,6 @@ export class BulkRootTxData extends BaseTxData {
                     Buffer.from([]),
                 ];
             super.fromUnnamedObject(tempPassedObj)
-                .then((result) => {
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    public fromObjectWithBuffers(passedObj: any): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            const tempPassedObj: IBaseTxDataObjectWithBuffers = Object.keys(passedObj).length > 5
-                ? passedObj
-                : {
-                    schema: passedObj.schema,
-                    account: '',
-                    maxFuel: passedObj.maxFuel,
-                    nonce: passedObj.nonce,
-                    network: passedObj.network,
-                    contract: null,
-                    method: '',
-                    caller: passedObj.caller,
-                    args: Buffer.from([]),
-                };
-            super.fromObjectWithBuffers(tempPassedObj)
                 .then((result) => {
                     return resolve(result);
                 })

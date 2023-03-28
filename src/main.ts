@@ -38,7 +38,7 @@ export { RSAKey } from './cryptography/RSAKey';
 export { ECDHKeyPair } from './cryptography/ECDHKeyPair';
 export { ECDSAKeyPair } from './cryptography/ECDSAKeyPair';
 export { IRSAKeyPair, RSAKeyPair } from './cryptography/RSAKeyPair';
-// export { Signable, ISignableObject } from './signable';
+export { Signable, ISignableObject } from './signable';
 export { getAccountId, Account } from './account';
 // export { Delegation } from './delegation';
 export * as BlindRSA from './cryptography/RSABlindSignature';

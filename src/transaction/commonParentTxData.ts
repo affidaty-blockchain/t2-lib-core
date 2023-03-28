@@ -1,29 +1,43 @@
 import * as Errors from '../errors';
 import { WebCrypto } from '../cryptography/webCrypto';
+import { hexDecode, hexEncode } from '../binConversions';
 import { objectToBytes, bytesToObject, sha256 } from '../utils';
+import { jsonParse } from '../json';
 import { BaseECKey } from '../cryptography/baseECKey';
 
-export type TTxSchemaType = string;
+export const TxSchemas: {
+    EMPTY_TX: '',
+    UNITARY_TX: 'd8af8f563f25eb065651ccdd05b9726fd27ff9dc40e3b9c8b4d2c55fa9819f36',
+    BULK_TX: '0ec3469e3509682d7599797a9d1c5cdf56b2d9bd435f853a3b999cbb717e0337',
+    BULK_ROOT_TX: '0bccf5dce4f25036de1ef091ea9e862fa348e6de82ef16fbcfc84c1f1314b86e',
+    BULK_NODE_TX: '097e5f552c79d4f64e15f853ad19d013973343aea557d5c1482d9cef71915db8',
+    BULK_EMPTY_ROOT_TX: 'f76bce109213ee2204e218f000b7c67770812e4b26f4dba90c532a10865968ff',
+} = {
+    EMPTY_TX: '',
+    UNITARY_TX: 'd8af8f563f25eb065651ccdd05b9726fd27ff9dc40e3b9c8b4d2c55fa9819f36',
+    BULK_TX: '0ec3469e3509682d7599797a9d1c5cdf56b2d9bd435f853a3b999cbb717e0337',
+    BULK_ROOT_TX: '0bccf5dce4f25036de1ef091ea9e862fa348e6de82ef16fbcfc84c1f1314b86e',
+    BULK_NODE_TX: '097e5f552c79d4f64e15f853ad19d013973343aea557d5c1482d9cef71915db8',
+    BULK_EMPTY_ROOT_TX: 'f76bce109213ee2204e218f000b7c67770812e4b26f4dba90c532a10865968ff',
+};
 
-export namespace TxSchemas {
-    export const EMPTY_TX: TTxSchemaType = '';
-    export const UNITARY_TX: TTxSchemaType = 'd8af8f563f25eb065651ccdd05b9726fd27ff9dc40e3b9c8b4d2c55fa9819f36';
-    export const BULK_TX: TTxSchemaType = '0ec3469e3509682d7599797a9d1c5cdf56b2d9bd435f853a3b999cbb717e0337';
-    export const BULK_ROOT_TX: TTxSchemaType = '0bccf5dce4f25036de1ef091ea9e862fa348e6de82ef16fbcfc84c1f1314b86e';
-    export const BULK_NODE_TX: TTxSchemaType = '097e5f552c79d4f64e15f853ad19d013973343aea557d5c1482d9cef71915db8';
-    export const BULK_EMPTY_ROOT_TX: TTxSchemaType = 'f76bce109213ee2204e218f000b7c67770812e4b26f4dba90c532a10865968ff';
-}
+export const SignableTypeTags: {
+    EMPTY_TX: '',
+    UNITARY_TX: 'unit_tx',
+    BULK_TX: 'bulk_tx',
+    BULK_ROOT_TX: 'bulk_root_tx',
+    BULK_NODE_TX: 'bulk_node_tx',
+    BULK_EMPTY_ROOT_TX: 'bulk_empty_root_tx',
+} = {
+    EMPTY_TX: '',
+    UNITARY_TX: 'unit_tx',
+    BULK_TX: 'bulk_tx',
+    BULK_ROOT_TX: 'bulk_root_tx',
+    BULK_NODE_TX: 'bulk_node_tx',
+    BULK_EMPTY_ROOT_TX: 'bulk_empty_root_tx',
+};
 
-export namespace SignableTypeTags {
-    export const EMPTY_TX: string = '';
-    export const UNITARY_TX: string = 'unit_tx';
-    export const BULK_TX: string = 'bulk_tx';
-    export const BULK_ROOT_TX: string = 'bulk_root_tx';
-    export const BULK_NODE_TX: string = 'bulk_node_tx';
-    export const BULK_EMPTY_ROOT_TX: string = 'bulk_empty_root_tx';
-}
-
-export const SCHEMA_TO_TYPE_TAG_MAP = new Map<TTxSchemaType, string>();
+export const SCHEMA_TO_TYPE_TAG_MAP = new Map<string, string>();
 SCHEMA_TO_TYPE_TAG_MAP.set(TxSchemas.EMPTY_TX, SignableTypeTags.EMPTY_TX);
 SCHEMA_TO_TYPE_TAG_MAP.set(TxSchemas.UNITARY_TX, SignableTypeTags.UNITARY_TX);
 SCHEMA_TO_TYPE_TAG_MAP.set(TxSchemas.BULK_TX, SignableTypeTags.BULK_TX);
@@ -31,17 +45,12 @@ SCHEMA_TO_TYPE_TAG_MAP.set(TxSchemas.BULK_ROOT_TX, SignableTypeTags.BULK_ROOT_TX
 SCHEMA_TO_TYPE_TAG_MAP.set(TxSchemas.BULK_EMPTY_ROOT_TX, SignableTypeTags.BULK_EMPTY_ROOT_TX);
 SCHEMA_TO_TYPE_TAG_MAP.set(TxSchemas.BULK_NODE_TX, SignableTypeTags.BULK_NODE_TX);
 
-const DEFAULT_SCHEMA: TTxSchemaType = TxSchemas.EMPTY_TX;
+const DEFAULT_SCHEMA = TxSchemas.EMPTY_TX;
 
 export interface ICommonParentTxDataUnnamedObject extends Array<any> {
     /** Transaction schema */
-    [0]: TTxSchemaType;
+    [0]: string;
     [key: number]: any;
-}
-
-export interface ICommonParentTxDataObjectWithBuffers extends Object {
-    /** Transaction schema */
-    schema: TTxSchemaType;
 }
 
 export interface ICommonParentTxDataObject extends Object {
@@ -50,89 +59,128 @@ export interface ICommonParentTxDataObject extends Object {
 }
 
 export class CommonParentTxData {
-    protected _typeTag: string;
+    private _typeTag: string;
 
-    protected _schema: TTxSchemaType;
+    private _schema: string;
 
-    protected _signerPubKey: BaseECKey;
+    private _target: string;
 
-    protected _account: string;
+    private _maxFuel: bigint;
 
-    protected _maxFuel: number;
+    private _nonce: Uint8Array;
 
-    protected _nonce: Buffer;
+    private _network: string;
 
-    protected _network: string;
+    private _contract: Uint8Array | null;
 
-    protected _contract: Buffer | null;
+    private _method: string;
 
-    protected _method: string;
+    private _args: Uint8Array;
 
-    protected _args: Buffer;
+    private _dependsOn: Uint8Array;
 
-    protected _dependsOn: Buffer;
+    private _signerPubKey: BaseECKey;
 
-    constructor(schema: TTxSchemaType = DEFAULT_SCHEMA) {
-        this._schema = schema;
-        this._signerPubKey = new BaseECKey();
-        this._account = '';
-        this._maxFuel = 0;
-        this._nonce = Buffer.from([]);
-        this._network = '';
-        this._contract = null;
-        this._method = '';
-        this._args = Buffer.from([]);
-        this._dependsOn = Buffer.from([]);
+    constructor(schema: string = DEFAULT_SCHEMA) {
         this._typeTag = SCHEMA_TO_TYPE_TAG_MAP.has(schema)
             ? SCHEMA_TO_TYPE_TAG_MAP.get(schema)!
             : SignableTypeTags.EMPTY_TX;
+        this._schema = schema;
+        this._target = '';
+        this._maxFuel = BigInt(0);
+        this._nonce = new Uint8Array([]);
+        this._network = '';
+        this._contract = null;
+        this._method = '';
+        this._args = new Uint8Array([]);
+        this._dependsOn = new Uint8Array([]);
+        this._signerPubKey = new BaseECKey();
     }
 
     public set typeTag(typeTag: string) {
         this._typeTag = typeTag;
     }
 
-    /** Reference to the schema used in this data type. */
     public get typeTag(): string {
         return this._typeTag;
     }
 
+    setTypeTag(typeTag: string) {
+        this.typeTag = typeTag;
+        return this;
+    }
+
     /** Reference to the default schema used in this data type. */
-    public static get defaultSchema(): TTxSchemaType {
+    public static get defaultSchema(): string {
         return DEFAULT_SCHEMA;
     }
 
     /** Reference to the schema used in this data type. */
-    public get schema(): TTxSchemaType {
+    public get schema() {
         return this._schema;
     }
 
     /** Reference to the schema used in this data type. */
-    public set schema(schema: TTxSchemaType) {
+    public set schema(schema: string) {
+        if (!SCHEMA_TO_TYPE_TAG_MAP.has(schema)) {
+            throw new Error(`Unknown tx schema: "${schema}"`);
+        }
         this._schema = schema;
     }
 
-    /** Account ID of the target (receiving account) of the transaction. */
-    public set accountId(id: string) {
-        this._account = id;
+    /** Reference to the schema used in this data type. */
+    setSchema(schema: string) {
+        this.schema = schema;
+        return this;
     }
 
     /** Account ID of the target (receiving account) of the transaction. */
+    public set target(accountId: string) {
+        this._target = accountId;
+    }
+
+    /** Account ID of the target (receiving account) of the transaction. */
+    public get target(): string {
+        return this._target;
+    }
+
+    /** Account ID of the target (receiving account) of the transaction. */
+    setTarget(accountId: string) {
+        this.target = accountId;
+        return this;
+    }
+
+    /** Account ID of the target (receiving account) of the transaction.
+     * @deprecated
+     */
+    public set accountId(accountId: string) {
+        this.target = accountId;
+    }
+
+    /** Account ID of the target (receiving account) of the transaction.
+     * @deprecated
+     */
     public get accountId(): string {
-        return this._account;
+        return this.target;
     }
 
     /** Maximum amount of fuel that sender is ready to burn for this transaction. */
-    public set maxFuel(maxFuel: number) {
-        if (maxFuel < 0) {
-            throw new Error(Errors.FUEL_NEGATIVE);
+    public set maxFuel(maxFuel: bigint) {
+        if (maxFuel < BigInt(0) || maxFuel > BigInt('0xffffffffffffffff')) {
+            throw new Error(Errors.FUEL_INCORRECT);
         }
-        this._maxFuel = maxFuel;
+        this._maxFuel = BigInt(maxFuel);
     }
 
     /** Maximum amount of fuel that sender is ready to burn for this transaction. */
-    public get maxFuel(): number {
+    public get maxFuel(): bigint {
         return this._maxFuel;
+    }
+
+    /** Maximum amount of fuel that sender is ready to burn for this transaction. */
+    setMaxFuel(maxFuel: number | string) {
+        this.maxFuel = BigInt(maxFuel);
+        return this;
     }
 
     /** Random 8-bytes value as an anti-replay protection(Uint8Array). */
@@ -140,32 +188,42 @@ export class CommonParentTxData {
         if (nonce.byteLength !== 8) {
             throw new Error(Errors.WRONG_TX_NONCE_LENGTH);
         }
-        this._nonce = Buffer.from(nonce);
+        this._nonce = nonce;
     }
 
     /** Random 8-bytes value as an anti-replay protection(Uint8Array). */
     public get nonce(): Uint8Array {
-        return new Uint8Array(this._nonce);
+        return this._nonce;
     }
 
     /** Random 8-bytes value as an anti-replay protection(hex string). */
     public set nonceHex(nonce: string) {
-        if (nonce.length !== 16) { // two chars for each byte
-            throw new Error(Errors.WRONG_TX_NONCE_LENGTH);
-        }
-        this._nonce = Buffer.from(nonce, 'hex');
+        this.nonce = hexDecode(nonce.padStart(16, '0'));
     }
 
     /** Random 8-bytes value as an anti-replay protection(hex string). */
     public get nonceHex(): string {
-        return this._nonce.toString('hex');
+        return hexEncode(this.nonce);
+    }
+
+    /** Random 8-bytes value as an anti-replay protection(Uint8Array).
+     * @param nonce - Byte array or hex string
+    */
+    setNonce(nonce: Uint8Array | string) {
+        if (typeof nonce === 'string') {
+            this.nonceHex = nonce;
+        } else {
+            this.nonce = nonce;
+        }
+        return this;
     }
 
     /** Automatically generates and sets new random nonce. */
-    public genNonce(): void {
+    public genNonce() {
         const newNonce = new Uint8Array(8);
         WebCrypto.getRandomValues(newNonce);
-        this._nonce = Buffer.from(newNonce);
+        this.nonce = newNonce;
+        return this;
     }
 
     /** Name of the network to which the transaction is addressed. */
@@ -178,10 +236,16 @@ export class CommonParentTxData {
         return this._network;
     }
 
+    /** Name of the network to which the transaction is addressed. */
+    setNetworkName(networkName: string) {
+        this.networkName = networkName;
+        return this;
+    }
+
     /** Smart contract hash, which will be invoked on target account. */
-    public set smartContractHash(hash: Uint8Array) {
-        if (hash.byteLength > 0) {
-            this._contract = Buffer.from(hash);
+    public set smartContractHash(hash: Uint8Array | null) {
+        if (hash && hash.byteLength > 0) {
+            this._contract = hash;
         } else {
             this._contract = null;
         }
@@ -190,26 +254,19 @@ export class CommonParentTxData {
     /** Smart contract hash, which will be invoked on target account. */
     public get smartContractHash(): Uint8Array {
         if (this._contract) {
-            return new Uint8Array(this._contract);
+            return this._contract;
         }
-        return Buffer.from([]);
+        return new Uint8Array([]);
     }
 
     /** Smart contract hash, which will be invoked on target account(hex string). */
     public set smartContractHashHex(hash: string) {
-        if (hash.length > 0) {
-            this._contract = Buffer.from(hash, 'hex');
-        } else {
-            this._contract = null;
-        }
+        this.smartContractHash = hexDecode(hash);
     }
 
     /** Smart contract hash, which will be invoked on target account(hex string). */
     public get smartContractHashHex(): string {
-        if (this._contract) {
-            return this._contract.toString('hex');
-        }
-        return '';
+        return hexEncode(this.smartContractHash);
     }
 
     /** Smart contract hash, which will be invoked on target account. */
@@ -219,6 +276,7 @@ export class CommonParentTxData {
         } else {
             this.smartContractHash = hash;
         }
+        return this;
     }
 
     /** Method to call on the invoked smart contract */
@@ -231,54 +289,98 @@ export class CommonParentTxData {
         return this._method;
     }
 
-    /** Arguments that will be passed to invoked smart contract method (generic json object) */
-    public set smartContractMethodArgs(passedArgs: any) {
-        this._args = Buffer.from(objectToBytes(passedArgs));
-    }
-
-    /** Arguments that will be passed to invoked smart contract method (generic json object) */
-    public get smartContractMethodArgs(): any {
-        return bytesToObject(new Uint8Array(this._args));
+    /** Method to call on the invoked smart contract */
+    setSmartContractMethod(method: string) {
+        this.smartContractMethod = method;
+        return this;
     }
 
     /** Arguments that will be passed to invoked smart contract method (Uint8Array) */
     public set smartContractMethodArgsBytes(passedArgs: Uint8Array) {
-        this._args = Buffer.from(passedArgs);
+        this._args = passedArgs;
     }
 
     /** Arguments that will be passed to invoked smart contract method (Uint8Array) */
     public get smartContractMethodArgsBytes(): Uint8Array {
-        return new Uint8Array(this._args);
+        return this._args;
+    }
+
+    /** Arguments that will be passed to invoked smart contract method (Uint8Array) */
+    setSmartContractMethodArgsBytes(passedArgs: Uint8Array) {
+        this.smartContractMethodArgsBytes = passedArgs;
+        return this;
     }
 
     /** Arguments that will be passed to invoked smart contract method (hex string) */
     public set smartContractMethodArgsHex(passedArgs: string) {
-        this._args = Buffer.from(passedArgs, 'hex');
+        this.smartContractMethodArgsBytes = hexDecode(passedArgs);
     }
 
     /** Arguments that will be passed to invoked smart contract method (hex string) */
     public get smartContractMethodArgsHex(): string {
-        return this._args.toString('hex');
+        return hexEncode(this.smartContractMethodArgsBytes);
+    }
+
+    /** Arguments that will be passed to invoked smart contract method (hex string) */
+    setsmartContractMethodArgsHex(passedArgs: string) {
+        this.smartContractMethodArgsHex = passedArgs;
+    }
+
+    /** Arguments that will be passed to invoked smart contract method (generic json object) */
+    public set smartContractMethodArgs(passedArgs: any) {
+        this.smartContractMethodArgsBytes = objectToBytes(passedArgs);
+    }
+
+    /** Arguments that will be passed to invoked smart contract method (generic json object) */
+    public get smartContractMethodArgs(): any {
+        return bytesToObject(this.smartContractMethodArgsBytes);
+    }
+
+    /** Arguments that will be passed to invoked smart contract method (generic json object) */
+    setSmartContractMethodArgs(passedArgs: any) {
+        this.smartContractMethodArgs = passedArgs;
+        return this;
+    }
+
+    /** Arguments that will be passed to invoked smart contract method (json string) */
+    public set smartContractMethodArgsJson(jsonStr: string) {
+        this.smartContractMethodArgs = jsonParse(jsonStr);
+    }
+
+    /** Arguments that will be passed to invoked smart contract method (json string) */
+    setSmartContractMethodArgsJson(jsonStr: string) {
+        this.smartContractMethodArgsJson = jsonStr;
+        return this;
     }
 
     /** Hash of the bulk root transaction on which this one depends. */
     public set dependsOn(hash: Uint8Array) {
-        this._dependsOn = Buffer.from(hash);
+        this._dependsOn = hash;
     }
 
     /** Hash of the bulk root transaction on which this one depends. */
     public get dependsOn(): Uint8Array {
-        return new Uint8Array(this._dependsOn);
+        return this._dependsOn;
     }
 
     /** Hash of the bulk root transaction on which this one depends as hex string. */
     public set dependsOnHex(hash: string) {
-        this._dependsOn = Buffer.from(hash, 'hex');
+        this.dependsOn = hexDecode(hash);
     }
 
     /** Hash of the bulk root transaction on which this one depends as hex string. */
     public get dependsOnHex(): string {
-        return this._dependsOn.toString('hex');
+        return hexEncode(this.dependsOn);
+    }
+
+    /** Hash of the bulk root transaction on which this one depends. */
+    setDependsOn(hash: Uint8Array | string) {
+        if (typeof hash === 'string') {
+            this.dependsOnHex = hash;
+        } else {
+            this.dependsOn = hash;
+        }
+        return this;
     }
 
     /** Signer's public key. */
@@ -289,6 +391,12 @@ export class CommonParentTxData {
     /** Signer's public key. */
     public get signerPublicKey(): BaseECKey {
         return this._signerPubKey;
+    }
+
+    /** Signer's public key. */
+    setSignerPublicKey(publicKey: BaseECKey) {
+        this.signerPublicKey = publicKey;
+        return this;
     }
 
     /**
@@ -305,10 +413,10 @@ export class CommonParentTxData {
 
     /**
      * Exports data structure to an object with named members and binary
-     * values represented by Buffers
-     * @returns - object with named members and binary values represented by Buffers
+     * values represented by Uint8Arrays
+     * @returns - object with named members and binary values represented by Uint8Arrays
      */
-    public toObjectWithBuffers(): Promise<ICommonParentTxDataObjectWithBuffers> {
+    public toObject(): Promise<ICommonParentTxDataObject> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObject: ICommonParentTxDataUnnamedObject) => {
@@ -317,23 +425,6 @@ export class CommonParentTxData {
                             schema: unnamedObject[0],
                         },
                     );
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Exports data structure to an object with named members and binary
-     * values represented by Uint8Arrays
-     * @returns - object with named members and binary values represented by Uint8Arrays
-     */
-    public toObject(): Promise<ICommonParentTxDataObject> {
-        return new Promise((resolve, reject) => {
-            this.toObjectWithBuffers()
-                .then((objWithBuffers: ICommonParentTxDataObjectWithBuffers) => {
-                    return resolve(objWithBuffers);
                 })
                 .catch((error: any) => {
                     return reject(error);
@@ -354,39 +445,15 @@ export class CommonParentTxData {
 
     /**
      * Imports data structure from an object with named members and binary
-     * values represented by Buffers
-     * @param passedObj - object with named members and binary values
-     * represented by Buffers
-     */
-    public fromObjectWithBuffers(
-        passedObj: ICommonParentTxDataObjectWithBuffers,
-    ): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            this.fromUnnamedObject(
-                [
-                    passedObj.schema,
-                ],
-            )
-                .then((result: boolean) => {
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Imports data structure from an object with named members and binary
      * values represented by Uint8Arrays
      * @param passedObj - object with named members and binary values represented by Uint8Arrays
      */
     public fromObject(passedObj: ICommonParentTxDataObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            this.fromObjectWithBuffers(
-                {
-                    schema: passedObj.schema,
-                },
+            this.fromUnnamedObject(
+                [
+                    passedObj.schema,
+                ],
             )
                 .then((result: boolean) => {
                     return resolve(result);

@@ -1,11 +1,9 @@
 import {
-    TTxSchemaType,
     TxSchemas,
 } from './commonParentTxData';
 import {
     BaseTxData,
     IBaseTxDataUnnamedObject,
-    IBaseTxDataObjectWithBuffers,
     IBaseTxDataObject,
 } from './baseTxData';
 
@@ -13,12 +11,7 @@ const DEFAULT_SCHEMA = TxSchemas.BULK_NODE_TX;
 
 export interface IBulkNodeTxDataUnnamedObject extends IBaseTxDataUnnamedObject {
     /** Hash of the bulk root transaction on which this one depends. */
-    [9]: Buffer;
-}
-
-export interface IBulkNodeTxDataObjectWithBuffers extends IBaseTxDataObjectWithBuffers {
-    /** Hash of the bulk root transaction on which this one depends. */
-    dependsOn: Buffer;
+    [9]: Uint8Array;
 }
 
 export interface IBulkNodeTxDataObject extends IBaseTxDataObject {
@@ -31,7 +24,7 @@ export class BulkNodeTxData extends BaseTxData {
         return DEFAULT_SCHEMA;
     }
 
-    constructor(schema: TTxSchemaType = DEFAULT_SCHEMA) {
+    constructor(schema: string = DEFAULT_SCHEMA) {
         super(schema);
     }
 
@@ -49,24 +42,8 @@ export class BulkNodeTxData extends BaseTxData {
                         superResult[6],
                         superResult[7],
                         superResult[8],
-                        this._dependsOn,
+                        this.dependsOn,
                     ];
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    public toObjectWithBuffers(): Promise<IBulkNodeTxDataObjectWithBuffers> {
-        return new Promise((resolve, reject) => {
-            super.toObjectWithBuffers()
-                .then((superResult: IBaseTxDataObjectWithBuffers) => {
-                    const resultObj: IBulkNodeTxDataObjectWithBuffers = {
-                        ...superResult,
-                        dependsOn: this._dependsOn,
-                    };
                     return resolve(resultObj);
                 })
                 .catch((error: any) => {
@@ -81,7 +58,7 @@ export class BulkNodeTxData extends BaseTxData {
                 .then((superResult: IBaseTxDataObject) => {
                     const resultObj: IBulkNodeTxDataObject = {
                         ...superResult,
-                        dependsOn: new Uint8Array(this._dependsOn),
+                        dependsOn: new Uint8Array(this.dependsOn),
                     };
                     return resolve(resultObj);
                 })
@@ -94,24 +71,9 @@ export class BulkNodeTxData extends BaseTxData {
     public fromUnnamedObject(passedObj: IBulkNodeTxDataUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj[9]) {
-                this._dependsOn = passedObj[9];
+                this.dependsOn = passedObj[9];
             }
             super.fromUnnamedObject(passedObj)
-                .then((result) => {
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    public fromObjectWithBuffers(passedObj: IBulkNodeTxDataObjectWithBuffers): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            if (passedObj.dependsOn) {
-                this._dependsOn = passedObj.dependsOn;
-            }
-            super.fromObjectWithBuffers(passedObj)
                 .then((result) => {
                     return resolve(result);
                 })
@@ -124,7 +86,7 @@ export class BulkNodeTxData extends BaseTxData {
     public fromObject(passedObj: IBulkNodeTxDataObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj.dependsOn) {
-                this._dependsOn = Buffer.from(passedObj.dependsOn);
+                this.dependsOn = Buffer.from(passedObj.dependsOn);
             }
             super.fromObject(passedObj)
                 .then((result) => {

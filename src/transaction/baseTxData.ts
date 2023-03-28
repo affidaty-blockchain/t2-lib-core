@@ -6,10 +6,8 @@ import {
 import { BaseECKey } from '../cryptography/baseECKey';
 import {
     TxSchemas,
-    TTxSchemaType,
     CommonParentTxData,
     ICommonParentTxDataUnnamedObject,
-    ICommonParentTxDataObjectWithBuffers,
     ICommonParentTxDataObject,
     SCHEMA_TO_TYPE_TAG_MAP,
 } from './commonParentTxData';
@@ -22,54 +20,26 @@ export interface IBaseTxDataPublicKeyUnnamedObject extends Array<any> {
     /** Public key curve type. E.g. 'secp384r1' */
     [1]: string;
     /** Actual value of the public key as "raw" bytes */
-    [2]: Buffer;
+    [2]: Uint8Array;
 }
 
 export interface IBaseTxDataUnnamedObject extends ICommonParentTxDataUnnamedObject {
     /** Target AccountId */
     [1]: string;
     /** Max fuel that consumable by this transaction */
-    [2]: number;
+    [2]: bigint;
     /** Nonce */
-    [3]: Buffer;
+    [3]: Uint8Array;
     /** Network name */
     [4]: string;
     /** Smart contract hash */
-    [5]: Buffer | null;
+    [5]: Uint8Array | null;
     /** Smart contract method */
     [6]: string;
     /** Signer's public key */
     [7]: IBaseTxDataPublicKeyUnnamedObject;
     /** Bytes representing smart contract arguments */
-    [8]: Buffer;
-}
-
-interface IBaseTxDataPublicKeyObjectWithBuffers {
-    /** Public key algorithm type. E.g. "ecdsa". */
-    type: string;
-    /** Public key curve type. E.g. 'secp384r1' */
-    curve: string;
-    /** Actual value of the public key as "raw" bytes */
-    value: Buffer;
-}
-
-export interface IBaseTxDataObjectWithBuffers extends ICommonParentTxDataObjectWithBuffers {
-    /** Target AccountId */
-    account: string;
-    /** Max fuel that consumable by this transaction */
-    maxFuel: number;
-    /** Nonce */
-    nonce: Buffer;
-    /** Network name */
-    network: string; // networkName
-    /** Smart contract hash */
-    contract: Buffer | null;
-    /** Smart contract method */
-    method: string;
-    /** Signer's public key */
-    caller: IBaseTxDataPublicKeyObjectWithBuffers;
-    /** Bytes representing smart contract arguments */
-    args: Buffer;
+    [8]: Uint8Array;
 }
 
 interface IBaseTxDataPublicKeyObject {
@@ -86,7 +56,7 @@ export interface IBaseTxDataObject extends ICommonParentTxDataObject {
     /** Target AccountId */
     account: string;
     /** Max fuel that consumable by this transaction */
-    maxFuel: number;
+    maxFuel: bigint;
     /** Nonce */
     nonce: Uint8Array;
     /** Network name */
@@ -106,40 +76,40 @@ export class BaseTxData extends CommonParentTxData {
         return DEFAULT_SCHEMA;
     }
 
-    constructor(schema: TTxSchemaType = DEFAULT_SCHEMA) {
+    constructor(schema: string = DEFAULT_SCHEMA) {
         super(schema);
     }
 
     public toUnnamedObject(): Promise<IBaseTxDataUnnamedObject> {
         return new Promise((resolve, reject) => {
             const resultObj: IBaseTxDataUnnamedObject = [
-                this._schema,
-                this._account,
-                this._maxFuel,
-                this._nonce,
-                this._network,
-                this._contract,
-                this._method,
+                this.schema,
+                this.target,
+                this.maxFuel,
+                this.nonce,
+                this.networkName,
+                this.smartContractHash,
+                this.smartContractMethod,
                 [
                     '',
                     '',
-                    Buffer.from([]),
+                    new Uint8Array([]),
                 ],
-                this._args,
+                this.smartContractMethodArgsBytes,
             ];
-            if (this._signerPubKey.paramsId === EKeyParamsIds.EMPTY) {
+            if (this.signerPublicKey.paramsId === EKeyParamsIds.EMPTY) {
                 return resolve(resultObj);
             }
-            this._signerPubKey.getRaw()
+            this.signerPublicKey.getRaw()
                 .then((rawKeyBytes: Uint8Array) => {
-                    const underscoreIndex = this._signerPubKey.paramsId.indexOf('_');
+                    const underscoreIndex = this.signerPublicKey.paramsId.indexOf('_');
                     if (underscoreIndex > -1) {
-                        resultObj[7][0] = this._signerPubKey.paramsId.slice(0, underscoreIndex);
-                        resultObj[7][1] = this._signerPubKey.paramsId.slice(underscoreIndex + 1);
+                        resultObj[7][0] = this.signerPublicKey.paramsId.slice(0, underscoreIndex);
+                        resultObj[7][1] = this.signerPublicKey.paramsId.slice(underscoreIndex + 1);
                     } else {
-                        resultObj[7][0] = this._signerPubKey.paramsId;
+                        resultObj[7][0] = this.signerPublicKey.paramsId;
                     }
-                    resultObj[7][2] = Buffer.from(rawKeyBytes);
+                    resultObj[7][2] = rawKeyBytes;
                     return resolve(resultObj);
                 })
                 .catch((error: any) => {
@@ -148,11 +118,11 @@ export class BaseTxData extends CommonParentTxData {
         });
     }
 
-    public toObjectWithBuffers(): Promise<IBaseTxDataObjectWithBuffers> {
+    public toObject(): Promise<IBaseTxDataObject> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObject: IBaseTxDataUnnamedObject) => {
-                    const resultObj: IBaseTxDataObjectWithBuffers = {
+                    const resultObj: IBaseTxDataObject = {
                         schema: unnamedObject[0],
                         account: unnamedObject[1],
                         maxFuel: unnamedObject[2],
@@ -175,46 +145,19 @@ export class BaseTxData extends CommonParentTxData {
         });
     }
 
-    public toObject(): Promise<IBaseTxDataObject> {
-        return new Promise((resolve, reject) => {
-            this.toObjectWithBuffers()
-                .then((objBuffers: IBaseTxDataObjectWithBuffers) => {
-                    const resultObj: IBaseTxDataObject = {
-                        schema: this._schema,
-                        account: objBuffers.account,
-                        maxFuel: objBuffers.maxFuel,
-                        nonce: new Uint8Array(objBuffers.nonce),
-                        network: objBuffers.network,
-                        contract: objBuffers.contract ? new Uint8Array(objBuffers.contract) : null,
-                        method: objBuffers.method,
-                        caller: {
-                            type: objBuffers.caller.type,
-                            curve: objBuffers.caller.curve,
-                            value: new Uint8Array(objBuffers.caller.value),
-                        },
-                        args: new Uint8Array(objBuffers.args),
-                    };
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
     public fromUnnamedObject(passedObj: IBaseTxDataUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!SCHEMA_TO_TYPE_TAG_MAP.has(passedObj[0])) {
                 return reject(new Error(Errors.INVALID_SCHEMA));
             }
-            this._typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(passedObj[0])!;
-            this._schema = passedObj[0];
-            this._account = passedObj[1];
-            this._maxFuel = passedObj[2];
-            this._nonce = passedObj[3];
-            this._network = passedObj[4];
-            this._contract = passedObj[5];
-            this._method = passedObj[6];
+            this.typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(passedObj[0])!;
+            this.schema = passedObj[0];
+            this.target = passedObj[1];
+            this.maxFuel = passedObj[2];
+            this.nonce = passedObj[3];
+            this.networkName = passedObj[4];
+            this.smartContractHash = passedObj[5];
+            this.smartContractMethod = passedObj[6];
             let keyParamsId: string = passedObj[7][0];
             if (passedObj[7][1].length > 0) {
                 keyParamsId += `_${passedObj[7][1]}`;
@@ -222,42 +165,15 @@ export class BaseTxData extends CommonParentTxData {
             if (!mKeyPairParams.has(keyParamsId)) {
                 return reject(new Error(Errors.IMPORT_TYPE_ERROR));
             }
-            this._signerPubKey = new BaseECKey(
+            this.signerPublicKey = new BaseECKey(
                 mKeyPairParams.get(keyParamsId)!.publicKey,
             );
-            this._args = passedObj[8];
+            this.smartContractMethodArgsBytes = passedObj[8];
             if (keyParamsId === EKeyParamsIds.EMPTY) {
                 return resolve(true);
             }
-            this._signerPubKey.importBin(new Uint8Array(passedObj[7][2]))
+            this.signerPublicKey.importBin(new Uint8Array(passedObj[7][2]))
                 .then((result) => {
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    public fromObjectWithBuffers(passedObj: IBaseTxDataObjectWithBuffers): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            const unnamedObject: IBaseTxDataUnnamedObject = [
-                passedObj.schema,
-                passedObj.account,
-                passedObj.maxFuel,
-                passedObj.nonce,
-                passedObj.network,
-                passedObj.contract ? passedObj.contract : null,
-                passedObj.method,
-                [
-                    passedObj.caller.type,
-                    passedObj.caller.curve,
-                    passedObj.caller.value,
-                ],
-                passedObj.args,
-            ];
-            this.fromUnnamedObject(unnamedObject)
-                .then((result: boolean) => {
                     return resolve(result);
                 })
                 .catch((error: any) => {
@@ -268,22 +184,22 @@ export class BaseTxData extends CommonParentTxData {
 
     public fromObject(passedObj: IBaseTxDataObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            const objBuffers: IBaseTxDataObjectWithBuffers = {
-                schema: passedObj.schema,
-                account: passedObj.account,
-                maxFuel: passedObj.maxFuel,
-                nonce: Buffer.from(passedObj.nonce),
-                network: passedObj.network,
-                contract: passedObj.contract ? Buffer.from(passedObj.contract) : null,
-                method: passedObj.method,
-                caller: {
-                    type: passedObj.caller.type,
-                    curve: passedObj.caller.curve,
-                    value: Buffer.from(passedObj.caller.value),
-                },
-                args: Buffer.from(passedObj.args),
-            };
-            this.fromObjectWithBuffers(objBuffers)
+            const unnamedObject: IBaseTxDataUnnamedObject = [
+                passedObj.schema,
+                passedObj.account,
+                passedObj.maxFuel,
+                passedObj.nonce,
+                passedObj.network,
+                passedObj.contract,
+                passedObj.method,
+                [
+                    passedObj.caller.type,
+                    passedObj.caller.curve,
+                    passedObj.caller.value,
+                ],
+                passedObj.args,
+            ];
+            this.fromUnnamedObject(unnamedObject)
                 .then((result: boolean) => {
                     return resolve(result);
                 })
