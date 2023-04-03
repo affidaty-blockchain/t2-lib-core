@@ -5,10 +5,8 @@ import {
 } from '../cryptography/cryptoDefaults';
 import { BaseECKey } from '../cryptography/baseECKey';
 import {
-    TTxSchemaType,
     CommonParentTxData,
     ICommonParentTxDataUnnamedObject,
-    ICommonParentTxDataObjectWithBuffers,
     ICommonParentTxDataObject,
 } from './commonParentTxData';
 import {
@@ -17,27 +15,20 @@ import {
 import {
     Signable,
     ISignableObject,
-    ISignableObjectWithBuffer,
     ISignableUnnamedObject,
     ISignableUnnamedObjectNoTag,
 } from '../signable';
 
-export type TSchemaToDataMap = Map<TTxSchemaType, (schema?: TTxSchemaType)=>CommonParentTxData>;
+export type TSchemaToDataMap = Map<string, (schema?: string)=>CommonParentTxData>;
 
 export interface IBaseTxUnnamedObject extends ISignableUnnamedObject {
     [1]: ICommonParentTxDataUnnamedObject,
-    [2]?: Buffer;
+    [2]?: Uint8Array;
 }
 
 export interface IBaseTxUnnamedObjectNoTag extends ISignableUnnamedObjectNoTag {
     [0]: ICommonParentTxDataUnnamedObject,
-    [1]?: Buffer;
-}
-
-// exported for usage in Client class
-export interface IBaseTxObjectWithBuffers extends ISignableObjectWithBuffer {
-    data: ICommonParentTxDataObjectWithBuffers,
-    signature?: Buffer;
+    [1]?: Uint8Array;
 }
 
 /**
@@ -57,7 +48,7 @@ export class BaseTransaction extends Signable {
     protected _data: CommonParentTxData;
 
     constructor(
-        schema: TTxSchemaType = BaseTxData.defaultSchema,
+        schema: string = BaseTxData.defaultSchema,
         hash: TKeyGenAlgorithmValidHashValues = defaultSignHash,
     ) {
         super(hash);
@@ -66,25 +57,207 @@ export class BaseTransaction extends Signable {
         this._typeTag = this._data.typeTag;
     }
 
-    public set schemaClassMap(schemaClassMap: TSchemaToDataMap) {
-        this._schemaClassMap = schemaClassMap;
-    }
-
-    public get schemaClassMap(): TSchemaToDataMap {
+    protected get schemaClassMap(): TSchemaToDataMap {
         return this._schemaClassMap;
     }
 
-    public get data(): CommonParentTxData {
-        return this._data;
+    protected set schemaClassMap(schemaClassMap: TSchemaToDataMap) {
+        this._schemaClassMap = schemaClassMap;
     }
 
-    public set data(data: CommonParentTxData) {
-        this._data = data;
+    protected setSchemaClassMap(schemaClassMap: TSchemaToDataMap) {
+        this.schemaClassMap = schemaClassMap;
+        return this;
     }
 
-    /** Automatically generates and sets new random nonce. */
-    public genNonce(): void {
+    protected setSchema(schema: string) {
+        this.data.setSchema(schema);
+        return this;
+    }
+
+    get target() {
+        return this._data.target;
+    }
+
+    set target(accountId: string) {
+        this._data.target = accountId;
+    }
+
+    setTarget(accountId: string) {
+        this._data.setTarget(accountId);
+        return this;
+    }
+
+    get maxFuel() {
+        return this._data.maxFuel;
+    }
+
+    set maxFuel(maxFuel: bigint) {
+        this._data.maxFuel = maxFuel;
+    }
+
+    setMaxFuel(maxFuel: string | number | bigint) {
+        this.data.setMaxFuel(maxFuel);
+        return this;
+    }
+
+    get networkName() {
+        return this._data.networkName;
+    }
+
+    set networkName(networkName: string) {
+        this._data.networkName = networkName;
+    }
+
+    setNetworkName(networkName: string) {
+        this._data.setNetworkName(networkName);
+        return this;
+    }
+
+    get nonce() {
+        return this._data.nonce;
+    }
+
+    set nonce(nonce: Uint8Array) {
+        this._data.nonce = nonce;
+    }
+
+    get nonceHex() {
+        return this._data.nonceHex;
+    }
+
+    set nonceHex(nonceHex: string) {
+        this._data.nonceHex = nonceHex;
+    }
+
+    setNonce(nonce: string | Uint8Array) {
+        this._data.setNonce(nonce);
+        return this;
+    }
+
+    genNonce() {
         this._data.genNonce();
+        return this;
+    }
+
+    get smartContractHash() {
+        return this._data.smartContractHash;
+    }
+
+    set smartContractHash(hash: Uint8Array) {
+        this._data.smartContractHash = hash;
+    }
+
+    get smartContractHashHex() {
+        return this._data.smartContractHashHex;
+    }
+
+    set smartContractHashHex(hashHex: string) {
+        this._data.smartContractHashHex = hashHex;
+    }
+
+    setSmartContractHash(contractHash?: string | Uint8Array) {
+        this._data.setSmartContractHash(contractHash);
+        return this;
+    }
+
+    get smartContractMethod() {
+        return this._data.smartContractMethod;
+    }
+
+    set smartContractMethod(method: string) {
+        this._data.smartContractMethod = method;
+    }
+
+    setSmartContractMethod(method: string) {
+        this._data.setSmartContractMethod(method);
+        return this;
+    }
+
+    get smartContractMethodArgs() {
+        return this._data.smartContractMethodArgs;
+    }
+
+    set smartContractMethodArgs(args: any) {
+        this._data.smartContractMethodArgs = args;
+    }
+
+    setSmartContractMethodArgs(args: any) {
+        this._data.setSmartContractMethodArgs(args);
+        return this;
+    }
+
+    get smartContractMethodArgsBytes() {
+        return this._data.smartContractMethodArgsBytes;
+    }
+
+    set smartContractMethodArgsBytes(argsBytes: Uint8Array) {
+        this._data.smartContractMethodArgsBytes = argsBytes;
+    }
+
+    setSmartContractMethodArgsBytes(args: Uint8Array) {
+        this._data.setSmartContractMethodArgsBytes(args);
+        return this;
+    }
+
+    get smartContractMethodArgsHex() {
+        return this._data.smartContractMethodArgsHex;
+    }
+
+    set smartContractMethodArgsHex(argsHex: string) {
+        this._data.smartContractMethodArgsHex = argsHex;
+    }
+
+    setSmartContractMethodArgsHex(args: string) {
+        this._data.setSmartContractMethodArgsHex(args);
+        return this;
+    }
+
+    get smartContractMethodArgsJson() {
+        return this._data.smartContractMethodArgsJson;
+    }
+
+    set smartContractMethodArgsJson(argsJson: string) {
+        this._data.smartContractMethodArgsJson = argsJson;
+    }
+
+    setSmartContractMethodArgsJson(args: string) {
+        this._data.setSmartContractMethodArgsJson(args);
+        return this;
+    }
+
+    get dependsOn() {
+        return this._data.dependsOn;
+    }
+
+    set dependsOn(txHash: Uint8Array) {
+        this._data.dependsOn = txHash;
+    }
+
+    get dependsOnHex() {
+        return this._data.dependsOnHex;
+    }
+
+    set dependsOnHex(txHash: string) {
+        this._data.dependsOnHex = txHash;
+    }
+
+    setDependsOn(txHash: string | Uint8Array) {
+        this._data.setDependsOn(txHash);
+        return this;
+    }
+
+    get signerPublicKey() {
+        return this._data.signerPublicKey;
+    }
+
+    set signerPublicKey(signerPublicKey: BaseECKey) {
+        this._data.signerPublicKey = signerPublicKey;
+    }
+
+    setSignerPublicKey(signerPubKey: BaseECKey) {
+        this._data.setSignerPublicKey(signerPubKey);
+        return this;
     }
 
     /**
@@ -93,15 +266,15 @@ export class BaseTransaction extends Signable {
      * and sent over the network
      * @returns - compact unnamed object
      */
-    public toUnnamedObject(): Promise<IBaseTxUnnamedObject> {
+    toUnnamedObject(): Promise<IBaseTxUnnamedObject> {
         return new Promise((resolve, reject) => {
-            this._data.toUnnamedObject()
+            this.data.toUnnamedObject()
                 .then((unnamedData: ICommonParentTxDataUnnamedObject) => {
                     const resultObj: IBaseTxUnnamedObject = [
-                        this._data.typeTag,
+                        this.data.typeTag,
                         unnamedData,
                     ];
-                    if (this._signature.byteLength > 0) {
+                    if (this._signature.length > 0) {
                         resultObj[2] = this._signature;
                     }
                     return resolve(resultObj);
@@ -112,7 +285,7 @@ export class BaseTransaction extends Signable {
         });
     }
 
-    public toUnnamedObjectNoTag(): Promise<IBaseTxUnnamedObjectNoTag> {
+    toUnnamedObjectNoTag(): Promise<IBaseTxUnnamedObjectNoTag> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObj: IBaseTxUnnamedObject) => {
@@ -132,34 +305,10 @@ export class BaseTransaction extends Signable {
 
     /**
      * Exports transaction to an object with named members and binary
-     * values represented by Buffers
-     * @returns - object with named members and binary values represented by Buffers
-     */
-    public toObjectWithBuffers(): Promise<IBaseTxObjectWithBuffers> {
-        return new Promise((resolve, reject) => {
-            this._data.toObjectWithBuffers()
-                .then((dataObj: ICommonParentTxDataObjectWithBuffers) => {
-                    const resultObj: IBaseTxObjectWithBuffers = {
-                        type: this._data.typeTag,
-                        data: dataObj,
-                    };
-                    if (this._signature.byteLength > 0) {
-                        resultObj.signature = this._signature;
-                    }
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Exports transaction to an object with named members and binary
      * values represented by Uint8Arrays
      * @returns - object with named members and binary values represented by Uint8Arrays
      */
-    public toObject(): Promise<IBaseTxObject> {
+    toObject(): Promise<IBaseTxObject> {
         return new Promise((resolve, reject) => {
             this._data.toObject()
                 .then((dataObj: ICommonParentTxDataObject) => {
@@ -167,8 +316,8 @@ export class BaseTransaction extends Signable {
                         type: this._data.typeTag,
                         data: dataObj,
                     };
-                    if (this._signature.byteLength > 0) {
-                        resultObj.signature = new Uint8Array(this._signature);
+                    if (this._signature.length > 0) {
+                        resultObj.signature = this.signature;
                     }
                     return resolve(resultObj);
                 })
@@ -182,7 +331,7 @@ export class BaseTransaction extends Signable {
      * Imports transaction from a compact object with unnamed members
      * @returns - compact unnamed object
      */
-    public fromUnnamedObject(passedObj: IBaseTxUnnamedObject): Promise<boolean> {
+    fromUnnamedObject(passedObj: IBaseTxUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!this._schemaClassMap.has(passedObj[1][0])) {
                 return reject(new Error(Errors.INVALID_SCHEMA));
@@ -202,7 +351,7 @@ export class BaseTransaction extends Signable {
         });
     }
 
-    protected fromUnnamedObjectNoTag(passedObj: IBaseTxUnnamedObjectNoTag): Promise<boolean> {
+    fromUnnamedObjectNoTag(passedObj: IBaseTxUnnamedObjectNoTag): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedArg: IBaseTxUnnamedObject = [
                 '',
@@ -224,16 +373,16 @@ export class BaseTransaction extends Signable {
 
     /**
      * Imports transaction from an object with named members and binary
-     * values represented by Buffers
-     * @param passedObj - object with named members and binary values represented by Buffers
+     * values represented by Uint8Arrays
+     * @param passedObj - object with named members and binary values represented by Uint8Arrays
      */
-    public fromObjectWithBuffers(passedObj: IBaseTxObjectWithBuffers): Promise<boolean> {
+    fromObject(passedObj: IBaseTxObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!this._schemaClassMap.has(passedObj.data.schema)) {
                 return reject(new Error(Errors.INVALID_SCHEMA));
             }
             this._data = this._schemaClassMap.get(passedObj.data.schema)!();
-            this._data.fromObjectWithBuffers(passedObj.data)
+            this._data.fromObject(passedObj.data)
                 .then((result: boolean) => {
                     this._typeTag = this._data.typeTag;
                     if (result && passedObj.signature) {
@@ -247,36 +396,11 @@ export class BaseTransaction extends Signable {
         });
     }
 
-    /**
-     * Imports transaction from an object with named members and binary
-     * values represented by Uint8Arrays
-     * @param passedObj - object with named members and binary values represented by Uint8Arrays
-     */
-    public fromObject(passedObj: IBaseTxObject): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            if (!this._schemaClassMap.has(passedObj.data.schema)) {
-                return reject(new Error(Errors.INVALID_SCHEMA));
-            }
-            this._data = this._schemaClassMap.get(passedObj.data.schema)!();
-            this._data.fromObject(passedObj.data)
-                .then((result: boolean) => {
-                    this._typeTag = this._data.typeTag;
-                    if (result && passedObj.signature) {
-                        this._signature = Buffer.from(passedObj.signature);
-                    }
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
     /** Signs transaction with private key, provided by
      * the gived key pair. This also automativcally sets
      * signerPublicKey of this transaction
      */
-    public sign(privateKey: BaseECKey): Promise<boolean> {
+    sign(privateKey: BaseECKey): Promise<boolean> {
         return new Promise((resolve, reject) => {
             privateKey.extractPublic()
                 .then((publicKey: BaseECKey) => {
@@ -298,7 +422,7 @@ export class BaseTransaction extends Signable {
     /** Verifies if transaction has a valid signature produced
      * by the private key associated with signerPublicKey
      */
-    public verify(): Promise<boolean> {
+    verify(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             super.verifySignature(this._data.signerPublicKey)
                 .then((result: boolean) => {
@@ -315,7 +439,7 @@ export class BaseTransaction extends Signable {
      * itself on transaction submission.
      * @returns - ticket string
      */
-    public getTicket(): Promise<string> {
+    getTicket(): Promise<string> {
         return new Promise((resolve, reject) => {
             this._data.getTicket()
                 .then((ticket: string) => {

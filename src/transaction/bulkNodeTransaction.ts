@@ -6,30 +6,23 @@ import {
 import {
     BulkNodeTxData,
     IBulkNodeTxDataUnnamedObject,
-    IBulkNodeTxDataObjectWithBuffers,
     IBulkNodeTxDataObject,
 } from './bulkNodeTxData';
 import {
     BaseTransaction,
     IBaseTxUnnamedObject,
-    IBaseTxObjectWithBuffers,
     IBaseTxObject,
     IBaseTxUnnamedObjectNoTag,
 } from './baseTransaction';
 
 export interface IBulkNodeTxUnnamedObject extends IBaseTxUnnamedObject {
     [1]: IBulkNodeTxDataUnnamedObject;
-    [2]: Buffer;
+    [2]: Uint8Array;
 }
 
 export interface IBulkNodeTxUnnamedObjectNoTag extends IBaseTxUnnamedObjectNoTag {
     [0]: IBulkNodeTxDataUnnamedObject,
-    [1]: Buffer,
-}
-
-export interface IBulkNodeTxObjectWithBuffers extends IBaseTxObjectWithBuffers {
-    data: IBulkNodeTxDataObjectWithBuffers;
-    signature: Buffer;
+    [1]: Uint8Array,
 }
 
 export interface IBulkNodeTxObject extends IBaseTxObject {
@@ -48,7 +41,7 @@ export class BulkNodeTransaction extends BaseTransaction {
         this._typeTag = this._data.typeTag;
     }
 
-    public toUnnamedObject(): Promise<IBulkNodeTxUnnamedObject> {
+    toUnnamedObject(): Promise<IBulkNodeTxUnnamedObject> {
         return new Promise((resolve, reject) => {
             this._data.toUnnamedObject()
                 .then((unnamedData: IBulkNodeTxDataUnnamedObject) => {
@@ -65,7 +58,7 @@ export class BulkNodeTransaction extends BaseTransaction {
         });
     }
 
-    public toUnnamedObjectNoTag(): Promise<IBulkNodeTxUnnamedObjectNoTag> {
+    toUnnamedObjectNoTag(): Promise<IBulkNodeTxUnnamedObjectNoTag> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObj: IBulkNodeTxUnnamedObject) => {
@@ -81,31 +74,14 @@ export class BulkNodeTransaction extends BaseTransaction {
         });
     }
 
-    public toObjectWithBuffers(): Promise<IBulkNodeTxObjectWithBuffers> {
-        return new Promise((resolve, reject) => {
-            this._data.toObjectWithBuffers()
-                .then((dataObj: IBulkNodeTxDataObjectWithBuffers) => {
-                    const resultObj: IBulkNodeTxObjectWithBuffers = {
-                        type: this._data.typeTag,
-                        data: dataObj,
-                        signature: this._signature,
-                    };
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    public toObject(): Promise<IBulkNodeTxObject> {
+    toObject(): Promise<IBulkNodeTxObject> {
         return new Promise((resolve, reject) => {
             this._data.toObject()
                 .then((dataObj: IBulkNodeTxDataObject) => {
                     const resultObj: IBulkNodeTxObject = {
                         type: this._data.typeTag,
                         data: dataObj,
-                        signature: new Uint8Array(this._signature),
+                        signature: this.signature,
                     };
                     return resolve(resultObj);
                 })
@@ -115,7 +91,7 @@ export class BulkNodeTransaction extends BaseTransaction {
         });
     }
 
-    public fromUnnamedObject(passedObj: IBulkNodeTxUnnamedObject): Promise<boolean> {
+    fromUnnamedObject(passedObj: IBulkNodeTxUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj[1][0] !== BulkNodeTxData.defaultSchema) {
                 return reject(new Error(Errors.INVALID_SCHEMA));
@@ -134,7 +110,7 @@ export class BulkNodeTransaction extends BaseTransaction {
         });
     }
 
-    public fromUnnamedObjectNoTag(passedObj: IBulkNodeTxUnnamedObjectNoTag): Promise<boolean> {
+    fromUnnamedObjectNoTag(passedObj: IBulkNodeTxUnnamedObjectNoTag): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedArg: IBulkNodeTxUnnamedObject = [
                 '',
@@ -153,37 +129,16 @@ export class BulkNodeTransaction extends BaseTransaction {
 
     /**
      * Imports transaction from an object with named members and binary
-     * values represented by Buffers
-     * @param passedObj - object with named members and binary values represented by Buffers
-     */
-    public fromObjectWithBuffers(passedObj: IBulkNodeTxObjectWithBuffers): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            this._data.fromObjectWithBuffers(passedObj.data)
-                .then((result: boolean) => {
-                    if (result) {
-                        this._typeTag = this._data.typeTag;
-                        this._signature = passedObj.signature;
-                    }
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Imports transaction from an object with named members and binary
      * values represented by Uint8Arrays
      * @param passedObj - object with named members and binary values represented by Uint8Arrays
      */
-    public fromObject(passedObj: IBulkNodeTxObject): Promise<boolean> {
+    fromObject(passedObj: IBulkNodeTxObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this._data.fromObject(passedObj.data)
                 .then((result: boolean) => {
                     if (result) {
                         this._typeTag = this._data.typeTag;
-                        this._signature = Buffer.from(passedObj.signature);
+                        this._signature = passedObj.signature;
                     }
                     return resolve(result);
                 })

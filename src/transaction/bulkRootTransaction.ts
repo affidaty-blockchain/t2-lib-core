@@ -11,7 +11,6 @@ import {
 import {
     BaseTxData,
     IBaseTxDataUnnamedObject,
-    IBaseTxDataObjectWithBuffers,
     IBaseTxDataObject,
 } from './baseTxData';
 
@@ -21,7 +20,6 @@ import {
 import {
     BaseTransaction,
     IBaseTxUnnamedObject,
-    IBaseTxObjectWithBuffers,
     IBaseTxObject,
     IBaseTxUnnamedObjectNoTag,
 } from './baseTransaction';
@@ -35,10 +33,6 @@ export interface IBulkRootTxUnnamedObject extends IBaseTxUnnamedObject {
 
 export interface IBulkRootTxUnnamedObjectNoTag extends IBaseTxUnnamedObjectNoTag {
     [0]: IBaseTxDataUnnamedObject,
-}
-
-export interface IBulkRootTxObjectWithBuffers extends IBaseTxObjectWithBuffers {
-    data: IBaseTxDataObjectWithBuffers;
 }
 
 export interface IBulkRootTxObject extends IBaseTxObject {
@@ -56,7 +50,7 @@ export class BulkRootTransaction extends BaseTransaction {
         this._typeTag = this._data.typeTag;
     }
 
-    public toUnnamedObject(): Promise<IBulkRootTxUnnamedObject> {
+    toUnnamedObject(): Promise<IBulkRootTxUnnamedObject> {
         return new Promise((resolve, reject) => {
             this._data.toUnnamedObject()
                 .then((unnamedData: IBaseTxDataUnnamedObject) => {
@@ -72,7 +66,7 @@ export class BulkRootTransaction extends BaseTransaction {
         });
     }
 
-    public toUnnamedObjectNoTag(): Promise<IBulkRootTxUnnamedObjectNoTag> {
+    toUnnamedObjectNoTag(): Promise<IBulkRootTxUnnamedObjectNoTag> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObj: IBulkRootTxUnnamedObject) => {
@@ -90,23 +84,7 @@ export class BulkRootTransaction extends BaseTransaction {
         });
     }
 
-    public toObjectWithBuffers(): Promise<IBulkRootTxObjectWithBuffers> {
-        return new Promise((resolve, reject) => {
-            this._data.toObjectWithBuffers()
-                .then((dataObj: IBaseTxDataObjectWithBuffers) => {
-                    const resultObj: IBulkRootTxObjectWithBuffers = {
-                        type: this._data.typeTag,
-                        data: dataObj,
-                    };
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    public toObject(): Promise<IBulkRootTxObject> {
+    toObject(): Promise<IBulkRootTxObject> {
         return new Promise((resolve, reject) => {
             this._data.toObject()
                 .then((dataObj: IBaseTxDataObject) => {
@@ -122,7 +100,7 @@ export class BulkRootTransaction extends BaseTransaction {
         });
     }
 
-    public fromUnnamedObject(passedObj: IBulkRootTxUnnamedObject): Promise<boolean> {
+    fromUnnamedObject(passedObj: IBulkRootTxUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj[1][0] !== DEFAULT_SCHEMA
                 && passedObj[1][0] !== EMPTY_SCHEMA
@@ -142,7 +120,7 @@ export class BulkRootTransaction extends BaseTransaction {
         });
     }
 
-    public fromUnnamedObjectNoTag(passedObj: IBulkRootTxUnnamedObjectNoTag): Promise<boolean> {
+    fromUnnamedObjectNoTag(passedObj: IBulkRootTxUnnamedObjectNoTag): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!SCHEMA_TO_TYPE_TAG_MAP.has(passedObj[0][0])) {
                 return reject(new Error(Errors.UNKNOWN_TX_TYPE));
@@ -167,30 +145,10 @@ export class BulkRootTransaction extends BaseTransaction {
 
     /**
      * Imports transaction from an object with named members and binary
-     * values represented by Buffers
-     * @param passedObj - object with named members and binary values represented by Buffers
-     */
-    public fromObjectWithBuffers(passedObj: IBulkRootTxObjectWithBuffers): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            this._data.fromObjectWithBuffers(passedObj.data)
-                .then((result: boolean) => {
-                    if (result) {
-                        this._typeTag = this._data.typeTag;
-                    }
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Imports transaction from an object with named members and binary
      * values represented by Uint8Arrays
      * @param passedObj - object with named members and binary values represented by Uint8Arrays
      */
-    public fromObject(passedObj: IBulkRootTxObject): Promise<boolean> {
+    fromObject(passedObj: IBulkRootTxObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this._data.fromObject(passedObj.data)
                 .then((result: boolean) => {
@@ -207,13 +165,13 @@ export class BulkRootTransaction extends BaseTransaction {
 
     /* eslint-disable class-methods-use-this */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public sign(privateKey: BaseECKey): Promise<boolean> {
+    sign(privateKey: BaseECKey): Promise<boolean> {
         return new Promise((resolve, reject) => {
             return reject(new Error(Errors.BULK_ROOT_TX_NO_SIGN));
         });
     }
 
-    public verify(): Promise<boolean> {
+    verify(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             return reject(new Error(Errors.BULK_ROOT_TX_NO_VERIFY));
         });

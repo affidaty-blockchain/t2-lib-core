@@ -4,7 +4,7 @@ import {
     // TxSchemas,
     SignableTypeTags,
 } from '../../src/transaction/commonParentTxData';
-import { UnitaryTransaction } from '../../src/transaction/unitaryTransaction';
+import { BulkNodeTransaction } from '../../src/transaction/bulkNodeTransaction';
 
 const signerAcc = new Account();
 let expectedTicket = '';
@@ -17,6 +17,7 @@ const txTestData = {
     contractHashHex: '1220ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
     contractMethod: 'pay',
     contractArgsHex: '84a466726f6dd92e516d64647852657845354451383248513448487171697936706e4a385241365a67464563397833534c7757564769a2746fad234f72646572426f6f6b303335a5756e697473cd1e84a464617461dc0049cc83cca5746f6b656ecca423425443cca5756e697473ccce0004cc93cce0cca3756964ccd92c346e7a336150774b54674d6754586e635762313779394c624d6169337448536e37483944396e7a7936503636',
+    dependsOnHex: '12209cbc82cd55810d89184edc956bffef92c8e292d11e5047d787ade31f0a0865b4',
     signerAcc: new Account(),
 };
 
@@ -26,9 +27,9 @@ describe('preliminary ops', () => {
     });
 });
 
-describe('UnitaryTransaction', () => {
+describe('BulkNodeTransaction', () => {
     test('accessors', async () => {
-        const tx = new UnitaryTransaction();
+        const tx = new BulkNodeTransaction();
         tx.target = txTestData.target;
         expect(tx.target).toEqual(txTestData.target);
         tx.maxFuel = BigInt(txTestData.maxFuel);
@@ -48,17 +49,21 @@ describe('UnitaryTransaction', () => {
         expect(tx.smartContractMethodArgsBytes).toEqual(hexDecode(txTestData.contractArgsHex));
         tx.signerPublicKey = signerAcc.keyPair.publicKey;
         expect(tx.signerPublicKey).toEqual(signerAcc.keyPair.publicKey);
+        tx.dependsOnHex = txTestData.dependsOnHex;
+        expect(tx.dependsOn).toEqual(hexDecode(txTestData.dependsOnHex));
+        expect(tx.dependsOnHex).toEqual(txTestData.dependsOnHex);
         expectedTicket = await tx.getTicket();
     });
     test('sign/verify', async () => {
-        const tx = new UnitaryTransaction()
+        const tx = new BulkNodeTransaction()
             .setTarget(txTestData.target)
             .setMaxFuel(txTestData.maxFuel)
             .setNetworkName(txTestData.network)
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsHex(txTestData.contractArgsHex);
+            .setSmartContractMethodArgsHex(txTestData.contractArgsHex)
+            .setDependsOn(txTestData.dependsOnHex);
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();
         tx.target = '#anotherTarget';
@@ -68,21 +73,22 @@ describe('UnitaryTransaction', () => {
         expect(tx.getTicket()).resolves.toEqual(expectedTicket);
     });
     test('to/from unnamed object', async () => {
-        const tx = new UnitaryTransaction()
+        const tx = new BulkNodeTransaction()
             .setTarget(txTestData.target)
             .setMaxFuel(txTestData.maxFuel)
             .setNetworkName(txTestData.network)
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsHex(txTestData.contractArgsHex);
+            .setSmartContractMethodArgsHex(txTestData.contractArgsHex)
+            .setDependsOn(txTestData.dependsOnHex);
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();
-        expect(tx.typeTag).toEqual(SignableTypeTags.UNITARY_TX);
+        expect(tx.typeTag).toEqual(SignableTypeTags.BULK_NODE_TX);
         expect(tx.getTicket()).resolves.toEqual(expectedTicket);
 
         const txUnnamedObj = await tx.toUnnamedObject();
-        const tx2 = new UnitaryTransaction();
+        const tx2 = new BulkNodeTransaction();
         await tx2.fromUnnamedObject(txUnnamedObj);
         expect(tx2.verify()).resolves.toBeTruthy();
         tx2.setTarget('#WrongTarget');
@@ -93,21 +99,22 @@ describe('UnitaryTransaction', () => {
         expect(tx2.getTicket()).resolves.toEqual(expectedTicket);
     });
     test('to/from object', async () => {
-        const tx = new UnitaryTransaction()
+        const tx = new BulkNodeTransaction()
             .setTarget(txTestData.target)
             .setMaxFuel(txTestData.maxFuel)
             .setNetworkName(txTestData.network)
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsHex(txTestData.contractArgsHex);
+            .setSmartContractMethodArgsHex(txTestData.contractArgsHex)
+            .setDependsOn(txTestData.dependsOnHex);
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();
-        expect(tx.typeTag).toEqual(SignableTypeTags.UNITARY_TX);
+        expect(tx.typeTag).toEqual(SignableTypeTags.BULK_NODE_TX);
         expect(tx.getTicket()).resolves.toEqual(expectedTicket);
 
         const txObj = await tx.toObject();
-        const tx2 = new UnitaryTransaction();
+        const tx2 = new BulkNodeTransaction();
         await tx2.fromObject(txObj);
         expect(tx2.verify()).resolves.toBeTruthy();
         tx2.setTarget('#WrongTarget');
@@ -118,21 +125,22 @@ describe('UnitaryTransaction', () => {
         expect(tx2.getTicket()).resolves.toEqual(expectedTicket);
     });
     test('to/from bytes', async () => {
-        const tx = new UnitaryTransaction()
+        const tx = new BulkNodeTransaction()
             .setTarget(txTestData.target)
             .setMaxFuel(txTestData.maxFuel)
             .setNetworkName(txTestData.network)
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex));
+            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex))
+            .setDependsOn(txTestData.dependsOnHex);
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();
-        expect(tx.typeTag).toEqual(SignableTypeTags.UNITARY_TX);
+        expect(tx.typeTag).toEqual(SignableTypeTags.BULK_NODE_TX);
         expect(tx.getTicket()).resolves.toEqual(expectedTicket);
 
         const txBytes = await tx.toBytes();
-        const tx2 = new UnitaryTransaction();
+        const tx2 = new BulkNodeTransaction();
         await tx2.fromBytes(txBytes);
         expect(tx2.verify()).resolves.toBeTruthy();
         tx2.setTarget('#WrongTarget');
@@ -143,21 +151,22 @@ describe('UnitaryTransaction', () => {
         expect(tx2.getTicket()).resolves.toEqual(expectedTicket);
     });
     test('to/from base58', async () => {
-        const tx = new UnitaryTransaction()
+        const tx = new BulkNodeTransaction()
             .setTarget(txTestData.target)
             .setMaxFuel(txTestData.maxFuel)
             .setNetworkName(txTestData.network)
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex));
+            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex))
+            .setDependsOn(txTestData.dependsOnHex);
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();
-        expect(tx.typeTag).toEqual(SignableTypeTags.UNITARY_TX);
+        expect(tx.typeTag).toEqual(SignableTypeTags.BULK_NODE_TX);
         expect(tx.getTicket()).resolves.toEqual(expectedTicket);
 
         const txB58 = await tx.toBase58();
-        const tx2 = new UnitaryTransaction();
+        const tx2 = new BulkNodeTransaction();
         await tx2.fromBase58(txB58);
         expect(tx2.verify()).resolves.toBeTruthy();
         tx2.setTarget('#WrongTarget');

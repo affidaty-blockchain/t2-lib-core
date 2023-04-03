@@ -4,7 +4,6 @@ import {
     DEF_SIGN_HASH_ALGORITHM as defaultSignHash,
 } from '../cryptography/cryptoDefaults';
 import {
-    TTxSchemaType,
     TxSchemas,
     SignableTypeTags,
 } from './commonParentTxData';
@@ -65,7 +64,7 @@ function typeTagToClass(typeTag: string, hash?: TKeyGenAlgorithmValidHashValues)
 
 export class Transaction extends BaseTransaction {
     constructor(
-        schema: TTxSchemaType = BaseTxData.defaultSchema,
+        schema: string = BaseTxData.defaultSchema,
         hash: TKeyGenAlgorithmValidHashValues = defaultSignHash,
     ) {
         super(hash);

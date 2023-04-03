@@ -7,13 +7,11 @@ import { TxSchemas } from './commonParentTxData';
 import {
     BaseTransaction,
     IBaseTxUnnamedObject,
-    IBaseTxObjectWithBuffers,
     IBaseTxObject,
 } from './baseTransaction';
 import {
     BulkTxData,
     IBulkTxDataUnnamedObject,
-    IBulkTxDataObjectWithBuffers,
     IBulkTxDataObject,
 } from './bulkTxData';
 
@@ -21,12 +19,7 @@ const DEFAULT_SCHEMA = TxSchemas.BULK_TX;
 
 export interface IBulkTxUnnamedObject extends IBaseTxUnnamedObject {
     [1]: IBulkTxDataUnnamedObject;
-    [2]: Buffer;
-}
-
-export interface IBulkTxObjectWithBuffers extends IBaseTxObjectWithBuffers {
-    data: IBulkTxDataObjectWithBuffers;
-    signature: Buffer;
+    [2]: Uint8Array;
 }
 
 export interface IBulkTxObject extends IBaseTxObject {
@@ -45,15 +38,15 @@ export class BulkTransaction extends BaseTransaction {
         this._typeTag = this._data.typeTag;
     }
 
-    public get data(): BulkTxData {
+    get data(): BulkTxData {
         return this._data;
     }
 
-    public set data(data: BulkTxData) {
+    set data(data: BulkTxData) {
         this._data = data;
     }
 
-    public toUnnamedObject(): Promise<IBulkTxUnnamedObject> {
+    toUnnamedObject(): Promise<IBulkTxUnnamedObject> {
         return new Promise((resolve, reject) => {
             this._data.toUnnamedObject()
                 .then((unnamedData: IBulkTxDataUnnamedObject) => {
@@ -70,31 +63,14 @@ export class BulkTransaction extends BaseTransaction {
         });
     }
 
-    public toObjectWithBuffers(): Promise<IBulkTxObjectWithBuffers> {
-        return new Promise((resolve, reject) => {
-            this._data.toObjectWithBuffers()
-                .then((dataObj: IBulkTxDataObjectWithBuffers) => {
-                    const resultObj: IBulkTxObjectWithBuffers = {
-                        type: this._data.typeTag,
-                        data: dataObj,
-                        signature: this._signature,
-                    };
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    public toObject(): Promise<IBulkTxObject> {
+    toObject(): Promise<IBulkTxObject> {
         return new Promise((resolve, reject) => {
             this._data.toObject()
                 .then((dataObj: IBulkTxDataObject) => {
                     const resultObj: IBulkTxObject = {
                         type: this._data.typeTag,
                         data: dataObj,
-                        signature: new Uint8Array(this._signature),
+                        signature: this.signature,
                     };
                     return resolve(resultObj);
                 })
@@ -104,7 +80,7 @@ export class BulkTransaction extends BaseTransaction {
         });
     }
 
-    public fromUnnamedObject(passedObj: IBulkTxUnnamedObject): Promise<boolean> {
+    fromUnnamedObject(passedObj: IBulkTxUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj[1][0] !== DEFAULT_SCHEMA) {
                 return reject(new Error(Errors.INVALID_SCHEMA));
@@ -123,14 +99,9 @@ export class BulkTransaction extends BaseTransaction {
         });
     }
 
-    /**
-     * Imports transaction from an object with named members and binary
-     * values represented by Buffers
-     * @param passedObj - object with named members and binary values represented by Buffers
-     */
-    public fromObjectWithBuffers(passedObj: IBulkTxObjectWithBuffers): Promise<boolean> {
+    fromObject(passedObj: IBulkTxObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            this._data.fromObjectWithBuffers(passedObj.data)
+            this._data.fromObject(passedObj.data)
                 .then((result: boolean) => {
                     if (result) {
                         this._typeTag = this._data.typeTag;
@@ -144,23 +115,7 @@ export class BulkTransaction extends BaseTransaction {
         });
     }
 
-    public fromObject(passedObj: IBulkTxObject): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            this._data.fromObject(passedObj.data)
-                .then((result: boolean) => {
-                    if (result) {
-                        this._typeTag = this._data.typeTag;
-                        this._signature = Buffer.from(passedObj.signature);
-                    }
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    public verify(): Promise<boolean> {
+    verify(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this._data.root.getTicket()
                 .then((rootTicket: string) => {
