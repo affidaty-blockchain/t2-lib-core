@@ -52,12 +52,12 @@ export function getSeededBytes(seed: any, byteLength: number): Uint8Array {
     const result = new Uint8Array(byteLength);
     const prnGen = Alea(seed);
     let pushedBytes = 0;
-    while (pushedBytes < result.byteLength) {
+    while (pushedBytes < result.length) {
         const prn = prnGen();
         const arr = new Uint8Array(new Float32Array([prn]).buffer).subarray(0, 3);
         let i = 0;
         while (i < 3) {
-            if (pushedBytes >= result.byteLength) {
+            if (pushedBytes >= result.length) {
                 break;
             }
             result[pushedBytes] = arr[i];

@@ -85,10 +85,10 @@ export function AESPassEncrypt(
     customSalt?: Uint8Array,
 ): Promise<Uint8Array> {
     return new Promise((resolve, reject) => {
-        if (typeof customInitVector !== 'undefined' && customInitVector.byteLength !== ivLength) {
+        if (typeof customInitVector !== 'undefined' && customInitVector.length !== ivLength) {
             return reject(new Error(Errors.IV_LEN));
         }
-        if (typeof customSalt !== 'undefined' && customSalt.byteLength !== saltLength) {
+        if (typeof customSalt !== 'undefined' && customSalt.length !== saltLength) {
             return reject(new Error(Errors.SALT_LEN));
         }
         const iv = customInitVector || WebCrypto.getRandomValues(new Uint8Array(12));
@@ -107,15 +107,15 @@ export function AESPassEncrypt(
                         )
                             .then((encryptedData: ArrayBuffer) => {
                                 const result = new Uint8Array(
-                                    salt.byteLength
-                                    + iv.byteLength
+                                    salt.length
+                                    + iv.length
                                     + encryptedData.byteLength,
                                 );
                                 result.set(salt, 0);
-                                result.set(iv, salt.byteLength);
+                                result.set(iv, salt.length);
                                 result.set(
                                     new Uint8Array(encryptedData),
-                                    salt.byteLength + iv.byteLength,
+                                    salt.length + iv.length,
                                 );
                                 return resolve(result);
                             })
@@ -143,7 +143,7 @@ export function AESPassDecrypt(
     encryptedData: Uint8Array,
 ): Promise<Uint8Array> {
     return new Promise((resolve, reject) => {
-        if (encryptedData.byteLength <= (ivLength + saltLength)) {
+        if (encryptedData.length <= (ivLength + saltLength)) {
             return reject(new Error(Errors.DATA_LEN));
         }
         const salt = encryptedData.slice(0, saltLength);

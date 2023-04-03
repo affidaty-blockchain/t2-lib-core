@@ -72,7 +72,7 @@ export interface IBaseTxDataObject extends ICommonParentTxDataObject {
 }
 
 export class BaseTxData extends CommonParentTxData {
-    public static get defaultSchema(): string {
+    static get defaultSchema(): string {
         return DEFAULT_SCHEMA;
     }
 
@@ -80,7 +80,7 @@ export class BaseTxData extends CommonParentTxData {
         super(schema);
     }
 
-    public toUnnamedObject(): Promise<IBaseTxDataUnnamedObject> {
+    toUnnamedObject(): Promise<IBaseTxDataUnnamedObject> {
         return new Promise((resolve, reject) => {
             const resultObj: IBaseTxDataUnnamedObject = [
                 this.schema,
@@ -88,7 +88,7 @@ export class BaseTxData extends CommonParentTxData {
                 this.maxFuel,
                 this.nonce,
                 this.networkName,
-                this.smartContractHash,
+                this.smartContractHash.length ? this.smartContractHash : null,
                 this.smartContractMethod,
                 [
                     '',
@@ -118,7 +118,7 @@ export class BaseTxData extends CommonParentTxData {
         });
     }
 
-    public toObject(): Promise<IBaseTxDataObject> {
+    toObject(): Promise<IBaseTxDataObject> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObject: IBaseTxDataUnnamedObject) => {
@@ -145,7 +145,7 @@ export class BaseTxData extends CommonParentTxData {
         });
     }
 
-    public fromUnnamedObject(passedObj: IBaseTxDataUnnamedObject): Promise<boolean> {
+    fromUnnamedObject(passedObj: IBaseTxDataUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!SCHEMA_TO_TYPE_TAG_MAP.has(passedObj[0])) {
                 return reject(new Error(Errors.INVALID_SCHEMA));
@@ -182,7 +182,7 @@ export class BaseTxData extends CommonParentTxData {
         });
     }
 
-    public fromObject(passedObj: IBaseTxDataObject): Promise<boolean> {
+    fromObject(passedObj: IBaseTxDataObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedObject: IBaseTxDataUnnamedObject = [
                 passedObj.schema,

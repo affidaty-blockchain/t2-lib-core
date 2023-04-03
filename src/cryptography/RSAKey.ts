@@ -141,7 +141,7 @@ export class RSAKey extends BaseKey {
             if (this.type !== 'public') {
                 return reject(new Error(Errors.ONLY_FOR_PUBKEY));
             }
-            if (this._spki.byteLength > 0) {
+            if (this._spki.length > 0) {
                 return resolve(this._spki);
             }
             this.getJWK()
@@ -187,7 +187,7 @@ export class RSAKey extends BaseKey {
             if (this.type !== 'private') {
                 return reject(new Error(Errors.ONLY_FOR_PRIVKEY));
             }
-            if (this._pkcs8.byteLength > 0) {
+            if (this._pkcs8.length > 0) {
                 return resolve(this._pkcs8);
             }
             this.getJWK()

@@ -28,7 +28,7 @@ describe('Testing elliptic curve cryptography implementations', () => {
         let rsaPrivateKeyJwk: BaseTypes.IJwk;
         let rsaPrivateKeyPKCS8: ArrayBuffer;
 
-        it('setting control values', async () => {
+        test('setting control values', async () => {
             ecdsaKeyPair! = await Subtle.generateKey(
                 Defaults.ECDSAP384R1PrivKeyParams.genAlgorithm,
                 true,
@@ -78,7 +78,7 @@ describe('Testing elliptic curve cryptography implementations', () => {
             rsaPrivateKeyPKCS8 = await Subtle.exportKey('pkcs8', rsaKeyPair.privateKey);
             expect(rsaPrivateKeyPKCS8).toBeDefined();
         });
-        it('testing initialization', async () => {
+        test('testing initialization', async () => {
             const testBaseECKey = new EllipticCurve.BaseECKey(Defaults.ECDSAP384R1PrivKeyParams);
             expect(testBaseECKey.paramsId).toEqual(
                 Defaults.ECDSAP384R1PrivKeyParams.paramsId,
@@ -100,7 +100,7 @@ describe('Testing elliptic curve cryptography implementations', () => {
                 )!.privateKey,
             );
         });
-        it('testing conversions', async () => {
+        test('testing conversions', async () => {
             let testBaseECKey = new EllipticCurve.BaseECKey(Defaults.ECDSAP384R1PubKeyParams);
             await testBaseECKey.setCryptoKey(ecdsaKeyPair.publicKey!);
             expect(testBaseECKey.type).toEqual('public');
@@ -193,7 +193,7 @@ describe('Testing elliptic curve cryptography implementations', () => {
             const newPubKey = await testBaseECKey.extractPublic();
             await expect(newPubKey.getRaw()).resolves.toEqual(new Uint8Array(ecdsaPublicKeyRaw));
         });
-        it('testing class exceptions', async () => {
+        test('testing class exceptions', async () => {
             const testBaseECPubKey = new EllipticCurve.BaseECKey(Defaults.ECDSAP384R1PubKeyParams);
             testBaseECPubKey.type = 'public';
             const emptyUint8Array = new Uint8Array(0);

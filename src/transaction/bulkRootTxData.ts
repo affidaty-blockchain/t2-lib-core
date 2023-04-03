@@ -25,7 +25,7 @@ export interface TEmptyBulkRootTxDataUnnamedObject extends ICommonParentTxDataUn
 }
 
 export class BulkRootTxData extends BaseTxData {
-    public static get defaultSchema(): string {
+    static get defaultSchema(): string {
         return DEFAULT_SCHEMA;
     }
 
@@ -33,22 +33,25 @@ export class BulkRootTxData extends BaseTxData {
         super(schema);
     }
 
-    public isEmpty(): boolean {
+    isEmpty(): boolean {
         if ((!this.target || !this.target.length)
-            && (!this.smartContractHash || !this.smartContractHash.byteLength)
+            && (!this.smartContractHash || !this.smartContractHash.length)
             && (!this.smartContractMethod || !this.smartContractMethod.length)
-            && (!this.smartContractMethodArgsBytes || !this.smartContractMethodArgsBytes.byteLength)
+            && (!this.smartContractMethodArgsBytes || !this.smartContractMethodArgsBytes.length)
         ) {
             return true;
         }
         return false;
     }
 
-    public toUnnamedObject(): Promise<any> {
+    toUnnamedObject(): Promise<any> {
         return new Promise((resolve, reject) => {
             if (this.isEmpty() && this.schema !== EMPTY_SCHEMA) {
                 this.schema = EMPTY_SCHEMA;
                 this.typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(EMPTY_SCHEMA)!;
+            } else if (!this.isEmpty() && this.schema === EMPTY_SCHEMA) {
+                this.schema = DEFAULT_SCHEMA;
+                this.typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(DEFAULT_SCHEMA)!;
             }
             super.toUnnamedObject()
                 .then((superResult: IBaseTxDataUnnamedObject) => {
@@ -69,7 +72,7 @@ export class BulkRootTxData extends BaseTxData {
         });
     }
 
-    public toObject(): Promise<any> {
+    toObject(): Promise<any> {
         return new Promise((resolve, reject) => {
             if (this.isEmpty() && this.schema !== EMPTY_SCHEMA) {
                 this.schema = EMPTY_SCHEMA;
@@ -112,7 +115,7 @@ export class BulkRootTxData extends BaseTxData {
         });
     }
 
-    public fromUnnamedObject(passedObj: any): Promise<boolean> {
+    fromUnnamedObject(passedObj: any): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const tempPassedObj: IBaseTxDataUnnamedObject = passedObj.length > 5
                 ? passedObj
@@ -125,7 +128,7 @@ export class BulkRootTxData extends BaseTxData {
                     null,
                     '',
                     passedObj[4],
-                    Buffer.from([]),
+                    new Uint8Array([]),
                 ];
             super.fromUnnamedObject(tempPassedObj)
                 .then((result) => {
@@ -137,7 +140,7 @@ export class BulkRootTxData extends BaseTxData {
         });
     }
 
-    public fromObject(passedObj: any): Promise<boolean> {
+    fromObject(passedObj: any): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const tempPassedObj: IBaseTxDataObject = Object.keys(passedObj).length > 5
                 ? passedObj

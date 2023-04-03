@@ -1,6 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable no-bitwise */
-/* eslint-disable no-nested-ternary */
 import fastSha256 from 'fast-sha256';
 import {
     encode as mpEnc,
@@ -8,21 +5,44 @@ import {
     decode as mpDec,
     DecoderOptions,
 } from '@msgpack/msgpack';
+import {
+    regexBase58,
+    b58Decode,
+} from './binConversions';
 
-const defOptions = {
+const regexValidAccChars = /^[a-zA-Z0-9-_#]+$/;
+
+const defMsgPackOptions = {
     useBigInt64: true,
     ignoreUndefined: true,
     initialBufferSize: 0,
 };
 
+export function stringIsTrinciAccount(accountId: string): boolean {
+    if (typeof accountId !== 'string' || accountId.length < 2) return false;
+    if (accountId.charAt(0) === '#') return regexValidAccChars.test(accountId);
+    if (!accountId.match(regexBase58)) return false;
+    const bytes = b58Decode(accountId);
+    if (bytes.length !== 34) return false;
+    if (bytes[0] !== 0x12 || bytes[1] !== 0x20) return false;
+    return true;
+}
+
 /** Serializes any javascript object into an array of bytes */
-export function objectToBytes(obj: any, options: EncoderOptions = defOptions): Uint8Array {
-    return mpEnc(obj, options);
+export function objectToBytes(obj: any, options: EncoderOptions = defMsgPackOptions): Uint8Array {
+    if (typeof obj === 'undefined') {
+        throw new Error('Cannot encode "undefined"');
+    }
+    const result = mpEnc(obj, options);
+    return result;
 }
 
 /** Deserializes an array of bytes into a plain javascript
  * object */
-export function bytesToObject(bytes: Uint8Array, options: DecoderOptions = defOptions): any {
+export function bytesToObject(bytes: Uint8Array, options: DecoderOptions = defMsgPackOptions): any {
+    if (!bytes.length) {
+        throw new Error('Cannot decode empty byte array.');
+    }
     return mpDec(bytes, options);
 }
 
@@ -69,7 +89,7 @@ export function concatBytes(...arrays: Array<ArrayBufferView | ArrayBufferLike>)
         if (temp) {
             _arrays.push(temp);
             offsets.push(arraysLenSum);
-            arraysLenSum += temp.byteLength;
+            arraysLenSum += temp.length;
         }
     });
 
@@ -92,16 +112,6 @@ export function similarArrays<T>(array1: Array<T>, array2: Array<T>): boolean {
         }
     }
     return true;
-}
-
-export function toBuffer(arg: Uint8Array | ArrayBufferLike | string): Buffer {
-    let result = Buffer.from([]);
-    if (typeof arg === 'string') {
-        result = Buffer.from(arg, 'hex');
-    } else {
-        result = Buffer.from(arg);
-    }
-    return result;
 }
 
 /**

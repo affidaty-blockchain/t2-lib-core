@@ -3,7 +3,7 @@ import { AESPassEncrypt, AESPassDecrypt } from '../../src/cryptography/AES';
 describe('Testing AES cryptography', () => {
     const testData = 'Hello world!';
     const password = 'secret';
-    it('testing password encryption', async () => {
+    test('testing password encryption', async () => {
         const encryptedData = await AESPassEncrypt(
             password,
             new TextEncoder().encode(testData),

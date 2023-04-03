@@ -20,7 +20,7 @@ export interface IBulkNodeTxDataObject extends IBaseTxDataObject {
 }
 
 export class BulkNodeTxData extends BaseTxData {
-    public static get defaultSchema(): string {
+    static get defaultSchema(): string {
         return DEFAULT_SCHEMA;
     }
 
@@ -28,7 +28,7 @@ export class BulkNodeTxData extends BaseTxData {
         super(schema);
     }
 
-    public toUnnamedObject(): Promise<IBulkNodeTxDataUnnamedObject> {
+    toUnnamedObject(): Promise<IBulkNodeTxDataUnnamedObject> {
         return new Promise((resolve, reject) => {
             super.toUnnamedObject()
                 .then((superResult: IBaseTxDataUnnamedObject) => {
@@ -52,7 +52,7 @@ export class BulkNodeTxData extends BaseTxData {
         });
     }
 
-    public toObject(): Promise<IBulkNodeTxDataObject> {
+    toObject(): Promise<IBulkNodeTxDataObject> {
         return new Promise((resolve, reject) => {
             super.toObject()
                 .then((superResult: IBaseTxDataObject) => {
@@ -68,7 +68,7 @@ export class BulkNodeTxData extends BaseTxData {
         });
     }
 
-    public fromUnnamedObject(passedObj: IBulkNodeTxDataUnnamedObject): Promise<boolean> {
+    fromUnnamedObject(passedObj: IBulkNodeTxDataUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj[9]) {
                 this.dependsOn = passedObj[9];
@@ -83,10 +83,10 @@ export class BulkNodeTxData extends BaseTxData {
         });
     }
 
-    public fromObject(passedObj: IBulkNodeTxDataObject): Promise<boolean> {
+    fromObject(passedObj: IBulkNodeTxDataObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj.dependsOn) {
-                this.dependsOn = Buffer.from(passedObj.dependsOn);
+                this.dependsOn = passedObj.dependsOn;
             }
             super.fromObject(passedObj)
                 .then((result) => {

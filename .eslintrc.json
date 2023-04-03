@@ -36,7 +36,18 @@
 
         "import/prefer-default-export": "off",
 
-        "max-len": "warn",
+        "max-len": [
+            "warn",
+            {
+                "code": 100,
+                "ignoreComments": true,
+                "ignoreStrings": true,
+                "ignoreUrls": true,
+                "ignoreTemplateLiterals": true,
+                "ignoreRegExpLiterals": true
+
+            }
+        ],
 
         "import/extensions": ["error", "never"],
         "no-underscore-dangle": "off",

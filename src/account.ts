@@ -37,23 +37,23 @@ export function getAccountId(input: BaseECKey): Promise<string> {
         input.getRaw()
             .then((keyBytes: Uint8Array) => {
                 const PROTO_KEY = new Uint8Array(
-                    PROTOBUF_HEADER.byteLength
-                    + ASN1_HEADER.byteLength
-                    + keyBytes.byteLength,
+                    PROTOBUF_HEADER.length
+                    + ASN1_HEADER.length
+                    + keyBytes.length,
                 );
                 PROTO_KEY.set(PROTOBUF_HEADER, 0);
-                PROTO_KEY.set(ASN1_HEADER, PROTOBUF_HEADER.byteLength);
-                PROTO_KEY.set(keyBytes, PROTOBUF_HEADER.byteLength + ASN1_HEADER.byteLength);
+                PROTO_KEY.set(ASN1_HEADER, PROTOBUF_HEADER.length);
+                PROTO_KEY.set(keyBytes, PROTOBUF_HEADER.length + ASN1_HEADER.length);
 
                 Subtle.digest('SHA-256', PROTO_KEY)
                     .then((hashed: ArrayBuffer) => {
                         const hashBytes = new Uint8Array(hashed);
                         const accountId = new Uint8Array(
-                            MULTIHASH_HEADER.byteLength
-                            + hashBytes.byteLength,
+                            MULTIHASH_HEADER.length
+                            + hashBytes.length,
                         );
                         accountId.set(MULTIHASH_HEADER, 0);
-                        accountId.set(hashBytes, MULTIHASH_HEADER.byteLength);
+                        accountId.set(hashBytes, MULTIHASH_HEADER.length);
 
                         // return base58
                         return resolve(b58Encode(accountId));

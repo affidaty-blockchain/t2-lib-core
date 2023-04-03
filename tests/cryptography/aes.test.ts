@@ -3,7 +3,7 @@ import {
 } from '../../src/cryptography/AES';
 
 describe('AES', () => {
-    it('test1', async () => {
+    test('test1', async () => {
         const k = new AESKey();
         await k.generate();
         const k1 = new AESKey();

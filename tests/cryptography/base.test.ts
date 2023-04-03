@@ -18,7 +18,7 @@ describe('Testing base cryptography implementations', () => {
         let rsaPrivateKeyJwk: BaseTypes.IJwk;
         let rsaPrivateKeyPKCS8: ArrayBuffer;
 
-        it('setting control values', async () => {
+        test('setting control values', async () => {
             ecdhKeyPair1 = await Subtle.generateKey(
                 Defaults.ECDHP384R1PrivKeyParams.genAlgorithm,
                 false,
@@ -48,7 +48,7 @@ describe('Testing base cryptography implementations', () => {
             rsaPrivateKeyPKCS8 = await Subtle.exportKey('pkcs8', rsaKeyPair.privateKey);
             expect(rsaPrivateKeyPKCS8).toBeDefined();
         });
-        it('testing initialization', async () => {
+        test('testing initialization', async () => {
             const testBaseKey = new Base.BaseKey(Defaults.ECDSAP384R1PrivKeyParams);
             expect(testBaseKey.paramsId).toEqual(Defaults.ECDSAP384R1PrivKeyParams.paramsId);
             expect(testBaseKey.keyParams).toEqual(Defaults.ECDSAP384R1PrivKeyParams);
@@ -58,7 +58,7 @@ describe('Testing base cryptography implementations', () => {
                 )!.privateKey,
             );
         });
-        it('testing class conversions', async () => {
+        test('testing class conversions', async () => {
             let testBaseKey = new Base.BaseKey(Defaults.ECDSAP384R1PubKeyParams);
             testBaseKey.setCryptoKey(ecdsaKeyPair.publicKey!);
             await expect(testBaseKey.getCryptoKey()).resolves.toEqual(
@@ -92,7 +92,7 @@ describe('Testing base cryptography implementations', () => {
                 ecdsaPrivateKeyJwk,
             );
         });
-        it('testing class exceptions', async () => {
+        test('testing class exceptions', async () => {
             let testError;
             let testObj;
             try {
@@ -167,7 +167,7 @@ describe('Testing base cryptography implementations', () => {
             }
             expect(testError).toEqual(new Error(Errors.IMPORT_USAGES_ERROR));
         });
-        it('testing functions exceptions', async () => {
+        test('testing functions exceptions', async () => {
             await expect(Base.keyBinToJWK(new Uint8Array([0xFF])))
                 .rejects.toEqual(new Error('FailedToDecodeKey'));
             await expect(Base.keyJWKToBin({ key_ops: [], kty: 'ASD', ext: false }))

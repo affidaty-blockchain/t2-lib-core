@@ -27,7 +27,7 @@ describe('Testing elliptic curve cryptography implementations', () => {
         let rsaPrivateKeyJwk: BaseTypes.IJwk;
         let rsaPrivateKeyPKCS8: ArrayBuffer;
 
-        it('setting control values', async () => {
+        test('setting control values', async () => {
             ecdsaKeyPair = await Subtle.generateKey(
                 Defaults.ECDSAP384R1PrivKeyParams.genAlgorithm,
                 true,
@@ -77,7 +77,7 @@ describe('Testing elliptic curve cryptography implementations', () => {
             rsaPrivateKeyPKCS8 = await Subtle.exportKey('pkcs8', rsaKeyPair.privateKey);
             expect(rsaPrivateKeyPKCS8).toBeDefined();
         });
-        it('testing initialization', async () => {
+        test('testing initialization', async () => {
             const baseECKeyPair = new BaseECKeyPair(Defaults.ECDSAP384R1KeyPairParams);
             expect(baseECKeyPair.privateKey.paramsId).toEqual(
                 Defaults.mKeyPairParams.get(baseECKeyPair.privateKey.paramsId)!.privateKey.paramsId,
@@ -101,7 +101,7 @@ describe('Testing elliptic curve cryptography implementations', () => {
                 .resolves.toBeInstanceOf(Uint8Array);
         });
 
-        it('testing key generation from a secret', async () => {
+        test('testing key generation from a secret', async () => {
             const secret1 = 'secret';
             const kp1P384 = new BaseECKeyPair(Defaults.ECDSAP384R1KeyPairParams);
             await kp1P384.generateFromSecret(secret1);
@@ -126,7 +126,7 @@ describe('Testing elliptic curve cryptography implementations', () => {
             expect(priv2P256JWK.x).toEqual('E0t4ixJv5Sw1w56J8Ir3k0r3rgLPbu28SkcgO30Re0Q');
             expect(priv2P256JWK.y).toEqual('6Llw1G7OZZu-Kso_-B7oj3Vcv6xztFzFjXQ7b1E_Peo');
         });
-        it('testing class exceptions', async () => {
+        test('testing class exceptions', async () => {
             const customKeyPairParams: BaseTypes.IKeyPairParams = {
                 publicKey: Defaults.ECDSAP384R1KeyPairParams.publicKey,
                 privateKey: Defaults.ECDSAP384R1KeyPairParams.privateKey,

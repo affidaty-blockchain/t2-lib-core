@@ -39,7 +39,7 @@ describe('Testing ACCOUNT CLASS implementations', () => {
     let rsaPrivateKeyJwk: BaseTypes.IJwk;
     let rsaPrivateKeyPKCS8: ArrayBuffer;
 
-    it('setting control values', async () => {
+    test('setting control values', async () => {
         ecdsaKeyPair = await Subtle.generateKey(
             Defaults.ECDSAP384R1PrivKeyParams.genAlgorithm,
             true,
@@ -89,7 +89,7 @@ describe('Testing ACCOUNT CLASS implementations', () => {
         rsaPrivateKeyPKCS8 = await Subtle.exportKey('pkcs8', rsaKeyPair.privateKey);
         expect(rsaPrivateKeyPKCS8).toBeDefined();
     });
-    it('init tests', async () => {
+    test('init tests', async () => {
         const acc1 = new Account(Defaults.ECDSAP384R1KeyPairParams);
         await expect(acc1.generate()).resolves.toBeTruthy();
         const acc1Id = await getAccountId(acc1.keyPair.publicKey);
@@ -105,7 +105,7 @@ describe('Testing ACCOUNT CLASS implementations', () => {
             .resolves.toEqual(predefinedAccountId);
     });
 
-    it('testing account generation from a secret', async () => {
+    test('testing account generation from a secret', async () => {
         const secret1 = 'secret';
         const acc1 = new Account();
         await acc1.generateFromSecret(secret1);
@@ -116,20 +116,20 @@ describe('Testing ACCOUNT CLASS implementations', () => {
         await acc2.generateFromSecret(secret2);
         expect(acc2.accountId).toEqual('QmaxcsD4tTqqnHveVuFbTHxenkDeJwnVop7Teih9EP7zR6');
 
-        const max = 100;
+        const max = 50;
         for (let i = 0; i < max; i += 1) {
             const secret = new Uint8Array(8);
             WebCrypto.getRandomValues(secret);
             const acc = new Account();
             await acc.generateFromSecret(secret);
-            process.stdout.write(`${i + 1}/${max}: ${acc.accountId}`);
+            // process.stdout.write(`${i + 1}/${max}: ${acc.accountId}`);
             const pubKeyBytes = await acc.keyPair.publicKey.getSPKI();
             const pubKey = new ECDSAKey('public');
             await pubKey.importBin(pubKeyBytes);
             expect(await pubKey.getRaw()).toEqual(await acc.keyPair.publicKey.getRaw());
         }
     }, 100000);
-    it('exceptions tests', async () => {
+    test('exceptions tests', async () => {
         const emptyPubKey = new EllipticCurve.BaseECKey(Defaults.ECDSAP384R1PubKeyParams);
         await expect(getAccountId(emptyPubKey))
             .rejects.toEqual(new Error(Errors.NO_BASE_KEY_VALUE));

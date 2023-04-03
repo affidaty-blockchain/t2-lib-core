@@ -137,7 +137,7 @@ export class BaseECKey extends BaseKey {
             if (this.type !== 'public') {
                 return reject(new Error(Errors.ONLY_FOR_PUBKEY));
             }
-            if (this._raw.byteLength > 0) {
+            if (this._raw.length > 0) {
                 return resolve(compress ? compressRawCurvePoint(this._raw) : this._raw);
             }
             this.getJWK()
@@ -183,7 +183,7 @@ export class BaseECKey extends BaseKey {
             if (this.type !== 'public') {
                 return reject(new Error(Errors.ONLY_FOR_PUBKEY));
             }
-            if (this._spki.byteLength > 0) {
+            if (this._spki.length > 0) {
                 return resolve(this._spki);
             }
             this.getJWK()
@@ -229,7 +229,7 @@ export class BaseECKey extends BaseKey {
             if (this.type !== 'private') {
                 return reject(new Error(Errors.ONLY_FOR_PRIVKEY));
             }
-            if (this._pkcs8.byteLength > 0) {
+            if (this._pkcs8.length > 0) {
                 return resolve(this._pkcs8);
             }
             this.getJWK()
@@ -299,7 +299,7 @@ export class BaseECKey extends BaseKey {
      */
     public importBin(binaryKey: Uint8Array): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            if (binaryKey.byteLength === 0) {
+            if (binaryKey.length === 0) {
                 return reject(new Error(Errors.EMPTY_VALUE));
             }
             const firstByte: number = binaryKey[0];

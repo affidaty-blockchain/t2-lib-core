@@ -6,7 +6,7 @@ import { ECDSAKeyPair } from '../../src/cryptography/ECDSAKeyPair';
 import { RSAKeyPair } from '../../src/cryptography/RSAKeyPair';
 
 describe('Testing specific keys classes', () => {
-    it('Testing ECDSA classes', async () => {
+    test('Testing ECDSA classes', async () => {
         const ecdsaKeyPair = new ECDSAKeyPair();
         await ecdsaKeyPair.generate();
         const ecdsaPubKeyRaw = await ecdsaKeyPair.publicKey.getRaw();
@@ -40,7 +40,7 @@ describe('Testing specific keys classes', () => {
         await expect(ecdsaPrivKey.getPKCS8()).resolves.toEqual(ecdsaPrivKeyPKCS8);
         await expect(ecdsaPrivKey.getJWK()).resolves.toEqual(ecdsaPrivKeyJWK);
     });
-    it('Testing ECDH classes', async () => {
+    test('Testing ECDH classes', async () => {
         const ecdhKeyPair = new ECDHKeyPair();
         await ecdhKeyPair.generate();
         const ecdhPubKeyRaw = await ecdhKeyPair.publicKey.getRaw();
@@ -90,14 +90,14 @@ describe('Testing specific keys classes', () => {
         );
         expect(await derivedKey1.getJWK()).toEqual(await derivedKey2.getJWK());
     });
-    it('Testing RSA classes', async () => {
+    test('Testing RSA classes', async () => {
         const rsaKeyPair = new RSAKeyPair();
         await rsaKeyPair.generate();
         const rsaPubKeySPKI = await rsaKeyPair.publicKey.getSPKI();
         const rsaPrivKeyPKCS8 = await rsaKeyPair.privateKey.getPKCS8();
         const rsaPubKeyJWK = await rsaKeyPair.publicKey.getJWK();
-        expect(rsaPubKeySPKI.byteLength).toBeGreaterThan(0);
-        expect(rsaPrivKeyPKCS8.byteLength).toBeGreaterThan(0);
+        expect(rsaPubKeySPKI.length).toBeGreaterThan(0);
+        expect(rsaPrivKeyPKCS8.length).toBeGreaterThan(0);
         expect(rsaPubKeyJWK.kty).toEqual('RSA');
     });
 });

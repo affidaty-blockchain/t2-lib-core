@@ -4,7 +4,7 @@ import { bytesToObject } from '../src/utils';
 import { jsonParse } from '../src/json';
 
 describe('parse', () => {
-    it('standart json parse', async () => {
+    test('standart json parse', async () => {
         const jsonString = '{"bool": true, "num": 42, "null": null, "string": "testString", "arr": [true, 42, null, "testString"], "obj": {"bool": false, "num": 42, "string": "testString"}}';
         const parsedResult = jsonParse(jsonString);
 
@@ -21,7 +21,7 @@ describe('parse', () => {
         expect(parsedResult.obj).toEqual({ bool: false, num: 42, string: 'testString' });
     });
 
-    it('custom json parse', async () => {
+    test('custom json parse', async () => {
         const jsonString = '{"binUTF8":"$:bin:utf8:hello","binHex":"$:bin:hex:00ff00ff","binB58":"$:bin:b58:3xeAA","binB64":"$:bin:b64:Av8A/w==","binB64Url":"$:bin:b64url:A_8A_w","u64Hex":"$:u64:hex:FFFFFFFFFFFFFFFF","u64Dec":"$:u64:dec:18446744073709551614"}';
         const parsedResult: {
             binUTF8: Uint8Array,
@@ -49,7 +49,7 @@ describe('parse', () => {
         expect(true).toBeTruthy();
     });
 
-    it('msgpack processor', async () => {
+    test('msgpack processor', async () => {
         const jsonString = '{"$:msgpack:msgpackTest": {"num": 42, "string": "testString", "binHex": "$:bin:hex:00ff00ff"}}';
         const parsedResult: {msgpackTest: Uint8Array} = jsonParse(jsonString);
 

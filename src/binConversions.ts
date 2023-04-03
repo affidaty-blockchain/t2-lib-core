@@ -9,6 +9,8 @@ export const regexBase58 = /^[1-9A-HJ-NP-Za-km-z]*$/g;
 export const regexBase64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/g;
 export const regexBase64Url = /^[A-Za-z0-9\-_]*$/g;
 
+// TODO: change String.match(RegExp) to RegExp.test(String)
+
 /**
 * Encodes binary data as hex string
 *

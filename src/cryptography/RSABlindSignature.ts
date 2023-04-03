@@ -206,7 +206,7 @@ function rsaTranscrypt(
     return new Promise((resolve, reject) => {
         key.getJWK()
             .then((keyJWK) => {
-                const inDataTotBytes = inData.byteLength;
+                const inDataTotBytes = inData.length;
                 let inDataBlockBytes = key.keyParams.genAlgorithm!.modulusLength! / 8;
                 let outDataBlockBytes = key.keyParams.genAlgorithm!.modulusLength! / 8;
                 switch (mode) {

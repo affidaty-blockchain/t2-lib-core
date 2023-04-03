@@ -1,5 +1,5 @@
 import * as Errors from '../errors';
-import { BaseECKey } from '../cryptography/baseECKey';
+// import { BaseECKey } from '../cryptography/baseECKey';
 import {
     TxSchemas,
     CommonParentTxData,
@@ -42,7 +42,7 @@ export class BulkTxData extends CommonParentTxData {
 
     protected _nodes: Array<BulkNodeTransaction>;
 
-    public static get defaultSchema(): string {
+    static get defaultSchema(): string {
         return DEFAULT_SCHEMA;
     }
 
@@ -52,41 +52,32 @@ export class BulkTxData extends CommonParentTxData {
         this._nodes = [];
     }
 
-    public set networkName(networkName: string) {
-        this._root.data.networkName = networkName;
-    }
-
-    public get networkName(): string {
-        return this._root.data.networkName;
-    }
-
-    public set root(root: BulkRootTransaction) {
-        this._root = root;
-    }
-
-    public get root(): BulkRootTransaction {
+    get root(): BulkRootTransaction {
         return this._root;
     }
 
-    public set nodes(nodes: Array<BulkNodeTransaction>) {
-        this._nodes = nodes;
+    set root(root: BulkRootTransaction) {
+        this._root = root;
     }
 
-    public get nodes(): Array<BulkNodeTransaction> {
+    setRoot(root: BulkRootTransaction) {
+        this.root = root;
+        return this;
+    }
+
+    get nodes(): Array<BulkNodeTransaction> {
         return this._nodes;
     }
 
-    /** Signer's public key. */
-    public set signerPublicKey(publicKey: BaseECKey) {
-        this._root.data.signerPublicKey = publicKey;
+    set nodes(nodes: Array<BulkNodeTransaction>) {
+        this._nodes = nodes;
     }
 
-    /** Signer's public key. */
-    public get signerPublicKey(): BaseECKey {
-        return this._root.data.signerPublicKey;
+    addNode(node: BulkNodeTransaction) {
+        this.nodes.push(node);
     }
 
-    public toUnnamedObject(): Promise<IBulkTxDataUnnamedObject> {
+    toUnnamedObject(): Promise<IBulkTxDataUnnamedObject> {
         return new Promise((resolve, reject) => {
             this._root.toUnnamedObjectNoTag()
                 .then((serializedRoot: IBulkRootTxUnnamedObjectNoTag) => {
@@ -135,7 +126,7 @@ export class BulkTxData extends CommonParentTxData {
         });
     }
 
-    public toObject(): Promise<IBulkTxDataObject> {
+    toObject(): Promise<IBulkTxDataObject> {
         return new Promise((resolve, reject) => {
             this._root.toObject()
                 .then((serializedRoot: IBulkRootTxObject) => {
@@ -184,7 +175,7 @@ export class BulkTxData extends CommonParentTxData {
         });
     }
 
-    public fromUnnamedObject(passedObj: IBulkTxDataUnnamedObject): Promise<boolean> {
+    fromUnnamedObject(passedObj: IBulkTxDataUnnamedObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj[0] !== DEFAULT_SCHEMA) {
                 return reject(new Error(Errors.INVALID_SCHEMA));
@@ -238,7 +229,7 @@ export class BulkTxData extends CommonParentTxData {
         });
     }
 
-    public fromObject(passedObj: IBulkTxDataObject): Promise<boolean> {
+    fromObject(passedObj: IBulkTxDataObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (passedObj.schema !== DEFAULT_SCHEMA) {
                 return reject(new Error(Errors.INVALID_SCHEMA));

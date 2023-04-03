@@ -1,5 +1,13 @@
-import { b58Encode, b58Decode } from './binConversions';
-import { objectToBytes, bytesToObject } from './utils';
+import {
+    b58Encode,
+    b58Decode,
+    hexEncode,
+    hexDecode,
+} from './binConversions';
+import {
+    objectToBytes,
+    bytesToObject,
+} from './utils';
 import { TKeyGenAlgorithmValidHashValues } from './cryptography/baseTypes';
 import { signData, verifyDataSignature } from './cryptography/base';
 import { DEF_SIGN_HASH_ALGORITHM as defaultSignHash } from './cryptography/cryptoDefaults';
@@ -46,11 +54,11 @@ export class Signable {
         this._signHashAlg = hash;
     }
 
-    public get typeTag(): string {
+    get typeTag(): string {
         return this._typeTag;
     }
 
-    public set typeTag(typeTag: string) {
+    set typeTag(typeTag: string) {
         this._typeTag = typeTag;
     }
 
@@ -60,12 +68,12 @@ export class Signable {
     }
 
     /** Data to sign */
-    public get data(): any {
+    get data(): any {
         return this._data;
     }
 
     /** Data to sign */
-    public set data(newData: any) {
+    set data(newData: any) {
         this._data = newData;
     }
 
@@ -76,35 +84,47 @@ export class Signable {
     }
 
     /** Data signature */
-    public get signature(): Uint8Array {
-        return new Uint8Array(this._signature);
+    get signature(): Uint8Array {
+        return this._signature;
     }
 
     /** Data signature */
-    public set signature(signature: Uint8Array) {
+    set signature(signature: Uint8Array) {
         this._signature = signature;
     }
 
+    get signatureHex(): string {
+        return hexEncode(this.signature);
+    }
+
+    set signatureHex(signatureHex: string) {
+        this.signature = hexDecode(signatureHex);
+    }
+
     /** Data signature */
-    setSignature(signature: Uint8Array) {
-        this.signature = signature;
+    setSignature(signature: Uint8Array | string) {
+        if (typeof signature === 'string') {
+            this.signatureHex = signature;
+        } else {
+            this.signature = signature;
+        }
         return this;
     }
 
-    protected toUnnamedObject(): Promise<ISignableUnnamedObject> {
+    toUnnamedObject(): Promise<ISignableUnnamedObject> {
         return new Promise((resolve) => {
             const resultObj: ISignableUnnamedObject = [
-                this._typeTag,
-                this._data,
+                this.typeTag,
+                this.data,
             ];
-            if (this._signature.byteLength > 0) {
-                resultObj[2] = this._signature;
+            if (this.signature.length > 0) {
+                resultObj[2] = this.signature;
             }
             return resolve(resultObj);
         });
     }
 
-    protected toUnnamedObjectNoTag(): Promise<ISignableUnnamedObjectNoTag> {
+    toUnnamedObjectNoTag(): Promise<ISignableUnnamedObjectNoTag> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObj: ISignableUnnamedObject) => {
@@ -126,7 +146,7 @@ export class Signable {
      * Serializes signable to a simple object with named properties
      * @returns - object, throws otherwise
      */
-    public toObject(): Promise<ISignableObject> {
+    toObject(): Promise<ISignableObject> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObj: ISignableUnnamedObject) => {
@@ -149,7 +169,7 @@ export class Signable {
      * Serializes signable object to a Uint8Array
      * @returns - Uint8Array, throws otherwise
      */
-    public toBytes(): Promise<Uint8Array> {
+    toBytes(): Promise<Uint8Array> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObj: ISignableUnnamedObject) => {
@@ -165,7 +185,7 @@ export class Signable {
      * Serializes signable object to a base58 string
      * @returns - b58 string, throws otherwise
      */
-    public toBase58(): Promise<string> {
+    toBase58(): Promise<string> {
         return new Promise((resolve, reject) => {
             this.toBytes()
                 .then((bytes: Uint8Array) => {
@@ -177,18 +197,18 @@ export class Signable {
         });
     }
 
-    protected fromUnnamedObject(passedObj: ISignableUnnamedObject): Promise<boolean> {
+    fromUnnamedObject(passedObj: ISignableUnnamedObject): Promise<boolean> {
         return new Promise((resolve) => {
-            this._typeTag = passedObj[0];
-            this._data = passedObj[1];
+            this.typeTag = passedObj[0];
+            this.data = passedObj[1];
             if (passedObj[2]) {
-                this._signature = passedObj[2];
+                this.signature = passedObj[2];
             }
             return resolve(true);
         });
     }
 
-    protected fromUnnamedObjectNoTag(passedObj: ISignableUnnamedObjectNoTag): Promise<boolean> {
+    fromUnnamedObjectNoTag(passedObj: ISignableUnnamedObjectNoTag): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedArg: ISignableUnnamedObject = [
                 '',
@@ -213,7 +233,7 @@ export class Signable {
      * @param object - object to try to deserialize signable from
      * @returns - true on success, throws otherwise
      */
-    public fromObject(passedObj: ISignableObject): Promise<boolean> {
+    fromObject(passedObj: ISignableObject): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedArg: ISignableUnnamedObject = [
                 passedObj.type,
@@ -237,7 +257,7 @@ export class Signable {
      * @param bytes - base58 string to try to deserialize signable from
      * @returns - true on success, throws otherwise
      */
-    public fromBytes(bytes: Uint8Array): Promise<boolean> {
+    fromBytes(bytes: Uint8Array): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedObj: ISignableUnnamedObject = bytesToObject(bytes);
             this.fromUnnamedObject(unnamedObj)
@@ -255,7 +275,7 @@ export class Signable {
      * @param b58 - base58 string to try to deserialize signable from
      * @returns - true on success, throws otherwise
      */
-    public fromBase58(b58: string): Promise<boolean> {
+    fromBase58(b58: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.fromBytes(b58Decode(b58))
                 .then((result) => {
@@ -272,14 +292,14 @@ export class Signable {
      * @param privateKey - private key to sign data with
      * @returns - true if signed, throws otherwise
      */
-    public sign(privateKey: BaseECKey): Promise<boolean> {
+    sign(privateKey: BaseECKey): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObject: ISignableUnnamedObject) => {
-                    const bytesToSign: Uint8Array = objectToBytes(unnamedObject[1]);
-                    signData(privateKey, bytesToSign, this._signHashAlg)
+                    const dataToSign: Uint8Array = objectToBytes(unnamedObject[1]);
+                    signData(privateKey, dataToSign, this._signHashAlg)
                         .then((signature: Uint8Array) => {
-                            this._signature = signature;
+                            this.signature = signature;
                             return resolve(true);
                         })
                         .catch((error: any) => {
@@ -297,10 +317,10 @@ export class Signable {
      * @param publicKey - Public key to verify signature against
      * @returns - true if signature is valid, false otherwise. Can throw.
      */
-    public verifySignature(publicKey: BaseECKey): Promise<boolean> {
+    verifySignature(publicKey: BaseECKey): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
-                .then((unnamedObject: ISignableUnnamedObject) => {
+                .then(async (unnamedObject: ISignableUnnamedObject) => {
                     const dataToVerify: Uint8Array = objectToBytes(unnamedObject[1]);
                     verifyDataSignature(
                         publicKey,

@@ -20,10 +20,10 @@ describe('testing blind signature', () => {
     // salt that server will apply to blinded message from client before signing it.
     const salt = hexDecode('e52858b19cfe12e4742b55e1ad239e849818fb1c8ff1b47c64dbad50c361e9d2183750a8ca713fe806df5b40f30bca4128d1147412715462df570e144ea3a9ccfd999a677e313d19f1d560bbe9d96baba4fd8e0f92ba587d63c17bb5d9');
 
-    it('init', async () => {
+    test('init', async () => {
         await expect(rsaKeyPair.generate()).resolves.toBeTruthy();
     });
-    it('Testing RSA class', async () => {
+    test('Testing RSA class', async () => {
         // authority keys
         const pubKey = rsaKeyPair.publicKey;
         const privKey = rsaKeyPair.privateKey;
@@ -57,14 +57,14 @@ describe('testing blind signature', () => {
         const decryptedUnblindedSaltedSignature = await decrypt(
             unblindedSaltedSignature,
             pubKey,
-            (message.byteLength + salt.byteLength),
+            (message.length + salt.length),
         );
 
         const plainSaltedMessage = hexDecode(
             (
                 BigInt(`0x${hexEncode(message)}`)
                 * BigInt(`0x${hexEncode(salt)}`)
-            ).toString(16).padStart((message.byteLength + salt.byteLength) * 2),
+            ).toString(16).padStart((message.length + salt.length) * 2),
         );
         expect(decryptedUnblindedSaltedSignature).toEqual(plainSaltedMessage);
         const plainSaltedSignature = await encrypt(

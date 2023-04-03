@@ -33,7 +33,7 @@ export function keyBinToJWK(
     exportOptions: object = {},
 ): Promise<baseTypes.IJwk> {
     return new Promise((resolve, reject) => {
-        if (bin.byteLength === 0) {
+        if (bin.length === 0) {
             return reject(new Error(Errors.EMPTY_VALUE));
         }
         const keyObj = new UtilKey(binFormat, bin, importOptions);
@@ -255,7 +255,13 @@ export class BaseKey {
                 if (typeof this._jwk === 'undefined') {
                     return reject(new Error(Errors.NO_BASE_KEY_VALUE));
                 }
-                importCryptoKey('jwk', this._jwk, this._keyParams.genAlgorithm, true, this._keyParams.usages)
+                importCryptoKey(
+                    'jwk',
+                    this._jwk,
+                    this._keyParams.genAlgorithm,
+                    true,
+                    this._keyParams.usages,
+                )
                     .then((importedCryptoKey: CryptoKey) => {
                         this.setCryptoKey(importedCryptoKey, false);
                         return resolve(this._cryptoKey!);
@@ -284,15 +290,16 @@ export function signData(
         if (!hashAlgorithm && !key.keyParams.genAlgorithm!.hash) {
             return reject(new Error(Errors.UNSURE_HASH_TYPE));
         }
+        const subtleSignParams = {
+            name: key.keyParams.genAlgorithm!.name,
+            hash: hashAlgorithm || key.keyParams.genAlgorithm!.hash,
+        };
         key.getCryptoKey()
             .then((cryptoKey: CryptoKey) => {
                 Subtle.sign(
-                    {
-                        name: key.keyParams.genAlgorithm!.name,
-                        hash: hashAlgorithm || key.keyParams.genAlgorithm!.hash,
-                    },
+                    subtleSignParams,
                     cryptoKey,
-                    data.buffer,
+                    data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength),
                 ).then((signature: ArrayBuffer) => {
                     return resolve(new Uint8Array(signature));
                 }).catch((error: any) => {
@@ -323,16 +330,23 @@ export function verifyDataSignature(
         if (!hashAlgorithm && !key.keyParams.genAlgorithm!.hash) {
             return reject(new Error(Errors.UNSURE_HASH_TYPE));
         }
+        const subtleVerifyParams = {
+            name: key.keyParams.genAlgorithm!.name,
+            hash: hashAlgorithm || key.keyParams.genAlgorithm!.hash,
+        };
         key.getCryptoKey()
             .then((cryptoKey: CryptoKey) => {
                 Subtle.verify(
-                    {
-                        name: key.keyParams.genAlgorithm!.name,
-                        hash: hashAlgorithm || key.keyParams.genAlgorithm!.hash,
-                    },
+                    subtleVerifyParams,
                     cryptoKey,
-                    signature.buffer,
-                    data.buffer,
+                    signature.buffer.slice(
+                        signature.byteOffset,
+                        signature.byteOffset + signature.byteLength,
+                    ),
+                    data.buffer.slice(
+                        data.byteOffset,
+                        data.byteOffset + data.byteLength,
+                    ),
                 ).then((result: boolean) => {
                     return resolve(result);
                 }).catch((error: any) => {
@@ -413,7 +427,7 @@ export interface IBaseKeyPair {
 
 export function compressRawCurvePoint(fullCurvePoint: Uint8Array | ArrayBufferLike): Uint8Array {
     const u8full = new Uint8Array(fullCurvePoint);
-    const len = u8full.byteLength;
+    const len = u8full.length;
     /* eslint-disable no-bitwise */
     const u8 = u8full.slice(0, 1 + len >>> 1); // drop `y`
     u8[0] = 0x2 | (u8full[len - 1] & 0x01); // encode sign of `y` in first bit
@@ -461,7 +475,7 @@ export function decompressRawCurvePoint(
 export function isCompressedCurvePoint(curvePoint: Uint8Array | ArrayBufferLike): boolean {
     const u8CurvePoint = new Uint8Array(curvePoint);
     return (
-        u8CurvePoint.byteLength
+        u8CurvePoint.length
         && (
             u8CurvePoint[0] === 0x02
             || u8CurvePoint[0] === 0x03
@@ -514,7 +528,7 @@ export function ieeeP1363ToAsn1(p1363: ArrayBufferLike | Uint8Array): any {
         asn1 = new Uint8Array(concatBytes(asn1, tmp));
     }
     // 0x30 b1, then contents
-    asn1 = new Uint8Array(concatBytes(new Uint8Array([0x30, asn1.byteLength]), asn1));
+    asn1 = new Uint8Array(concatBytes(new Uint8Array([0x30, asn1.length]), asn1));
     return asn1;
 }
 
