@@ -1,4 +1,3 @@
-import * as Errors from '../errors';
 import { WebCrypto } from '../cryptography/webCrypto';
 import { hexDecode, hexEncode } from '../binConversions';
 import {
@@ -70,7 +69,7 @@ export class CommonParentTxData {
 
     private _target: string;
 
-    private _maxFuel: bigint;
+    private _maxFuel: number;
 
     private _nonce: Uint8Array;
 
@@ -93,7 +92,7 @@ export class CommonParentTxData {
         this._typeTag = SCHEMA_TO_TYPE_TAG_MAP.get(schema)!;
         this._schema = schema;
         this._target = '';
-        this._maxFuel = BigInt(0);
+        this._maxFuel = 0;
         this._nonce = new Uint8Array([]);
         this._network = '';
         this._contract = null;
@@ -101,7 +100,12 @@ export class CommonParentTxData {
         this._args = new Uint8Array([]);
         this._dependsOn = new Uint8Array([]);
         this._signerPubKey = new BaseECKey();
-        this.genNonce();
+        if (
+            this._typeTag !== SignableTypeTags.EMPTY_TX
+            && this._typeTag !== SignableTypeTags.BULK_TX
+        ) {
+            this.genNonce();
+        }
     }
 
     get typeTag(): string {
@@ -149,7 +153,7 @@ export class CommonParentTxData {
     /** Account ID of the target (receiving account) of the transaction. */
     set target(accountId: string) {
         if (!stringIsTrinciAccount(accountId) && this.schema !== TxSchemas.BULK_EMPTY_ROOT_TX) {
-            throw new Error(`String "${accountId}" is not a TRINCI account.`);
+            throw new Error(`String "${accountId}" is not a valid TRINCI account.`);
         }
         this._target = accountId;
     }
@@ -175,24 +179,21 @@ export class CommonParentTxData {
     }
 
     /** Maximum amount of fuel that sender is ready to burn for this transaction. */
-    get maxFuel(): bigint {
+    get maxFuel(): number {
         return this._maxFuel;
     }
 
     /** Maximum amount of fuel that sender is ready to burn for this transaction. */
-    set maxFuel(maxFuel: bigint) {
-        if (maxFuel < BigInt(0) || maxFuel > BigInt('0xffffffffffffffff')) {
-            throw new Error(Errors.FUEL_INCORRECT);
-        }
-        this._maxFuel = BigInt(maxFuel);
+    set maxFuel(maxFuel: number) {
+        this._maxFuel = Math.floor(maxFuel);
     }
 
     /** Maximum amount of fuel that sender is ready to burn for this transaction. */
-    setMaxFuel(maxFuel: bigint | number | string) {
+    setMaxFuel(maxFuel: number | string) {
         if (typeof maxFuel === 'string') {
-            this.maxFuel = BigInt(`0x${maxFuel}`);
+            this.maxFuel = parseInt(maxFuel, 10);
         } else {
-            this.maxFuel = BigInt(maxFuel);
+            this.maxFuel = maxFuel;
         }
         return this;
     }
@@ -204,9 +205,9 @@ export class CommonParentTxData {
 
     /** Random 8-bytes value as an anti-replay protection(Uint8Array). */
     set nonce(nonce: Uint8Array) {
-        if (nonce.length !== 8) {
-            throw new Error(Errors.WRONG_TX_NONCE_LENGTH);
-        }
+        // if (nonce.length !== 8) {
+        //     throw new Error(Errors.WRONG_TX_NONCE_LENGTH);
+        // }
         this._nonce = nonce;
     }
 
@@ -527,7 +528,8 @@ export class CommonParentTxData {
             this.toUnnamedObject()
                 .then((unnamedDataObj: ICommonParentTxDataUnnamedObject) => {
                     try {
-                        const dataHash = sha256(objectToBytes(unnamedDataObj));
+                        const bytes = objectToBytes(unnamedDataObj);
+                        const dataHash = sha256(bytes);
                         const ticket = `1220${hexEncode(dataHash)}`;
                         return resolve(ticket);
                     } catch (error) {

@@ -32,8 +32,8 @@ describe('BulkNodeTransaction', () => {
         const tx = new BulkNodeTransaction();
         tx.target = txTestData.target;
         expect(tx.target).toEqual(txTestData.target);
-        tx.maxFuel = BigInt(txTestData.maxFuel);
-        expect(tx.maxFuel).toEqual(BigInt(txTestData.maxFuel));
+        tx.maxFuel = txTestData.maxFuel;
+        expect(tx.maxFuel).toEqual(txTestData.maxFuel);
         tx.networkName = txTestData.network;
         expect(tx.networkName).toEqual(txTestData.network);
         tx.nonceHex = txTestData.nonceHex;

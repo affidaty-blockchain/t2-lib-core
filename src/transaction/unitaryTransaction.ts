@@ -35,12 +35,15 @@ export class UnitaryTransaction extends BaseTransaction {
         this.typeTag = this.data.typeTag;
     }
 
-    /**
-     * @deprecated No effect on UnitaryTransaction
-     */
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    setDependsOn(_txHash: string | Uint8Array): this {
-        return this;
+    // eslint-disable-next-line class-methods-use-this
+    get dependsOn() {
+        throw new Error(Errors.ONLY_NODE_FIELD);
+    }
+
+    /** Hash of the bulk root transaction on which this one depends. */
+    // eslint-disable-next-line class-methods-use-this
+    set dependsOn(hash: Uint8Array) {
+        throw new Error(Errors.ONLY_NODE_FIELD);
     }
 
     toUnnamedObject(): Promise<IUnitaryTxUnnamedObject> {

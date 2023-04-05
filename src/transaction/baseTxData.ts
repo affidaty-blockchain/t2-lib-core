@@ -27,7 +27,7 @@ export interface IBaseTxDataUnnamedObject extends ICommonParentTxDataUnnamedObje
     /** Target AccountId */
     [1]: string;
     /** Max fuel that consumable by this transaction */
-    [2]: bigint;
+    [2]: number;
     /** Nonce */
     [3]: Uint8Array;
     /** Network name */
@@ -56,7 +56,7 @@ export interface IBaseTxDataObject extends ICommonParentTxDataObject {
     /** Target AccountId */
     account: string;
     /** Max fuel that consumable by this transaction */
-    maxFuel: bigint;
+    maxFuel: number;
     /** Nonce */
     nonce: Uint8Array;
     /** Network name */

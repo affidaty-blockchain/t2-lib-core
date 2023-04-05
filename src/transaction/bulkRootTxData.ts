@@ -1,3 +1,5 @@
+import * as Errors from '../errors';
+
 import {
     TxSchemas,
     SCHEMA_TO_TYPE_TAG_MAP,
@@ -31,6 +33,17 @@ export class BulkRootTxData extends BaseTxData {
 
     constructor(schema: string = DEFAULT_SCHEMA) {
         super(schema);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get dependsOn() {
+        throw new Error(Errors.ONLY_NODE_FIELD);
+    }
+
+    /** Hash of the bulk root transaction on which this one depends. */
+    // eslint-disable-next-line class-methods-use-this
+    set dependsOn(hash: Uint8Array) {
+        throw new Error(Errors.ONLY_NODE_FIELD);
     }
 
     isEmpty(): boolean {

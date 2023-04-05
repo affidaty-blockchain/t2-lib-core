@@ -92,11 +92,11 @@ export class BaseTransaction extends Signable {
         return this._data.maxFuel;
     }
 
-    set maxFuel(maxFuel: bigint) {
+    set maxFuel(maxFuel: number) {
         this._data.maxFuel = maxFuel;
     }
 
-    setMaxFuel(maxFuel: string | number | bigint) {
+    setMaxFuel(maxFuel: string | number) {
         this.data.setMaxFuel(maxFuel);
         return this;
     }

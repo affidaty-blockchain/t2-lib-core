@@ -66,10 +66,10 @@ export {
     IBulkNodeTxUnnamedObject,
     IBulkNodeTxUnnamedObjectNoTag,
 } from './transaction/bulkNodeTransaction';
-// export {
-//     BulkTransaction,
-//     IBulkTxObject,
-//     IBulkTxUnnamedObject,
-// } from './transaction/bulkTransaction';
-// export { Delegation } from './delegation';
+export {
+    BulkTransaction,
+    IBulkTxObject,
+    IBulkTxUnnamedObject,
+} from './transaction/bulkTransaction';
+export { Delegation } from './delegation';
 // export { Certificate } from './certificate';

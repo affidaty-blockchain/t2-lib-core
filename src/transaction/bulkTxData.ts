@@ -1,5 +1,5 @@
 import * as Errors from '../errors';
-// import { BaseECKey } from '../cryptography/baseECKey';
+import { BaseECKey } from '../cryptography/baseECKey';
 import {
     TxSchemas,
     CommonParentTxData,
@@ -50,6 +50,100 @@ export class BulkTxData extends CommonParentTxData {
         super(schema);
         this._root = new BulkRootTransaction();
         this._nodes = [];
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get target(): string {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    set target(accountId: string) {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get maxFuel(): number {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    set maxFuel(maxFuel: number) {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get networkName(): string {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    set networkName(networkName: string) {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get nonce(): Uint8Array {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    set nonce(nonce: Uint8Array) {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get smartContractHash(): Uint8Array {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    set smartContractHash(hash: Uint8Array) {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get smartContractMethod(): string {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    set smartContractMethod(method: string) {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get smartContractMethodArgsBytes(): Uint8Array {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    set smartContractMethodArgsBytes(passedArgs: Uint8Array) {
+        throw new Error(Errors.BULK_NO_FIELD);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get dependsOn() {
+        throw new Error(Errors.ONLY_NODE_FIELD);
+    }
+
+    /** Hash of the bulk root transaction on which this one depends. */
+    // eslint-disable-next-line class-methods-use-this
+    set dependsOn(hash: Uint8Array) {
+        throw new Error(Errors.ONLY_NODE_FIELD);
+    }
+
+    get signerPublicKey(): BaseECKey {
+        return this.root.signerPublicKey;
+    }
+
+    set signerPublicKey(publicKey: BaseECKey) {
+        this.root.signerPublicKey = publicKey;
+    }
+
+    setSignerPublicKey(publicKey: BaseECKey) {
+        this.root.setSignerPublicKey(publicKey);
+        return this;
     }
 
     get root(): BulkRootTransaction {
@@ -209,7 +303,7 @@ export class BulkTxData extends CommonParentTxData {
                                     ) {
                                         return reject(
                                             new Error(
-                                                `Could not import transaction with index ${i + 1}`,
+                                                `Could not import transaction with index ${i}; Reason: ${(nodesResults[i] as PromiseRejectedResult).reason} `,
                                             ),
                                         );
                                     }

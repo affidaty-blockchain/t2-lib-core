@@ -61,27 +61,17 @@ describe('base tx data class', () => {
         data.target = 'QmfZy5bvk7a3DQAjCbGNtmrPXWkyVvPrdnZMyBZ5q5ieKG';
         expect(data.target).toEqual('QmfZy5bvk7a3DQAjCbGNtmrPXWkyVvPrdnZMyBZ5q5ieKG');
 
-        // too much
-        expect(() => { data.maxFuel = BigInt('0xfffffffffffffffff'); }).toThrow();
-        // too little
-        expect(() => { data.maxFuel = BigInt(-1); }).toThrow();
-        data.maxFuel = BigInt(10000);
-        expect(data.maxFuel).toEqual(BigInt(10000));
+        data.maxFuel = 10000;
+        expect(data.maxFuel).toEqual(10000);
 
         data.networkName = 'myNetwork';
         expect(data.networkName).toEqual('myNetwork');
 
-        // too long
-        expect(() => { data.nonce = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8]); }).toThrow();
-        // too short
-        expect(() => { data.nonce = new Uint8Array([0, 1, 2, 3, 4, 5, 6]); }).toThrow();
         data.nonce = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7]);
         expect(data.nonce).toEqual(new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7]));
         expect(data.nonceHex).toEqual('0001020304050607');
         // not a hex string
         expect(() => { data.nonceHex = '=0706050=403020100='; }).toThrow();
-        // too long
-        expect(() => { data.nonceHex = '0706050403020100ff'; }).toThrow();
 
         // leading 0s assumed
         data.nonceHex = '07060504030201';
@@ -190,8 +180,8 @@ describe('base tx data class', () => {
         expect(data.schema).toEqual(TxSchemas.EMPTY_TX);
         data = data.setTarget('#Target');
         expect(data.target).toEqual('#Target');
-        data = data.setMaxFuel('ffffffffffffffff');
-        expect(data.maxFuel).toEqual(BigInt('0xffffffffffffffff'));
+        data = data.setMaxFuel('10000');
+        expect(data.maxFuel).toEqual(10000);
         data = data.setNetworkName('my_network');
         expect(data.networkName).toEqual('my_network');
         data = data.setNonce('ffffffffffffffff');

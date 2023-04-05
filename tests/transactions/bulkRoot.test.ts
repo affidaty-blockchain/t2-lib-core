@@ -30,8 +30,8 @@ describe('BulkRootTransaction', () => {
     test('empty/full automatic tag change', async () => {
         const tx = new BulkRootTransaction();
         expect(tx.typeTag).toEqual(SignableTypeTags.BULK_ROOT_TX);
-        tx.maxFuel = BigInt(txTestData.maxFuel);
-        expect(tx.maxFuel).toEqual(BigInt(txTestData.maxFuel));
+        tx.maxFuel = txTestData.maxFuel;
+        expect(tx.maxFuel).toEqual(txTestData.maxFuel);
         tx.networkName = txTestData.network;
         expect(tx.networkName).toEqual(txTestData.network);
         tx.nonceHex = txTestData.nonceHex;
@@ -69,8 +69,8 @@ describe('BulkRootTransaction', () => {
         const tx = new BulkRootTransaction();
         tx.target = txTestData.target;
         expect(tx.target).toEqual(txTestData.target);
-        tx.maxFuel = BigInt(txTestData.maxFuel);
-        expect(tx.maxFuel).toEqual(BigInt(txTestData.maxFuel));
+        tx.maxFuel = txTestData.maxFuel;
+        expect(tx.maxFuel).toEqual(txTestData.maxFuel);
         tx.networkName = txTestData.network;
         expect(tx.networkName).toEqual(txTestData.network);
         tx.nonceHex = txTestData.nonceHex;
@@ -171,7 +171,7 @@ describe('BulkRootTransaction', () => {
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex))
+            .setSmartContractMethodArgsHex(txTestData.contractArgsHex)
             .setSignerPublicKey(signerAcc.keyPair.publicKey);
         expect(tx.getTicket()).resolves.toEqual(expectedTicket);
         expect(tx.typeTag).toEqual(SignableTypeTags.BULK_ROOT_TX);
