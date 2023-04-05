@@ -15,7 +15,6 @@ import {
     Signable,
     ISignableUnnamedObject,
     ISignableUnnamedObjectNoTag,
-    ISignableObjectWithBuffer,
     ISignableObject,
 } from './signable';
 
@@ -39,7 +38,7 @@ interface IDelegationMainDataInternal {
 interface IUnnamedDelegator extends Array<any> {
     [0]: string; // id of the key type. Es. 'ecdsa_p384r1'
     [1]: string; // curve
-    [2]: Buffer; // actual value of the public key as 'raw'
+    [2]: Uint8Array; // actual value of the public key as 'raw'
 }
 
 interface IUnnamedDelegationMainData extends Array<any> {
@@ -56,32 +55,12 @@ interface IUnnamedDelegationMainData extends Array<any> {
  */
 export interface IUnnamedDelegation extends ISignableUnnamedObject {
     [1]: IUnnamedDelegationMainData; // data
-    [2]: Buffer; // signature
+    [2]: Uint8Array; // signature
 }
 
 export interface IUnnamedDelegationNoTag extends ISignableUnnamedObjectNoTag {
     [0]: IUnnamedDelegationMainData; // data
-    [1]: Buffer; // signature
-}
-
-interface IDelegatorBuffers {
-    type: string; // id of the key type. E.g. 'ecdsa'
-    curve: string; // curve variant. E.g. 'secp384r1'
-    value: Buffer; // actual value of the public key as 'raw'
-}
-
-interface IDelegationMainDataBuffers {
-    delegate: string;
-    delegator: IDelegatorBuffers;
-    network: string;
-    target: string;
-    expiration: number;
-    capabilities: ICapabilities;
-}
-
-export interface IDelegationBuffers extends ISignableObjectWithBuffer {
-    data: IDelegationMainDataBuffers;
-    signature: Buffer;
+    [1]: Uint8Array; // signature
 }
 
 interface IDelegator {
@@ -290,7 +269,7 @@ export class Delegation extends Signable {
                     [
                         '',
                         '',
-                        Buffer.from([]),
+                        new Uint8Array([]),
                     ],
                     this._data.network,
                     this._data.target,
@@ -317,7 +296,7 @@ export class Delegation extends Signable {
                     } else {
                         resultObj[1][1][0] = this._data.delegator.paramsId;
                     }
-                    resultObj[1][1][2] = Buffer.from(rawKeyBytes);
+                    resultObj[1][1][2] = rawKeyBytes;
                     return resolve(resultObj);
                 })
                 .catch((error: any) => {
@@ -334,7 +313,7 @@ export class Delegation extends Signable {
                     [
                         '',
                         '',
-                        Buffer.from([]),
+                        new Uint8Array([]),
                     ],
                     this._data.network,
                     this._data.target,
@@ -361,7 +340,7 @@ export class Delegation extends Signable {
                     } else {
                         resultObj[0][1][0] = this._data.delegator.paramsId;
                     }
-                    resultObj[0][1][2] = Buffer.from(rawKeyBytes);
+                    resultObj[0][1][2] = rawKeyBytes;
                     return resolve(resultObj);
                 })
                 .catch((error: any) => {
@@ -371,14 +350,14 @@ export class Delegation extends Signable {
     }
 
     /**
-     * Converts delegation to an object with binary members represented by Buffers
+     * Converts delegation to an object
      * @returns - object, throws otherwise
      */
-    public toObjectWithBuffers(): Promise<IDelegationBuffers> {
+    public toObject(): Promise<IDelegation> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObject: IUnnamedDelegation) => {
-                    const resultObj: IDelegationBuffers = {
+                    const resultObj: IDelegation = {
                         type: unnamedObject[0],
                         data: {
                             delegate: unnamedObject[1][0],
@@ -393,38 +372,6 @@ export class Delegation extends Signable {
                             capabilities: unnamedObject[1][5],
                         },
                         signature: unnamedObject[2],
-                    };
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Converts delegation to an object with binary members represented by Uint8Array
-     * @returns - object, throws otherwise
-     */
-    public toObject(): Promise<IDelegation> {
-        return new Promise((resolve, reject) => {
-            this.toObjectWithBuffers()
-                .then((objBuffers: IDelegationBuffers) => {
-                    const resultObj: IDelegation = {
-                        type: objBuffers.type,
-                        data: {
-                            delegate: objBuffers.data.delegate,
-                            delegator: {
-                                type: objBuffers.data.delegator.type,
-                                curve: objBuffers.data.delegator.curve,
-                                value: new Uint8Array(objBuffers.data.delegator.value),
-                            },
-                            network: objBuffers.data.network,
-                            target: objBuffers.data.target,
-                            expiration: objBuffers.data.expiration,
-                            capabilities: objBuffers.data.capabilities,
-                        },
-                        signature: new Uint8Array(objBuffers.signature),
                     };
                     return resolve(resultObj);
                 })
@@ -520,11 +467,11 @@ export class Delegation extends Signable {
     }
 
     /**
-     * Converts an object with buffers to delegation
-     * @param passedObj - object with buffers
+     * Converts an object to delegation
+     * @param passedObj - object
      * @returns - true, throws otherwise
      */
-    public fromObjectWithBuffers(passedObj: IDelegationBuffers): Promise<boolean> {
+    public fromObject(passedObj: IDelegation): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedObject: IUnnamedDelegation = [
                 TYPE_TAG_VALUE,
@@ -543,39 +490,6 @@ export class Delegation extends Signable {
                 passedObj.signature,
             ];
             this.fromUnnamedObject(unnamedObject)
-                .then((result: boolean) => {
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Converts an object with Uint8Arrays to delegation
-     * @param passedObj - object with Uint8Arrays
-     * @returns - true, throws otherwise
-     */
-    public fromObject(passedObj: IDelegation): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            const objBuffers: IDelegationBuffers = {
-                type: TYPE_TAG_VALUE,
-                data: {
-                    delegate: passedObj.data.delegate,
-                    delegator: {
-                        type: passedObj.data.delegator.type,
-                        curve: passedObj.data.delegator.curve,
-                        value: Buffer.from(passedObj.data.delegator.value),
-                    },
-                    network: passedObj.data.network,
-                    target: passedObj.data.target,
-                    expiration: passedObj.data.expiration,
-                    capabilities: passedObj.data.capabilities,
-                },
-                signature: Buffer.from(passedObj.signature),
-            };
-            this.fromObjectWithBuffers(objBuffers)
                 .then((result: boolean) => {
                     return resolve(result);
                 })
