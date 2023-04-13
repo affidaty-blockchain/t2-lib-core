@@ -7,7 +7,7 @@ import {
 } from '@msgpack/msgpack';
 import {
     regexBase58,
-    b58Decode,
+    fromBase58,
 } from './binConversions';
 
 const regexValidAccChars = /^[a-zA-Z0-9-_#]+$/;
@@ -18,11 +18,15 @@ const defMsgPackOptions = {
     initialBufferSize: 0,
 };
 
+export function xor(a: boolean, b: boolean): boolean {
+    return a ? !b : b;
+}
+
 export function stringIsTrinciAccount(accountId: string): boolean {
     if (typeof accountId !== 'string' || accountId.length < 2) return false;
     if (accountId.charAt(0) === '#') return regexValidAccChars.test(accountId);
     if (!accountId.match(regexBase58)) return false;
-    const bytes = b58Decode(accountId);
+    const bytes = fromBase58(accountId);
     if (bytes.length !== 34) return false;
     if (bytes[0] !== 0x12 || bytes[1] !== 0x20) return false;
     return true;
@@ -116,18 +120,18 @@ export function similarArrays<T>(array1: Array<T>, array2: Array<T>): boolean {
 
 /**
  * Sequence generator function
- * @param start - Initial number (will be included).
- * @param stop - Final number (will be included).
+ * @param start - Initial number (included).
+ * @param end - Final number (included).
  * @param step - Step between two consecutive numbers (default 1).
  * @returns - Array filled according to passed arguments with numbers.
  */
 export function numRange(
     start: number,
-    stop: number,
+    end: number,
     step: number = 1,
 ): Array<number> {
     return Array.from(
-        { length: (stop - start) / step + 1 },
+        { length: (end - start) / step + 1 },
         (_, i) => { return start + (i * step); },
     );
 }

@@ -1,5 +1,5 @@
 import {
-    hexDecode,
+    fromHex,
     Signable,
     ECDSAKeyPair,
     ECDHKeyPair,
@@ -16,7 +16,7 @@ describe('signable', () => {
             true,
             3.14,
         ],
-        d: hexDecode('ff00ff00ff'),
+        d: fromHex('ff00ff00ff'),
     };
 
     test('init', async () => {
@@ -72,9 +72,9 @@ describe('signable', () => {
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeFalsy();
         s2.data.b = 'string';
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
-        s2.data.d = hexDecode('ff00ff00fe');
+        s2.data.d = fromHex('ff00ff00fe');
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeFalsy();
-        s2.data.d = hexDecode('ff00ff00ff');
+        s2.data.d = fromHex('ff00ff00ff');
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
     });
 
@@ -92,9 +92,9 @@ describe('signable', () => {
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeFalsy();
         s2.data.b = 'string';
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
-        s2.data.d = hexDecode('ff00ff00fe');
+        s2.data.d = fromHex('ff00ff00fe');
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeFalsy();
-        s2.data.d = hexDecode('ff00ff00ff');
+        s2.data.d = fromHex('ff00ff00ff');
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
     });
 
@@ -112,9 +112,9 @@ describe('signable', () => {
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeFalsy();
         s2.data.b = 'string';
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
-        s2.data.d = hexDecode('ff00ff00fe');
+        s2.data.d = fromHex('ff00ff00fe');
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeFalsy();
-        s2.data.d = hexDecode('ff00ff00ff');
+        s2.data.d = fromHex('ff00ff00ff');
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
     });
 
@@ -132,9 +132,9 @@ describe('signable', () => {
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeFalsy();
         s2.data.b = 'string';
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
-        s2.data.d = hexDecode('ff00ff00fe');
+        s2.data.d = fromHex('ff00ff00fe');
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeFalsy();
-        s2.data.d = hexDecode('ff00ff00ff');
+        s2.data.d = fromHex('ff00ff00ff');
         await expect(s2.verifySignature(ecdsa.publicKey)).resolves.toBeTruthy();
     });
 });

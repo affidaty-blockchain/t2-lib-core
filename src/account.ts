@@ -1,5 +1,5 @@
 import { Subtle } from './cryptography/webCrypto';
-import { b58Encode } from './binConversions';
+import { toBase58 } from './binConversions';
 import { IKeyPairParams } from './cryptography/baseTypes';
 import {
     ECDSAP384R1KeyPairParams as defaultKeyPairParams,
@@ -56,7 +56,7 @@ export function getAccountId(input: BaseECKey): Promise<string> {
                         accountId.set(hashBytes, MULTIHASH_HEADER.length);
 
                         // return base58
-                        return resolve(b58Encode(accountId));
+                        return resolve(toBase58(accountId));
                     })
                     .catch((error: any) => {
                         return reject(error);

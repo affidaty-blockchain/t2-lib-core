@@ -1,4 +1,4 @@
-import { hexDecode } from '../../../src/binConversions';
+import { fromHex } from '../../../src/binConversions';
 import { ECDSAKeyPair } from '../../../src/cryptography/ECDSAKeyPair';
 import {
     TxSchemas,
@@ -143,23 +143,23 @@ describe('bulk node tx data class', () => {
         expect(() => { data.smartContractMethodArgsHex = 'ff==00'; }).toThrow();
         // incorrect json string
         expect(() => { data.smartContractMethodArgsJson = '{"key":val}'; }).toThrow();
-        data.smartContractMethodArgsBytes = hexDecode('81a36b6579a376616c');
-        expect(data.smartContractMethodArgsBytes).toEqual(hexDecode('81a36b6579a376616c'));
+        data.smartContractMethodArgsBytes = fromHex('81a36b6579a376616c');
+        expect(data.smartContractMethodArgsBytes).toEqual(fromHex('81a36b6579a376616c'));
         expect(data.smartContractMethodArgsHex).toEqual('81a36b6579a376616c');
         expect(data.smartContractMethodArgsJson).toEqual('{"key":"val"}');
         expect(data.smartContractMethodArgs).toEqual({ key: 'val' });
         data.smartContractMethodArgsHex = '81a46b657931a476616c31';
-        expect(data.smartContractMethodArgsBytes).toEqual(hexDecode('81a46b657931a476616c31'));
+        expect(data.smartContractMethodArgsBytes).toEqual(fromHex('81a46b657931a476616c31'));
         expect(data.smartContractMethodArgsHex).toEqual('81a46b657931a476616c31');
         expect(data.smartContractMethodArgsJson).toEqual('{"key1":"val1"}');
         expect(data.smartContractMethodArgs).toEqual({ key1: 'val1' });
         data.smartContractMethodArgs = { key2: 'val2' };
-        expect(data.smartContractMethodArgsBytes).toEqual(hexDecode('81a46b657932a476616c32'));
+        expect(data.smartContractMethodArgsBytes).toEqual(fromHex('81a46b657932a476616c32'));
         expect(data.smartContractMethodArgsHex).toEqual('81a46b657932a476616c32');
         expect(data.smartContractMethodArgsJson).toEqual('{"key2":"val2"}');
         expect(data.smartContractMethodArgs).toEqual({ key2: 'val2' });
         data.smartContractMethodArgsJson = '{"key3":"val3"}';
-        expect(data.smartContractMethodArgsBytes).toEqual(hexDecode('81a46b657933a476616c33'));
+        expect(data.smartContractMethodArgsBytes).toEqual(fromHex('81a46b657933a476616c33'));
         expect(data.smartContractMethodArgsHex).toEqual('81a46b657933a476616c33');
         expect(data.smartContractMethodArgsJson).toEqual('{"key3":"val3"}');
         expect(data.smartContractMethodArgs).toEqual({ key3: 'val3' });
@@ -185,23 +185,23 @@ describe('bulk node tx data class', () => {
         data = data.setNetworkName('my_network');
         expect(data.networkName).toEqual('my_network');
         data = data.setNonce('ffffffffffffffff');
-        expect(data.nonce).toEqual(hexDecode('ffffffffffffffff'));
+        expect(data.nonce).toEqual(fromHex('ffffffffffffffff'));
         data = data.genNonce();
         expect(data.nonceHex.length).toEqual(16);
         data = data.setSmartContractHash('1220ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-        expect(data.smartContractHash).toEqual(hexDecode('1220ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'));
+        expect(data.smartContractHash).toEqual(fromHex('1220ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'));
         data = data.setSmartContractMethod('my_method');
         expect(data.smartContractMethod).toEqual('my_method');
         data = data.setSmartContractMethodArgs({ key1: 'val1' });
         expect(data.smartContractMethodArgs).toEqual({ key1: 'val1' });
-        expect(data.smartContractMethodArgsBytes).toEqual(hexDecode('81a46b657931a476616c31'));
+        expect(data.smartContractMethodArgsBytes).toEqual(fromHex('81a46b657931a476616c31'));
         expect(data.smartContractMethodArgsHex).toEqual('81a46b657931a476616c31');
         expect(data.smartContractMethodArgsJson).toEqual('{"key1":"val1"}');
         data = data.setSmartContractMethodArgsJson('{"key2":"val2"}');
         expect(data.smartContractMethodArgs).toEqual({ key2: 'val2' });
         data = data.setSmartContractMethodArgsHex('81a46b657933a476616c33');
         expect(data.smartContractMethodArgs).toEqual({ key3: 'val3' });
-        data = data.setSmartContractMethodArgsBytes(hexDecode('81a46b657934a476616c34'));
+        data = data.setSmartContractMethodArgsBytes(fromHex('81a46b657934a476616c34'));
         expect(data.smartContractMethodArgs).toEqual({ key4: 'val4' });
         data = data.setDependsOn('1220ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
         expect(data.dependsOn).toEqual(new Uint8Array([

@@ -1,4 +1,4 @@
-import { hexDecode } from '../../src/binConversions';
+import { fromHex } from '../../src/binConversions';
 import { Account } from '../../src/account';
 import {
     // TxSchemas,
@@ -37,15 +37,15 @@ describe('UnitaryTransaction', () => {
         expect(tx.networkName).toEqual(txTestData.network);
         tx.nonceHex = txTestData.nonceHex;
         expect(tx.nonceHex).toEqual(txTestData.nonceHex);
-        expect(tx.nonce).toEqual(hexDecode(txTestData.nonceHex));
+        expect(tx.nonce).toEqual(fromHex(txTestData.nonceHex));
         tx.smartContractHashHex = txTestData.contractHashHex;
-        expect(tx.smartContractHash).toEqual(hexDecode(txTestData.contractHashHex));
+        expect(tx.smartContractHash).toEqual(fromHex(txTestData.contractHashHex));
         expect(tx.smartContractHashHex).toEqual(txTestData.contractHashHex);
         tx.smartContractMethod = txTestData.contractMethod;
         expect(tx.smartContractMethod).toEqual(txTestData.contractMethod);
         tx.smartContractMethodArgsHex = txTestData.contractArgsHex;
         expect(tx.smartContractMethodArgsHex).toEqual(txTestData.contractArgsHex);
-        expect(tx.smartContractMethodArgsBytes).toEqual(hexDecode(txTestData.contractArgsHex));
+        expect(tx.smartContractMethodArgsBytes).toEqual(fromHex(txTestData.contractArgsHex));
         tx.signerPublicKey = signerAcc.keyPair.publicKey;
         expect(tx.signerPublicKey).toEqual(signerAcc.keyPair.publicKey);
         expectedTicket = await tx.getTicket();
@@ -125,7 +125,7 @@ describe('UnitaryTransaction', () => {
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex));
+            .setSmartContractMethodArgsBytes(fromHex(txTestData.contractArgsHex));
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();
         expect(tx.typeTag).toEqual(SignableTypeTags.UNITARY_TX);
@@ -150,7 +150,7 @@ describe('UnitaryTransaction', () => {
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex));
+            .setSmartContractMethodArgsBytes(fromHex(txTestData.contractArgsHex));
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();
         expect(tx.typeTag).toEqual(SignableTypeTags.UNITARY_TX);

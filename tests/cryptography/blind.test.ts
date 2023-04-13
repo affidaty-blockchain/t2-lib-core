@@ -1,5 +1,5 @@
 import { RSAKeyPair } from '../../src/cryptography/RSAKeyPair';
-import { hexDecode, hexEncode } from '../../src/binConversions';
+import { fromHex, toHex } from '../../src/binConversions';
 import {
     getFactor,
     applyBlinding,
@@ -16,9 +16,9 @@ import {
 describe('testing blind signature', () => {
     const rsaKeyPair = new RSAKeyPair();
 
-    const message = hexDecode('122022264e20bc0cf4b49a7e7c9b4a0e427605a2e04a05255ee50cec3666d0cbbc1b');
+    const message = fromHex('122022264e20bc0cf4b49a7e7c9b4a0e427605a2e04a05255ee50cec3666d0cbbc1b');
     // salt that server will apply to blinded message from client before signing it.
-    const salt = hexDecode('e52858b19cfe12e4742b55e1ad239e849818fb1c8ff1b47c64dbad50c361e9d2183750a8ca713fe806df5b40f30bca4128d1147412715462df570e144ea3a9ccfd999a677e313d19f1d560bbe9d96baba4fd8e0f92ba587d63c17bb5d9');
+    const salt = fromHex('e52858b19cfe12e4742b55e1ad239e849818fb1c8ff1b47c64dbad50c361e9d2183750a8ca713fe806df5b40f30bca4128d1147412715462df570e144ea3a9ccfd999a677e313d19f1d560bbe9d96baba4fd8e0f92ba587d63c17bb5d9');
 
     test('init', async () => {
         await expect(rsaKeyPair.generate()).resolves.toBeTruthy();
@@ -60,10 +60,10 @@ describe('testing blind signature', () => {
             (message.length + salt.length),
         );
 
-        const plainSaltedMessage = hexDecode(
+        const plainSaltedMessage = fromHex(
             (
-                BigInt(`0x${hexEncode(message)}`)
-                * BigInt(`0x${hexEncode(salt)}`)
+                BigInt(`0x${toHex(message)}`)
+                * BigInt(`0x${toHex(salt)}`)
             ).toString(16).padStart((message.length + salt.length) * 2),
         );
         expect(decryptedUnblindedSaltedSignature).toEqual(plainSaltedMessage);

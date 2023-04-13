@@ -2,14 +2,14 @@ export * as Errors from './errors';
 export * from './browser';
 export { WebCrypto, Subtle } from './cryptography/webCrypto';
 export {
-    hexEncode,
-    hexDecode,
-    b58Encode,
-    b58Decode,
-    b64Encode,
-    b64Decode,
-    b64UrlEncode,
-    b64UrlDecode,
+    toHex,
+    fromHex,
+    toBase58,
+    fromBase58,
+    toBase64,
+    fromBase64,
+    toBase64Url,
+    fromBase64Url,
 } from './binConversions';
 export * as Utils from './utils';
 export { jsonParse, customKeyProcessors, customValueProcessors } from './json';
@@ -72,4 +72,4 @@ export {
     IBulkTxUnnamedObject,
 } from './transaction/bulkTransaction';
 export { Delegation } from './delegation';
-// export { Certificate } from './certificate';
+export { Certificate } from './certificate';

@@ -1,5 +1,5 @@
 import { WebCrypto } from '../cryptography/webCrypto';
-import { hexDecode, hexEncode } from '../binConversions';
+import { fromHex, toHex } from '../binConversions';
 import {
     stringIsTrinciAccount,
     sha256,
@@ -213,12 +213,12 @@ export class CommonParentTxData {
 
     /** Random 8-bytes value as an anti-replay protection(hex string). */
     get nonceHex(): string {
-        return hexEncode(this.nonce);
+        return toHex(this.nonce);
     }
 
     /** Random 8-bytes value as an anti-replay protection(hex string). */
     set nonceHex(nonce: string) {
-        this.nonce = hexDecode(nonce.padStart(16, '0'));
+        this.nonce = fromHex(nonce.padStart(16, '0'));
     }
 
     /** Random 8-bytes value as an anti-replay protection(Uint8Array).
@@ -270,7 +270,7 @@ export class CommonParentTxData {
         const expectedByteLen = 34;
         if (hash && hash.length > 0) {
             if (hash.length !== expectedByteLen) {
-                throw new Error(`Incorrect smart contract hash length: ${hexEncode(hash)}. Expected ${expectedByteLen} received ${hash.length}.`);
+                throw new Error(`Incorrect smart contract hash length: ${toHex(hash)}. Expected ${expectedByteLen} received ${hash.length}.`);
             }
             this._contract = hash;
         } else {
@@ -280,12 +280,12 @@ export class CommonParentTxData {
 
     /** Smart contract hash, which will be invoked on target account(hex string). */
     get smartContractHashHex(): string {
-        return hexEncode(this.smartContractHash);
+        return toHex(this.smartContractHash);
     }
 
     /** Smart contract hash, which will be invoked on target account(hex string). */
     set smartContractHashHex(hash: string) {
-        this.smartContractHash = hexDecode(hash);
+        this.smartContractHash = fromHex(hash);
     }
 
     /** Smart contract hash, which will be invoked on target account. */
@@ -337,12 +337,12 @@ export class CommonParentTxData {
 
     /** Arguments that will be passed to invoked smart contract method (hex string) */
     get smartContractMethodArgsHex(): string {
-        return hexEncode(this.smartContractMethodArgsBytes);
+        return toHex(this.smartContractMethodArgsBytes);
     }
 
     /** Arguments that will be passed to invoked smart contract method (hex string) */
     set smartContractMethodArgsHex(passedArgs: string) {
-        this.smartContractMethodArgsBytes = hexDecode(passedArgs);
+        this.smartContractMethodArgsBytes = fromHex(passedArgs);
     }
 
     /** Arguments that will be passed to invoked smart contract method (hex string) */
@@ -402,12 +402,12 @@ export class CommonParentTxData {
 
     /** Hash of the bulk root transaction on which this one depends as hex string. */
     get dependsOnHex(): string {
-        return hexEncode(this.dependsOn);
+        return toHex(this.dependsOn);
     }
 
     /** Hash of the bulk root transaction on which this one depends as hex string. */
     set dependsOnHex(hash: string) {
-        this.dependsOn = hexDecode(hash);
+        this.dependsOn = fromHex(hash);
     }
 
     /** Hash of the bulk root transaction on which this one depends. */
@@ -530,7 +530,7 @@ export class CommonParentTxData {
                     try {
                         const bytes = objectToBytes(unnamedDataObj);
                         const dataHash = sha256(bytes);
-                        const ticket = `1220${hexEncode(dataHash)}`;
+                        const ticket = `1220${toHex(dataHash)}`;
                         return resolve(ticket);
                     } catch (error) {
                         return reject(error);

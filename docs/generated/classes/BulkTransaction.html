@@ -1,0 +1,1210 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>BulkTransaction | T2Lib Core Documentation</title><meta name="description" content="Documentation for T2Lib Core Documentation"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base="..">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">T2Lib Core Documentation</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb">
+<li><a href="../modules.html">T2Lib Core Documentation</a></li>
+<li><a href="BulkTransaction.html">BulkTransaction</a></li></ul>
+<h1>Class BulkTransaction</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>Class for automatic transaction creation, management and transcoding</p>
+</div></section>
+<section class="tsd-panel tsd-hierarchy">
+<h4>Hierarchy</h4>
+<ul class="tsd-hierarchy">
+<li><a href="BaseTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BaseTransaction</a>
+<ul class="tsd-hierarchy">
+<li><span class="target">BulkTransaction</span></li></ul></li></ul></section><aside class="tsd-sources">
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:32</li></ul></aside>
+<section class="tsd-panel-group tsd-index-group">
+<section class="tsd-panel tsd-index-panel">
+<details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
+<h5 class="tsd-index-heading uppercase" role="button" aria-expanded="false" tabIndex=0><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1.5 5.50969L8 11.6609L14.5 5.50969L12.5466 3.66086L8 7.96494L3.45341 3.66086L1.5 5.50969Z" fill="var(--color-text)"></path></svg> Index</h5></summary>
+<div class="tsd-accordion-details">
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Constructors</h3>
+<div class="tsd-index-list"><a href="BulkTransaction.html#constructor" class="tsd-index-link tsd-kind-constructor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#4D7FFF" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-512-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-512-text"></path></svg><span>constructor</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Properties</h3>
+<div class="tsd-index-list"><a href="BulkTransaction.html#_data" class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-protected"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-1024-path"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)" id="icon-1024-text"></path></svg><span>_data</span></a>
+<a href="BulkTransaction.html#_schemaClassMap" class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>_schema<wbr/>Class<wbr/>Map</span></a>
+<a href="BulkTransaction.html#_signHashAlg" class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>_sign<wbr/>Hash<wbr/>Alg</span></a>
+<a href="BulkTransaction.html#_signature" class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>_signature</span></a>
+<a href="BulkTransaction.html#_typeTag" class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>_type<wbr/>Tag</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Accessors</h3>
+<div class="tsd-index-list"><a href="BulkTransaction.html#data" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4D4D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-262144-path"></rect><path d="M8.85 16L11.13 7.24H12.582L14.85 16H13.758L13.182 13.672H10.53L9.954 16H8.85ZM10.746 12.76H12.954L12.282 10.06C12.154 9.548 12.054 9.12 11.982 8.776C11.91 8.432 11.866 8.208 11.85 8.104C11.834 8.208 11.79 8.432 11.718 8.776C11.646 9.12 11.546 9.544 11.418 10.048L10.746 12.76Z" fill="var(--color-text)" id="icon-262144-text"></path></svg><span>data</span></a>
+<a href="BulkTransaction.html#dependsOn" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>depends<wbr/>On</span></a>
+<a href="BulkTransaction.html#dependsOnHex" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>depends<wbr/>On<wbr/>Hex</span></a>
+<a href="BulkTransaction.html#maxFuel" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>max<wbr/>Fuel</span></a>
+<a href="BulkTransaction.html#networkName" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>network<wbr/>Name</span></a>
+<a href="BulkTransaction.html#nodes" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>nodes</span></a>
+<a href="BulkTransaction.html#nonce" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>nonce</span></a>
+<a href="BulkTransaction.html#nonceHex" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>nonce<wbr/>Hex</span></a>
+<a href="BulkTransaction.html#root" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>root</span></a>
+<a href="BulkTransaction.html#schemaClassMap" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>schema<wbr/>Class<wbr/>Map</span></a>
+<a href="BulkTransaction.html#signature" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>signature</span></a>
+<a href="BulkTransaction.html#signatureHex" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>signature<wbr/>Hex</span></a>
+<a href="BulkTransaction.html#signerPublicKey" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>signer<wbr/>Public<wbr/>Key</span></a>
+<a href="BulkTransaction.html#smartContractHash" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>smart<wbr/>Contract<wbr/>Hash</span></a>
+<a href="BulkTransaction.html#smartContractHashHex" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>smart<wbr/>Contract<wbr/>Hash<wbr/>Hex</span></a>
+<a href="BulkTransaction.html#smartContractMethod" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>smart<wbr/>Contract<wbr/>Method</span></a>
+<a href="BulkTransaction.html#smartContractMethodArgs" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>smart<wbr/>Contract<wbr/>Method<wbr/>Args</span></a>
+<a href="BulkTransaction.html#smartContractMethodArgsBytes" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Bytes</span></a>
+<a href="BulkTransaction.html#smartContractMethodArgsHex" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Hex</span></a>
+<a href="BulkTransaction.html#smartContractMethodArgsJson" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Json</span></a>
+<a href="BulkTransaction.html#target" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>target</span></a>
+<a href="BulkTransaction.html#typeTag" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>type<wbr/>Tag</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Methods</h3>
+<div class="tsd-index-list"><a href="BulkTransaction.html#addNode" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-2048-path"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)" id="icon-2048-text"></path></svg><span>add<wbr/>Node</span></a>
+<a href="BulkTransaction.html#fromBase58" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>from<wbr/>Base58</span></a>
+<a href="BulkTransaction.html#fromBytes" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>from<wbr/>Bytes</span></a>
+<a href="BulkTransaction.html#fromObject" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>from<wbr/>Object</span></a>
+<a href="BulkTransaction.html#fromUnnamedObject" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>from<wbr/>Unnamed<wbr/>Object</span></a>
+<a href="BulkTransaction.html#fromUnnamedObjectNoTag" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>from<wbr/>Unnamed<wbr/>Object<wbr/>No<wbr/>Tag</span></a>
+<a href="BulkTransaction.html#genNonce" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>gen<wbr/>Nonce</span></a>
+<a href="BulkTransaction.html#getTicket" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Ticket</span></a>
+<a href="BulkTransaction.html#setData" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Data</span></a>
+<a href="BulkTransaction.html#setDependsOn" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Depends<wbr/>On</span></a>
+<a href="BulkTransaction.html#setMaxFuel" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Max<wbr/>Fuel</span></a>
+<a href="BulkTransaction.html#setNetworkName" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Network<wbr/>Name</span></a>
+<a href="BulkTransaction.html#setNonce" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Nonce</span></a>
+<a href="BulkTransaction.html#setRoot" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Root</span></a>
+<a href="BulkTransaction.html#setSchema" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Schema</span></a>
+<a href="BulkTransaction.html#setSchemaClassMap" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Schema<wbr/>Class<wbr/>Map</span></a>
+<a href="BulkTransaction.html#setSignature" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Signature</span></a>
+<a href="BulkTransaction.html#setSignerPublicKey" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Signer<wbr/>Public<wbr/>Key</span></a>
+<a href="BulkTransaction.html#setSmartContractHash" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Smart<wbr/>Contract<wbr/>Hash</span></a>
+<a href="BulkTransaction.html#setSmartContractMethod" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method</span></a>
+<a href="BulkTransaction.html#setSmartContractMethodArgs" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args</span></a>
+<a href="BulkTransaction.html#setSmartContractMethodArgsBytes" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Bytes</span></a>
+<a href="BulkTransaction.html#setSmartContractMethodArgsHex" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Hex</span></a>
+<a href="BulkTransaction.html#setSmartContractMethodArgsJson" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Json</span></a>
+<a href="BulkTransaction.html#setTarget" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Target</span></a>
+<a href="BulkTransaction.html#setTypeTag" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Type<wbr/>Tag</span></a>
+<a href="BulkTransaction.html#sign" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>sign</span></a>
+<a href="BulkTransaction.html#toBase58" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>to<wbr/>Base58</span></a>
+<a href="BulkTransaction.html#toBytes" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>to<wbr/>Bytes</span></a>
+<a href="BulkTransaction.html#toObject" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>to<wbr/>Object</span></a>
+<a href="BulkTransaction.html#toUnnamedObject" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>to<wbr/>Unnamed<wbr/>Object</span></a>
+<a href="BulkTransaction.html#toUnnamedObjectNoTag" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>to<wbr/>Unnamed<wbr/>Object<wbr/>No<wbr/>Tag</span></a>
+<a href="BulkTransaction.html#verify" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>verify</span></a>
+<a href="BulkTransaction.html#verifySignature" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>verify<wbr/>Signature</span></a>
+</div></section></div></details></section></section>
+<section class="tsd-panel-group tsd-member-group">
+<h2>Constructors</h2>
+<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"><a id="constructor" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="constructor.new_BulkTransaction">new <wbr/>Bulk<wbr/>Transaction<span class="tsd-signature-symbol">(</span>hash<span class="tsd-signature-symbol">?: </span><a href="../types/TKeyGenAlgorithmValidHashValues.html" class="tsd-signature-type" data-tsd-kind="Type alias">TKeyGenAlgorithmValidHashValues</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#constructor.new_BulkTransaction" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>hash: <a href="../types/TKeyGenAlgorithmValidHashValues.html" class="tsd-signature-type" data-tsd-kind="Type alias">TKeyGenAlgorithmValidHashValues</a><span class="tsd-signature-symbol"> = defaultSignHash</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Overrides <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#constructor">constructor</a></p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:35</li></ul></aside></li></ul></section></section>
+<section class="tsd-panel-group tsd-member-group">
+<h2>Properties</h2>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a id="_data" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>_data</span><a href="#_data" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">_data<span class="tsd-signature-symbol">:</span> <a href="_internal_.BulkTxData.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTxData</a></div><aside class="tsd-sources">
+<p>Overrides <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#_data">_data</a></p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:33</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a id="_schemaClassMap" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>_schema<wbr/>Class<wbr/>Map</span><a href="#_schemaClassMap" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">_schema<wbr/>Class<wbr/>Map<span class="tsd-signature-symbol">:</span> <a href="../types/_internal_.TSchemaToDataMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">TSchemaToDataMap</a></div><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#_schemaClassMap">_schemaClassMap</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:46</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a id="_signHashAlg" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>_sign<wbr/>Hash<wbr/>Alg</span><a href="#_signHashAlg" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">_sign<wbr/>Hash<wbr/>Alg<span class="tsd-signature-symbol">:</span> <a href="../types/TKeyGenAlgorithmValidHashValues.html" class="tsd-signature-type" data-tsd-kind="Type alias">TKeyGenAlgorithmValidHashValues</a></div><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#_signHashAlg">_signHashAlg</a></p>
+<ul>
+<li>Defined in src/signable.ts:51</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a id="_signature" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>_signature</span><a href="#_signature" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">_signature<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#_signature">_signature</a></p>
+<ul>
+<li>Defined in src/signable.ts:49</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a id="_typeTag" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>_type<wbr/>Tag</span><a href="#_typeTag" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">_type<wbr/>Tag<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#39;&#39;</span></div><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#_typeTag">_typeTag</a></p>
+<ul>
+<li>Defined in src/signable.ts:45</li></ul></aside></section></section>
+<section class="tsd-panel-group tsd-member-group">
+<h2>Accessors</h2>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="data" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>data</span><a href="#data" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+<li class="tsd-signature" id="data.data-1"><span class="tsd-signature-symbol">get</span> data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_internal_.BulkTxData.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTxData</a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Data to sign</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="_internal_.BulkTxData.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTxData</a></h4><aside class="tsd-sources">
+<p>Overrides BaseTransaction.data</p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:43</li></ul></aside></li>
+<li class="tsd-signature" id="data.data-2"><span class="tsd-signature-symbol">set</span> data<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="_internal_.BulkTxData.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTxData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Data to sign</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>data: <a href="_internal_.BulkTxData.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTxData</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Overrides BaseTransaction.data</p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:47</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="dependsOn" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>depends<wbr/>On</span><a href="#dependsOn" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="dependsOn.dependsOn-1"><span class="tsd-signature-symbol">get</span> dependsOn<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.dependsOn</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:229</li></ul></aside></li>
+<li class="tsd-signature" id="dependsOn.dependsOn-2"><span class="tsd-signature-symbol">set</span> dependsOn<span class="tsd-signature-symbol">(</span>txHash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>txHash: <span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.dependsOn</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:233</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="dependsOnHex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>depends<wbr/>On<wbr/>Hex</span><a href="#dependsOnHex" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="dependsOnHex.dependsOnHex-1"><span class="tsd-signature-symbol">get</span> dependsOnHex<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.dependsOnHex</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:237</li></ul></aside></li>
+<li class="tsd-signature" id="dependsOnHex.dependsOnHex-2"><span class="tsd-signature-symbol">set</span> dependsOnHex<span class="tsd-signature-symbol">(</span>txHash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>txHash: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.dependsOnHex</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:241</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="maxFuel" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>max<wbr/>Fuel</span><a href="#maxFuel" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="maxFuel.maxFuel-1"><span class="tsd-signature-symbol">get</span> maxFuel<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.maxFuel</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:91</li></ul></aside></li>
+<li class="tsd-signature" id="maxFuel.maxFuel-2"><span class="tsd-signature-symbol">set</span> maxFuel<span class="tsd-signature-symbol">(</span>maxFuel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>maxFuel: <span class="tsd-signature-type">number</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.maxFuel</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:95</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="networkName" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>network<wbr/>Name</span><a href="#networkName" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="networkName.networkName-1"><span class="tsd-signature-symbol">get</span> networkName<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.networkName</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:104</li></ul></aside></li>
+<li class="tsd-signature" id="networkName.networkName-2"><span class="tsd-signature-symbol">set</span> networkName<span class="tsd-signature-symbol">(</span>networkName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>networkName: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.networkName</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:108</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="nodes" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>nodes</span><a href="#nodes" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+<li class="tsd-signature" id="nodes.nodes-1"><span class="tsd-signature-symbol">get</span> nodes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkNodeTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkNodeTransaction</a><span class="tsd-signature-symbol">[]</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <a href="BulkNodeTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkNodeTransaction</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:64</li></ul></aside></li>
+<li class="tsd-signature" id="nodes.nodes-2"><span class="tsd-signature-symbol">set</span> nodes<span class="tsd-signature-symbol">(</span>nodes<span class="tsd-signature-symbol">: </span><a href="BulkNodeTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkNodeTransaction</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>nodes: <a href="BulkNodeTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkNodeTransaction</a><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:68</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="nonce" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>nonce</span><a href="#nonce" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="nonce.nonce-1"><span class="tsd-signature-symbol">get</span> nonce<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.nonce</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:117</li></ul></aside></li>
+<li class="tsd-signature" id="nonce.nonce-2"><span class="tsd-signature-symbol">set</span> nonce<span class="tsd-signature-symbol">(</span>nonce<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>nonce: <span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.nonce</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:121</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="nonceHex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>nonce<wbr/>Hex</span><a href="#nonceHex" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="nonceHex.nonceHex-1"><span class="tsd-signature-symbol">get</span> nonceHex<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.nonceHex</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:125</li></ul></aside></li>
+<li class="tsd-signature" id="nonceHex.nonceHex-2"><span class="tsd-signature-symbol">set</span> nonceHex<span class="tsd-signature-symbol">(</span>nonceHex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>nonceHex: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.nonceHex</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:129</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="root" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>root</span><a href="#root" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+<li class="tsd-signature" id="root.root-1"><span class="tsd-signature-symbol">get</span> root<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkRootTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkRootTransaction</a></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <a href="BulkRootTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkRootTransaction</a></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:51</li></ul></aside></li>
+<li class="tsd-signature" id="root.root-2"><span class="tsd-signature-symbol">set</span> root<span class="tsd-signature-symbol">(</span>rootTx<span class="tsd-signature-symbol">: </span><a href="BulkRootTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkRootTransaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>rootTx: <a href="BulkRootTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkRootTransaction</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:55</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a id="schemaClassMap" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>schema<wbr/>Class<wbr/>Map</span><a href="#schemaClassMap" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-protected tsd-is-inherited">
+<li class="tsd-signature" id="schemaClassMap.schemaClassMap-1"><span class="tsd-signature-symbol">get</span> schemaClassMap<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../types/_internal_.TSchemaToDataMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">TSchemaToDataMap</a></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <a href="../types/_internal_.TSchemaToDataMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">TSchemaToDataMap</a></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.schemaClassMap</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:60</li></ul></aside></li>
+<li class="tsd-signature" id="schemaClassMap.schemaClassMap-2"><span class="tsd-signature-symbol">set</span> schemaClassMap<span class="tsd-signature-symbol">(</span>schemaClassMap<span class="tsd-signature-symbol">: </span><a href="../types/_internal_.TSchemaToDataMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">TSchemaToDataMap</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>schemaClassMap: <a href="../types/_internal_.TSchemaToDataMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">TSchemaToDataMap</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.schemaClassMap</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:64</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="signature" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>signature</span><a href="#signature" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="signature.signature-1"><span class="tsd-signature-symbol">get</span> signature<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Data signature</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.signature</p>
+<ul>
+<li>Defined in src/signable.ts:87</li></ul></aside></li>
+<li class="tsd-signature" id="signature.signature-2"><span class="tsd-signature-symbol">set</span> signature<span class="tsd-signature-symbol">(</span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Data signature</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>signature: <span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.signature</p>
+<ul>
+<li>Defined in src/signable.ts:92</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="signatureHex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>signature<wbr/>Hex</span><a href="#signatureHex" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="signatureHex.signatureHex-1"><span class="tsd-signature-symbol">get</span> signatureHex<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.signatureHex</p>
+<ul>
+<li>Defined in src/signable.ts:96</li></ul></aside></li>
+<li class="tsd-signature" id="signatureHex.signatureHex-2"><span class="tsd-signature-symbol">set</span> signatureHex<span class="tsd-signature-symbol">(</span>signatureHex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>signatureHex: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.signatureHex</p>
+<ul>
+<li>Defined in src/signable.ts:100</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="signerPublicKey" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>signer<wbr/>Public<wbr/>Key</span><a href="#signerPublicKey" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="signerPublicKey.signerPublicKey-1"><span class="tsd-signature-symbol">get</span> signerPublicKey<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.signerPublicKey</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:250</li></ul></aside></li>
+<li class="tsd-signature" id="signerPublicKey.signerPublicKey-2"><span class="tsd-signature-symbol">set</span> signerPublicKey<span class="tsd-signature-symbol">(</span>signerPublicKey<span class="tsd-signature-symbol">: </span><a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>signerPublicKey: <a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.signerPublicKey</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:254</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="smartContractHash" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>smart<wbr/>Contract<wbr/>Hash</span><a href="#smartContractHash" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="smartContractHash.smartContractHash-1"><span class="tsd-signature-symbol">get</span> smartContractHash<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractHash</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:143</li></ul></aside></li>
+<li class="tsd-signature" id="smartContractHash.smartContractHash-2"><span class="tsd-signature-symbol">set</span> smartContractHash<span class="tsd-signature-symbol">(</span>hash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>hash: <span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractHash</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:147</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="smartContractHashHex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>smart<wbr/>Contract<wbr/>Hash<wbr/>Hex</span><a href="#smartContractHashHex" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="smartContractHashHex.smartContractHashHex-1"><span class="tsd-signature-symbol">get</span> smartContractHashHex<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractHashHex</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:151</li></ul></aside></li>
+<li class="tsd-signature" id="smartContractHashHex.smartContractHashHex-2"><span class="tsd-signature-symbol">set</span> smartContractHashHex<span class="tsd-signature-symbol">(</span>hashHex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>hashHex: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractHashHex</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:155</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="smartContractMethod" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>smart<wbr/>Contract<wbr/>Method</span><a href="#smartContractMethod" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="smartContractMethod.smartContractMethod-1"><span class="tsd-signature-symbol">get</span> smartContractMethod<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethod</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:164</li></ul></aside></li>
+<li class="tsd-signature" id="smartContractMethod.smartContractMethod-2"><span class="tsd-signature-symbol">set</span> smartContractMethod<span class="tsd-signature-symbol">(</span>method<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>method: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethod</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:168</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="smartContractMethodArgs" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>smart<wbr/>Contract<wbr/>Method<wbr/>Args</span><a href="#smartContractMethodArgs" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="smartContractMethodArgs.smartContractMethodArgs-1"><span class="tsd-signature-symbol">get</span> smartContractMethodArgs<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethodArgs</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:177</li></ul></aside></li>
+<li class="tsd-signature" id="smartContractMethodArgs.smartContractMethodArgs-2"><span class="tsd-signature-symbol">set</span> smartContractMethodArgs<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>args: <span class="tsd-signature-type">any</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethodArgs</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:181</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="smartContractMethodArgsBytes" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Bytes</span><a href="#smartContractMethodArgsBytes" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="smartContractMethodArgsBytes.smartContractMethodArgsBytes-1"><span class="tsd-signature-symbol">get</span> smartContractMethodArgsBytes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethodArgsBytes</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:190</li></ul></aside></li>
+<li class="tsd-signature" id="smartContractMethodArgsBytes.smartContractMethodArgsBytes-2"><span class="tsd-signature-symbol">set</span> smartContractMethodArgsBytes<span class="tsd-signature-symbol">(</span>argsBytes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>argsBytes: <span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethodArgsBytes</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:194</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="smartContractMethodArgsHex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Hex</span><a href="#smartContractMethodArgsHex" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="smartContractMethodArgsHex.smartContractMethodArgsHex-1"><span class="tsd-signature-symbol">get</span> smartContractMethodArgsHex<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethodArgsHex</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:203</li></ul></aside></li>
+<li class="tsd-signature" id="smartContractMethodArgsHex.smartContractMethodArgsHex-2"><span class="tsd-signature-symbol">set</span> smartContractMethodArgsHex<span class="tsd-signature-symbol">(</span>argsHex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>argsHex: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethodArgsHex</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:207</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="smartContractMethodArgsJson" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Json</span><a href="#smartContractMethodArgsJson" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="smartContractMethodArgsJson.smartContractMethodArgsJson-1"><span class="tsd-signature-symbol">get</span> smartContractMethodArgsJson<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethodArgsJson</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:216</li></ul></aside></li>
+<li class="tsd-signature" id="smartContractMethodArgsJson.smartContractMethodArgsJson-2"><span class="tsd-signature-symbol">set</span> smartContractMethodArgsJson<span class="tsd-signature-symbol">(</span>argsJson<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>argsJson: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.smartContractMethodArgsJson</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:220</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="target" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>target</span><a href="#target" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="target.target-1"><span class="tsd-signature-symbol">get</span> target<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.target</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:78</li></ul></aside></li>
+<li class="tsd-signature" id="target.target-2"><span class="tsd-signature-symbol">set</span> target<span class="tsd-signature-symbol">(</span>accountId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>accountId: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.target</p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:82</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="typeTag" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>type<wbr/>Tag</span><a href="#typeTag" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature" id="typeTag.typeTag-1"><span class="tsd-signature-symbol">get</span> typeTag<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.typeTag</p>
+<ul>
+<li>Defined in src/signable.ts:57</li></ul></aside></li>
+<li class="tsd-signature" id="typeTag.typeTag-2"><span class="tsd-signature-symbol">set</span> typeTag<span class="tsd-signature-symbol">(</span>typeTag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>typeTag: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseTransaction.typeTag</p>
+<ul>
+<li>Defined in src/signable.ts:61</li></ul></aside></li></ul></section></section>
+<section class="tsd-panel-group tsd-member-group">
+<h2>Methods</h2>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="addNode" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>add<wbr/>Node</span><a href="#addNode" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="addNode.addNode-1">add<wbr/>Node<span class="tsd-signature-symbol">(</span>nodeTx<span class="tsd-signature-symbol">: </span><a href="BulkNodeTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkNodeTransaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#addNode.addNode-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>nodeTx: <a href="BulkNodeTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkNodeTransaction</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:72</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="fromBase58" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>from<wbr/>Base58</span><a href="#fromBase58" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="fromBase58.fromBase58-1">from<wbr/>Base58<span class="tsd-signature-symbol">(</span>b58<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#fromBase58.fromBase58-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Tries to deserialize a signable from a base58 string.</p>
+
+<h3>Returns</h3><ul>
+<li>true on success, throws otherwise</li>
+</ul>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>b58: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>base58 string to try to deserialize signable from</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#fromBase58">fromBase58</a></p>
+<ul>
+<li>Defined in src/signable.ts:278</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="fromBytes" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>from<wbr/>Bytes</span><a href="#fromBytes" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="fromBytes.fromBytes-1">from<wbr/>Bytes<span class="tsd-signature-symbol">(</span>bytes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#fromBytes.fromBytes-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Tries to deserialize a signable from a Uint8Array.</p>
+
+<h3>Returns</h3><ul>
+<li>true on success, throws otherwise</li>
+</ul>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>bytes: <span class="tsd-signature-type">Uint8Array</span></h5>
+<div class="tsd-comment tsd-typography"><p>base58 string to try to deserialize signable from</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#fromBytes">fromBytes</a></p>
+<ul>
+<li>Defined in src/signable.ts:260</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="fromObject" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>from<wbr/>Object</span><a href="#fromObject" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="fromObject.fromObject-1">from<wbr/>Object<span class="tsd-signature-symbol">(</span>passedObj<span class="tsd-signature-symbol">: </span><a href="../interfaces/IBulkTxObject.html" class="tsd-signature-type" data-tsd-kind="Interface">IBulkTxObject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#fromObject.fromObject-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Imports transaction from an object with named members and binary
+values represented by Uint8Arrays</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>passedObj: <a href="../interfaces/IBulkTxObject.html" class="tsd-signature-type" data-tsd-kind="Interface">IBulkTxObject</a></h5>
+<div class="tsd-comment tsd-typography"><p>object with named members and binary values represented by Uint8Arrays</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#fromObject">fromObject</a></p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:130</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="fromUnnamedObject" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>from<wbr/>Unnamed<wbr/>Object</span><a href="#fromUnnamedObject" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="fromUnnamedObject.fromUnnamedObject-1">from<wbr/>Unnamed<wbr/>Object<span class="tsd-signature-symbol">(</span>passedObj<span class="tsd-signature-symbol">: </span><a href="../interfaces/IBulkTxUnnamedObject.html" class="tsd-signature-type" data-tsd-kind="Interface">IBulkTxUnnamedObject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#fromUnnamedObject.fromUnnamedObject-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Imports transaction from a compact object with unnamed members</p>
+
+<h3>Returns</h3><ul>
+<li>compact unnamed object</li>
+</ul>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>passedObj: <a href="../interfaces/IBulkTxUnnamedObject.html" class="tsd-signature-type" data-tsd-kind="Interface">IBulkTxUnnamedObject</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#fromUnnamedObject">fromUnnamedObject</a></p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:111</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="fromUnnamedObjectNoTag" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>from<wbr/>Unnamed<wbr/>Object<wbr/>No<wbr/>Tag</span><a href="#fromUnnamedObjectNoTag" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="fromUnnamedObjectNoTag.fromUnnamedObjectNoTag-1">from<wbr/>Unnamed<wbr/>Object<wbr/>No<wbr/>Tag<span class="tsd-signature-symbol">(</span>passedObj<span class="tsd-signature-symbol">: </span><a href="../interfaces/IBaseTxUnnamedObjectNoTag.html" class="tsd-signature-type" data-tsd-kind="Interface">IBaseTxUnnamedObjectNoTag</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#fromUnnamedObjectNoTag.fromUnnamedObjectNoTag-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>passedObj: <a href="../interfaces/IBaseTxUnnamedObjectNoTag.html" class="tsd-signature-type" data-tsd-kind="Interface">IBaseTxUnnamedObjectNoTag</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#fromUnnamedObjectNoTag">fromUnnamedObjectNoTag</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:354</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="genNonce" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>gen<wbr/>Nonce</span><a href="#genNonce" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="genNonce.genNonce-1">gen<wbr/>Nonce<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#genNonce.genNonce-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#genNonce">genNonce</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:138</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getTicket" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>Ticket</span><a href="#getTicket" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="getTicket.getTicket-1">get<wbr/>Ticket<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><a href="#getTicket.getTicket-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Computes the transaction ticket which would be returned by blockchain
+itself on transaction submission.</p>
+
+<h3>Returns</h3><ul>
+<li>ticket string</li>
+</ul>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#getTicket">getTicket</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:442</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setData" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Data</span><a href="#setData" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setData.setData-1">set<wbr/>Data<span class="tsd-signature-symbol">(</span>newData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setData.setData-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Data to sign</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>newData: <span class="tsd-signature-type">any</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setData">setData</a></p>
+<ul>
+<li>Defined in src/signable.ts:81</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setDependsOn" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Depends<wbr/>On</span><a href="#setDependsOn" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setDependsOn.setDependsOn-1">set<wbr/>Depends<wbr/>On<span class="tsd-signature-symbol">(</span>txHash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setDependsOn.setDependsOn-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>txHash: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setDependsOn">setDependsOn</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:245</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setMaxFuel" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Max<wbr/>Fuel</span><a href="#setMaxFuel" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setMaxFuel.setMaxFuel-1">set<wbr/>Max<wbr/>Fuel<span class="tsd-signature-symbol">(</span>maxFuel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setMaxFuel.setMaxFuel-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>maxFuel: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setMaxFuel">setMaxFuel</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:99</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setNetworkName" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Network<wbr/>Name</span><a href="#setNetworkName" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setNetworkName.setNetworkName-1">set<wbr/>Network<wbr/>Name<span class="tsd-signature-symbol">(</span>networkName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setNetworkName.setNetworkName-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>networkName: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setNetworkName">setNetworkName</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:112</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setNonce" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Nonce</span><a href="#setNonce" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setNonce.setNonce-1">set<wbr/>Nonce<span class="tsd-signature-symbol">(</span>nonce<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setNonce.setNonce-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>nonce: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setNonce">setNonce</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:133</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setRoot" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Root</span><a href="#setRoot" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="setRoot.setRoot-1">set<wbr/>Root<span class="tsd-signature-symbol">(</span>rootTx<span class="tsd-signature-symbol">: </span><a href="BulkRootTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkRootTransaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setRoot.setRoot-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>rootTx: <a href="BulkRootTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkRootTransaction</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:59</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a id="setSchema" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>set<wbr/>Schema</span><a href="#setSchema" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSchema.setSchema-1">set<wbr/>Schema<span class="tsd-signature-symbol">(</span>schema<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSchema.setSchema-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>schema: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSchema">setSchema</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:73</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a id="setSchemaClassMap" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>set<wbr/>Schema<wbr/>Class<wbr/>Map</span><a href="#setSchemaClassMap" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSchemaClassMap.setSchemaClassMap-1">set<wbr/>Schema<wbr/>Class<wbr/>Map<span class="tsd-signature-symbol">(</span>schemaClassMap<span class="tsd-signature-symbol">: </span><a href="../types/_internal_.TSchemaToDataMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">TSchemaToDataMap</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSchemaClassMap.setSchemaClassMap-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>schemaClassMap: <a href="../types/_internal_.TSchemaToDataMap.html" class="tsd-signature-type" data-tsd-kind="Type alias">TSchemaToDataMap</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSchemaClassMap">setSchemaClassMap</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:68</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setSignature" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Signature</span><a href="#setSignature" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSignature.setSignature-1">set<wbr/>Signature<span class="tsd-signature-symbol">(</span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSignature.setSignature-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Data signature</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>signature: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSignature">setSignature</a></p>
+<ul>
+<li>Defined in src/signable.ts:105</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setSignerPublicKey" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Signer<wbr/>Public<wbr/>Key</span><a href="#setSignerPublicKey" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSignerPublicKey.setSignerPublicKey-1">set<wbr/>Signer<wbr/>Public<wbr/>Key<span class="tsd-signature-symbol">(</span>signerPubKey<span class="tsd-signature-symbol">: </span><a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSignerPublicKey.setSignerPublicKey-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>signerPubKey: <a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSignerPublicKey">setSignerPublicKey</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:258</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setSmartContractHash" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Smart<wbr/>Contract<wbr/>Hash</span><a href="#setSmartContractHash" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSmartContractHash.setSmartContractHash-1">set<wbr/>Smart<wbr/>Contract<wbr/>Hash<span class="tsd-signature-symbol">(</span>contractHash<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSmartContractHash.setSmartContractHash-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> contractHash: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSmartContractHash">setSmartContractHash</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:159</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setSmartContractMethod" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method</span><a href="#setSmartContractMethod" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSmartContractMethod.setSmartContractMethod-1">set<wbr/>Smart<wbr/>Contract<wbr/>Method<span class="tsd-signature-symbol">(</span>method<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSmartContractMethod.setSmartContractMethod-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>method: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSmartContractMethod">setSmartContractMethod</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:172</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setSmartContractMethodArgs" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args</span><a href="#setSmartContractMethodArgs" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSmartContractMethodArgs.setSmartContractMethodArgs-1">set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSmartContractMethodArgs.setSmartContractMethodArgs-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>args: <span class="tsd-signature-type">any</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSmartContractMethodArgs">setSmartContractMethodArgs</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:185</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setSmartContractMethodArgsBytes" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Bytes</span><a href="#setSmartContractMethodArgsBytes" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSmartContractMethodArgsBytes.setSmartContractMethodArgsBytes-1">set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Bytes<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSmartContractMethodArgsBytes.setSmartContractMethodArgsBytes-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>args: <span class="tsd-signature-type">Uint8Array</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSmartContractMethodArgsBytes">setSmartContractMethodArgsBytes</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:198</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setSmartContractMethodArgsHex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Hex</span><a href="#setSmartContractMethodArgsHex" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSmartContractMethodArgsHex.setSmartContractMethodArgsHex-1">set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Hex<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSmartContractMethodArgsHex.setSmartContractMethodArgsHex-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>args: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSmartContractMethodArgsHex">setSmartContractMethodArgsHex</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:211</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setSmartContractMethodArgsJson" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Json</span><a href="#setSmartContractMethodArgsJson" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setSmartContractMethodArgsJson.setSmartContractMethodArgsJson-1">set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Json<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setSmartContractMethodArgsJson.setSmartContractMethodArgsJson-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>args: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setSmartContractMethodArgsJson">setSmartContractMethodArgsJson</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:224</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setTarget" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Target</span><a href="#setTarget" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setTarget.setTarget-1">set<wbr/>Target<span class="tsd-signature-symbol">(</span>accountId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setTarget.setTarget-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>accountId: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setTarget">setTarget</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:86</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="setTypeTag" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Type<wbr/>Tag</span><a href="#setTypeTag" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="setTypeTag.setTypeTag-1">set<wbr/>Type<wbr/>Tag<span class="tsd-signature-symbol">(</span>typeTag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a><a href="#setTypeTag.setTypeTag-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>typeTag: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="BulkTransaction.html" class="tsd-signature-type" data-tsd-kind="Class">BulkTransaction</a></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#setTypeTag">setTypeTag</a></p>
+<ul>
+<li>Defined in src/signable.ts:65</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="sign" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>sign</span><a href="#sign" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="sign.sign-1">sign<span class="tsd-signature-symbol">(</span>privateKey<span class="tsd-signature-symbol">: </span><a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#sign.sign-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Signs transaction with private key, provided by
+the gived key pair. This also automativcally sets
+signerPublicKey of this transaction</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>privateKey: <a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#sign">sign</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:403</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="toBase58" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>to<wbr/>Base58</span><a href="#toBase58" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="toBase58.toBase58-1">to<wbr/>Base58<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><a href="#toBase58.toBase58-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Serializes signable object to a base58 string</p>
+
+<h3>Returns</h3><ul>
+<li>b58 string, throws otherwise</li>
+</ul>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#toBase58">toBase58</a></p>
+<ul>
+<li>Defined in src/signable.ts:188</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="toBytes" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>to<wbr/>Bytes</span><a href="#toBytes" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="toBytes.toBytes-1">to<wbr/>Bytes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">&gt;</span><a href="#toBytes.toBytes-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Serializes signable object to a Uint8Array</p>
+
+<h3>Returns</h3><ul>
+<li>Uint8Array, throws otherwise</li>
+</ul>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#toBytes">toBytes</a></p>
+<ul>
+<li>Defined in src/signable.ts:172</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="toObject" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>to<wbr/>Object</span><a href="#toObject" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="toObject.toObject-1">to<wbr/>Object<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/IBulkTxObject.html" class="tsd-signature-type" data-tsd-kind="Interface">IBulkTxObject</a><span class="tsd-signature-symbol">&gt;</span><a href="#toObject.toObject-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Exports transaction to an object with named members and binary
+values represented by Uint8Arrays</p>
+
+<h3>Returns</h3><ul>
+<li>object with named members and binary values represented by Uint8Arrays</li>
+</ul>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/IBulkTxObject.html" class="tsd-signature-type" data-tsd-kind="Interface">IBulkTxObject</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#toObject">toObject</a></p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:94</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="toUnnamedObject" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>to<wbr/>Unnamed<wbr/>Object</span><a href="#toUnnamedObject" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="toUnnamedObject.toUnnamedObject-1">to<wbr/>Unnamed<wbr/>Object<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/IBulkTxUnnamedObject.html" class="tsd-signature-type" data-tsd-kind="Interface">IBulkTxUnnamedObject</a><span class="tsd-signature-symbol">&gt;</span><a href="#toUnnamedObject.toUnnamedObject-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Exports transaction to a compact object with unnamed members,
+ready to be encoded with msgpack
+and sent over the network</p>
+
+<h3>Returns</h3><ul>
+<li>compact unnamed object</li>
+</ul>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/IBulkTxUnnamedObject.html" class="tsd-signature-type" data-tsd-kind="Interface">IBulkTxUnnamedObject</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#toUnnamedObject">toUnnamedObject</a></p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:77</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="toUnnamedObjectNoTag" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>to<wbr/>Unnamed<wbr/>Object<wbr/>No<wbr/>Tag</span><a href="#toUnnamedObjectNoTag" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="toUnnamedObjectNoTag.toUnnamedObjectNoTag-1">to<wbr/>Unnamed<wbr/>Object<wbr/>No<wbr/>Tag<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/IBaseTxUnnamedObjectNoTag.html" class="tsd-signature-type" data-tsd-kind="Interface">IBaseTxUnnamedObjectNoTag</a><span class="tsd-signature-symbol">&gt;</span><a href="#toUnnamedObjectNoTag.toUnnamedObjectNoTag-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/IBaseTxUnnamedObjectNoTag.html" class="tsd-signature-type" data-tsd-kind="Interface">IBaseTxUnnamedObjectNoTag</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#toUnnamedObjectNoTag">toUnnamedObjectNoTag</a></p>
+<ul>
+<li>Defined in src/transaction/baseTransaction.ts:288</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="verify" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>verify</span><a href="#verify" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="verify.verify-1">verify<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#verify.verify-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Verifies if transaction has a valid signature produced
+by the private key associated with signerPublicKey</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#verify">verify</a></p>
+<ul>
+<li>Defined in src/transaction/bulkTransaction.ts:146</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="verifySignature" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>verify<wbr/>Signature</span><a href="#verifySignature" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="verifySignature.verifySignature-1">verify<wbr/>Signature<span class="tsd-signature-symbol">(</span>publicKey<span class="tsd-signature-symbol">: </span><a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#verifySignature.verifySignature-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Verifies data signature against a public key</p>
+
+<h3>Returns</h3><ul>
+<li>true if signature is valid, false otherwise. Can throw.</li>
+</ul>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>publicKey: <a href="BaseECKey.html" class="tsd-signature-type" data-tsd-kind="Class">BaseECKey</a></h5>
+<div class="tsd-comment tsd-typography"><p>Public key to verify signature against</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="BaseTransaction.html">BaseTransaction</a>.<a href="BaseTransaction.html#verifySignature">verifySignature</a></p>
+<ul>
+<li>Defined in src/signable.ts:320</li></ul></aside></li></ul></section></section></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li><a href="../modules.html">T2<wbr/>Lib <wbr/>Core <wbr/>Documentation</a>
+<ul>
+<li class="tsd-kind-module"><a href="../modules/_internal_.html">&lt;internal&gt;</a></li>
+<li class="tsd-kind-namespace"><a href="../modules/BlindRSA.html">BlindRSA</a></li>
+<li class="tsd-kind-namespace"><a href="../modules/CryptoDefaults.html">Crypto<wbr/>Defaults</a></li>
+<li class="tsd-kind-namespace"><a href="../modules/Errors.html">Errors</a></li>
+<li class="tsd-kind-namespace"><a href="../modules/Utils.html">Utils</a></li></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky">
+<ul>
+<li class="current tsd-kind-class"><a href="BulkTransaction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-class)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-128-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-128-text"></path></svg><span>Bulk<wbr/>Transaction</span></a>
+<ul>
+<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="BulkTransaction.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-512-path"></use><use href="#icon-512-text"></use></svg>constructor</a></li>
+<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="BulkTransaction.html#_data" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>_data</a></li>
+<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a href="BulkTransaction.html#_schemaClassMap" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>_schema<wbr/>Class<wbr/>Map</a></li>
+<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a href="BulkTransaction.html#_signHashAlg" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>_sign<wbr/>Hash<wbr/>Alg</a></li>
+<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a href="BulkTransaction.html#_signature" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>_signature</a></li>
+<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a href="BulkTransaction.html#_typeTag" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>_type<wbr/>Tag</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="BulkTransaction.html#data" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>data</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#dependsOn" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>depends<wbr/>On</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#dependsOnHex" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>depends<wbr/>On<wbr/>Hex</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#maxFuel" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>max<wbr/>Fuel</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#networkName" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>network<wbr/>Name</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="BulkTransaction.html#nodes" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>nodes</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#nonce" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>nonce</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#nonceHex" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>nonce<wbr/>Hex</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="BulkTransaction.html#root" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>root</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a href="BulkTransaction.html#schemaClassMap" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>schema<wbr/>Class<wbr/>Map</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#signature" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>signature</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#signatureHex" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>signature<wbr/>Hex</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#signerPublicKey" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>signer<wbr/>Public<wbr/>Key</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#smartContractHash" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>smart<wbr/>Contract<wbr/>Hash</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#smartContractHashHex" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>smart<wbr/>Contract<wbr/>Hash<wbr/>Hex</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#smartContractMethod" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>smart<wbr/>Contract<wbr/>Method</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#smartContractMethodArgs" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>smart<wbr/>Contract<wbr/>Method<wbr/>Args</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#smartContractMethodArgsBytes" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Bytes</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#smartContractMethodArgsHex" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Hex</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#smartContractMethodArgsJson" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Json</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#target" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>target</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#typeTag" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>type<wbr/>Tag</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="BulkTransaction.html#addNode" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>add<wbr/>Node</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#fromBase58" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>from<wbr/>Base58</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#fromBytes" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>from<wbr/>Bytes</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="BulkTransaction.html#fromObject" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>from<wbr/>Object</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="BulkTransaction.html#fromUnnamedObject" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>from<wbr/>Unnamed<wbr/>Object</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#fromUnnamedObjectNoTag" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>from<wbr/>Unnamed<wbr/>Object<wbr/>No<wbr/>Tag</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#genNonce" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>gen<wbr/>Nonce</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#getTicket" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Ticket</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setData" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Data</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setDependsOn" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Depends<wbr/>On</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setMaxFuel" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Max<wbr/>Fuel</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setNetworkName" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Network<wbr/>Name</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setNonce" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Nonce</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="BulkTransaction.html#setRoot" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Root</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a href="BulkTransaction.html#setSchema" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Schema</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a href="BulkTransaction.html#setSchemaClassMap" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Schema<wbr/>Class<wbr/>Map</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setSignature" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Signature</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setSignerPublicKey" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Signer<wbr/>Public<wbr/>Key</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setSmartContractHash" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Smart<wbr/>Contract<wbr/>Hash</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setSmartContractMethod" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Smart<wbr/>Contract<wbr/>Method</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setSmartContractMethodArgs" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setSmartContractMethodArgsBytes" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Bytes</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setSmartContractMethodArgsHex" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Hex</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setSmartContractMethodArgsJson" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Smart<wbr/>Contract<wbr/>Method<wbr/>Args<wbr/>Json</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setTarget" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Target</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#setTypeTag" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>set<wbr/>Type<wbr/>Tag</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#sign" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>sign</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#toBase58" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>to<wbr/>Base58</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#toBytes" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>to<wbr/>Bytes</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="BulkTransaction.html#toObject" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>to<wbr/>Object</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="BulkTransaction.html#toUnnamedObject" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>to<wbr/>Unnamed<wbr/>Object</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#toUnnamedObjectNoTag" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>to<wbr/>Unnamed<wbr/>Object<wbr/>No<wbr/>Tag</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="BulkTransaction.html#verify" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>verify</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="BulkTransaction.html#verifySignature" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>verify<wbr/>Signature</a></li></ul></li></ul></nav></div></div>
+<div class="container tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div><script src="../assets/main.js"></script></body></html>

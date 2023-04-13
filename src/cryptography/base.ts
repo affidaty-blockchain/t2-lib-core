@@ -3,8 +3,8 @@ import { modPow } from '../bigIntModArith';
 import * as baseTypes from './baseTypes';
 import * as Errors from '../errors';
 import {
-    hexDecode,
-    hexEncode,
+    fromHex,
+    toHex,
 } from '../binConversions';
 import { Subtle } from './webCrypto';
 import {
@@ -441,7 +441,7 @@ export function decompressRawCurvePoint(
 ): Uint8Array {
     const u8CompPubKey = new Uint8Array(compPubKey);
     // isolating X bytes
-    const x = BigInt(`0x${hexEncode(u8CompPubKey.subarray(1))}`);
+    const x = BigInt(`0x${toHex(u8CompPubKey.subarray(1))}`);
     // getting Y parity value
     const signY = BigInt(u8CompPubKey[0] - 2);
 
@@ -469,7 +469,7 @@ export function decompressRawCurvePoint(
         y = p - y;
     }
     const fullCurvePointHex = `04${x.toString(16).padStart(96)}${y.toString(16).padStart(96)}`;
-    return hexDecode(fullCurvePointHex);
+    return fromHex(fullCurvePointHex);
 }
 
 export function isCompressedCurvePoint(curvePoint: Uint8Array | ArrayBufferLike): boolean {

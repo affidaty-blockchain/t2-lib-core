@@ -1,7 +1,7 @@
-import { MerkleTree } from 'merkletreejs';
+// import { MerkleTree } from 'merkletreejs';
 import * as Errors from './errors';
 import { WebCrypto } from './cryptography/webCrypto';
-import { stringToArrayBuffer } from './binConversions';
+import { toHex, fromHex } from './binConversions';
 import {
     sha256,
     numRange,
@@ -20,7 +20,6 @@ import {
     Signable,
     ISignableUnnamedObject,
     ISignableUnnamedObjectNoTag,
-    ISignableObjectWithBuffer,
     ISignableObject,
 } from './signable';
 
@@ -36,125 +35,227 @@ function missingSymmetryLeaves(givenLeaves: number): number {
     return (2 ** calculateSymmetryDepth(givenLeaves)) - givenLeaves;
 }
 
+function makeNextLayerNode(a: Uint8Array, b: Uint8Array): Uint8Array {
+    const ab = new Uint8Array(a.length + b.length);
+    ab.set(a, 0);
+    ab.set(b, a.length);
+    return sha256(ab);
+}
+
 interface IMerkleData {
-    root: Buffer;
     depth: number;
-    multiProof: Buffer[];
+    root: Uint8Array;
+    multiProof: Uint8Array[];
 }
 
 function createMerkleTree(
-    dataArray: Buffer[],
-    clearIndexes: number[] = [],
+    leaves: Uint8Array[],
+    clearIndexesList: number[] = [],
 ): IMerkleData {
-    if (dataArray.length === 0) {
+    if (leaves.length === 0) {
         throw new Error(Errors.EMPTY_VALUE);
     }
     let sortedIndexes: number[];
-    if (clearIndexes.length === 0) {
-        sortedIndexes = numRange(0, dataArray.length - 1);
+    if (clearIndexesList.length === 0) {
+        sortedIndexes = numRange(0, leaves.length - 1);
     } else {
-        sortedIndexes = clearIndexes.sort((a, b) => { return a - b; });
+        sortedIndexes = clearIndexesList.sort((a, b) => { return a - b; });
     }
-    if (sortedIndexes[0] < 0 || sortedIndexes[sortedIndexes.length - 1] >= dataArray.length) {
+    if (sortedIndexes[0] < 0 || sortedIndexes[sortedIndexes.length - 1] >= leaves.length) {
         throw new Error(Errors.MERK_WRONG_IDXS);
     }
-    const [...leaves] = dataArray;
-    const tree = new MerkleTree(leaves, undefined, { complete: true });
-    const resultObj: IMerkleData = {
-        depth: tree.getDepth(),
-        root: tree.getRoot(),
-        multiProof: tree.getMultiProof(clearIndexes),
+
+    const treeDepth = Math.ceil(Math.log2(leaves.length));
+    const expectedLeavesCount = 2 ** treeDepth;
+    if (leaves.length < expectedLeavesCount) {
+        throw new Error(`Merkle tree must be balanced. ${expectedLeavesCount - leaves.length} more leave(s) missing.`);
+    }
+
+    const result: IMerkleData = {
+        depth: treeDepth,
+        root: new Uint8Array(0),
+        multiProof: [],
     };
-    return resultObj;
+    // ========================= TREE LAYERS CREATION ==========================
+    const layersCount = (treeDepth + 1);
+    const layers: Uint8Array[][] = new Array<Array<Uint8Array>>(layersCount);
+    layers[0] = leaves;
+
+    for (let layerIdx = 1; layerIdx < layersCount; layerIdx += 1) {
+        const layer = new Array<Uint8Array>(2 ** (layersCount - (layerIdx + 1)));
+        for (let nodeIdx = 0; nodeIdx < layer.length; nodeIdx += 1) {
+            const leftIdx = 2 * nodeIdx;
+            const left = layers[layerIdx - 1][leftIdx];
+            const rightIdx = leftIdx + 1;
+            const right = layers[layerIdx - 1][rightIdx];
+            layer[nodeIdx] = makeNextLayerNode(left, right);
+        }
+        layers[layerIdx] = layer;
+    }
+
+    result.root = layers[layers.length - 1][0];
+
+    // ========================== MULTIPROOF CREATION ==========================
+    const isClearLeaf = (idx: number) => {
+        return (clearIndexesList.indexOf(idx) > -1);
+    };
+
+    let needMultiproof = false;
+    let knownNodes: boolean[] = layers.length
+        ? layers[0].map((_, i) => {
+            const isClear = isClearLeaf(i);
+            if (!needMultiproof && !isClear) {
+                needMultiproof = true;
+            }
+            return isClear;
+        })
+        : [];
+    if (!needMultiproof) {
+        return result;
+    }
+    const multiProof: Uint8Array[] = [];
+    for (let layerIdx = 0; layerIdx < (layers.length - 1); layerIdx += 1) {
+        const nextKnownNodes: boolean[] = new Array<boolean>(layers[layerIdx + 1].length)
+            .fill(false);
+        for (let layerNodeIdx = 0; layerNodeIdx < layers[layerIdx].length; layerNodeIdx += 1) {
+            const pairedLayerNodeIdx = layerNodeIdx % 2 ? layerNodeIdx - 1 : layerNodeIdx + 1;
+            if (!knownNodes[layerNodeIdx] && knownNodes[pairedLayerNodeIdx]) {
+                multiProof.push(layers[layerIdx][layerNodeIdx]);
+                nextKnownNodes[Math.floor(layerNodeIdx / 2)] = true;
+            } else if (knownNodes[layerNodeIdx] && knownNodes[pairedLayerNodeIdx]) {
+                nextKnownNodes[Math.floor(layerNodeIdx / 2)] = true;
+            }
+        }
+        knownNodes = nextKnownNodes;
+    }
+    result.multiProof = multiProof;
+
+    return result;
 }
 
-function createLeaf(valueKey: string, value: string, salt: Buffer): Buffer {
-    const leafStr = `${value}${valueKey}${salt.toString('hex')}`;
-    const hash = sha256(new Uint8Array(stringToArrayBuffer(leafStr)));
-    return Buffer.from(hash);
+function createLeaf(valueKey: string, value: string, salt: Uint8Array): Uint8Array {
+    const leafStr = `${value}${valueKey}${toHex(salt)}`;
+    const hash = sha256(new TextEncoder().encode(leafStr));
+    return hash;
 }
 
 function verifyMerkleTree(
-    clearLeaves: Buffer[],
+    clearLeaves: Uint8Array[],
     clearIndexes: number[],
     totalLeaves: number,
-    root: Buffer,
-    multiproof: Buffer[],
+    root: Uint8Array,
+    multiproof: Uint8Array[],
 ): boolean {
-    const tree = new MerkleTree([], undefined, { complete: true });
-    return tree.verifyMultiProof(
-        root,
-        clearIndexes,
-        clearLeaves,
-        totalLeaves,
-        multiproof,
-    );
+    const depth = calculateSymmetryDepth(totalLeaves);
+    const treeLayers: Uint8Array[][] = [];
+    const layersCount = depth + 1;
+
+    const isClearLeaf = (idx: number) => {
+        return clearIndexes.indexOf(idx) >= 0;
+    };
+    const _multiproof = multiproof;
+    let currLayer: Uint8Array[] = new Array<Uint8Array>(2 ** depth)
+        .fill(new Uint8Array(0))
+        .map((_, i) => {
+            if (isClearLeaf(i)) {
+                return clearLeaves[clearIndexes.indexOf(i)];
+            }
+            return _;
+        });
+    for (let layerIdx = 0; layerIdx < layersCount; layerIdx += 1) {
+        const layerNodesCount = 2 ** (layersCount - layerIdx - 1);
+        const nextLayer: Uint8Array[] = new Array<Uint8Array>(Math.floor(layerNodesCount / 2))
+            .fill(new Uint8Array(0));
+        if (layerNodesCount > 1) {
+            for (let layerNodeIdx = 0; layerNodeIdx < layerNodesCount; layerNodeIdx += 1) {
+                const pairedLayerNodeIdx = layerNodeIdx % 2 ? layerNodeIdx - 1 : layerNodeIdx + 1;
+                if (!currLayer[layerNodeIdx].length && currLayer[pairedLayerNodeIdx].length) {
+                    if (_multiproof.length <= 0) {
+                        return false;
+                    }
+                    currLayer[layerNodeIdx] = _multiproof.shift()!;
+                    const leftIdx = layerNodeIdx < pairedLayerNodeIdx
+                        ? layerNodeIdx : pairedLayerNodeIdx;
+                    const rightIdx = layerNodeIdx < pairedLayerNodeIdx
+                        ? pairedLayerNodeIdx : layerNodeIdx;
+                    nextLayer[Math.floor(layerNodeIdx / 2)] = makeNextLayerNode(
+                        currLayer[leftIdx],
+                        currLayer[rightIdx],
+                    );
+                } else if (currLayer[layerNodeIdx].length && currLayer[pairedLayerNodeIdx].length) {
+                    const leftIdx = layerNodeIdx < pairedLayerNodeIdx
+                        ? layerNodeIdx : pairedLayerNodeIdx;
+                    const rightIdx = layerNodeIdx < pairedLayerNodeIdx
+                        ? pairedLayerNodeIdx : layerNodeIdx;
+                    nextLayer[Math.floor(layerNodeIdx / 2)] = makeNextLayerNode(
+                        currLayer[leftIdx],
+                        currLayer[rightIdx],
+                    );
+                }
+            }
+        }
+        treeLayers.push(currLayer);
+        if (!nextLayer.length) break;
+        currLayer = nextLayer;
+    }
+    return toHex(treeLayers[treeLayers.length - 1][0]) === toHex(root);
 }
 
 interface ICertMainDataInternal {
     target: string;
     fields: string[];
-    salt: Buffer;
-    root: Buffer;
+    salt: Uint8Array;
+    root: Uint8Array;
     certifier: BaseECKey;
 }
 
 interface IUnnamedCertifier extends Array<any> {
-    [0]: string; // id of the key type. Es. 'ecdsa'
-    [1]: string; // curve
-    [2]: Buffer; // actual value of the public key as 'raw'
+    /** Key type (e.g. 'ecdsa') */
+    [0]: string;
+    /** Curve */
+    [1]: string;
+    /** Public key raw value */
+    [2]: Uint8Array;
 }
 
 interface IUnnamedCertMainData extends Array<any> {
-    [0]: string; // target
-    [1]: string[]; // fields
-    [2]: Buffer; // salt
-    [3]: Buffer; // root
-    [4]: IUnnamedCertifier; // certifier
+    /** Target */
+    [0]: string;
+    /** Fields */
+    [1]: string[];
+    /** Salt */
+    [2]: Uint8Array;
+    /** Root */
+    [3]: Uint8Array;
+    /** Certifier */
+    [4]: IUnnamedCertifier;
 }
 
 /**
  * Unnamed certificate object meant for transfer.
  */
 export interface IUnnamedCert extends ISignableUnnamedObject {
-    [1]: IUnnamedCertMainData; // data
-    [2]: Buffer; // signature
-    [3]?: Buffer[]; // multiProof
+    /** Data */
+    [1]: IUnnamedCertMainData;
+    /** Signature */
+    [2]: Uint8Array;
+    /** MultiProof */
+    [3]?: Uint8Array[];
 }
 
 export interface IUnnamedCertNoTag extends ISignableUnnamedObjectNoTag {
-    [0]: IUnnamedCertMainData; // data
-    [1]: Buffer; // signature
-    [2]?: Buffer[]; // multiProof
-}
-
-interface ICertifierBuffers {
-    type: string; // id of the key type. E.g. 'ecdsa'
-    curve: string; // curve variant. E.g. 'secp384r1'
-    value: Buffer; // actual value of the public key as 'raw'
-}
-
-interface ICertMainDataBuffers {
-    target: string;
-    fields: string[];
-    salt: Buffer;
-    root: Buffer;
-    certifier: ICertifierBuffers;
-}
-
-/**
- * Certificate object with binary members as Buffers
- */
-export interface ICertBuffers extends ISignableObjectWithBuffer {
-    data: ICertMainDataBuffers;
-    signature: Buffer;
-    multiProof?: Buffer[];
+    /** Data */
+    [0]: IUnnamedCertMainData;
+    /** Signature */
+    [1]: Uint8Array;
+    /** MultiProof */
+    [2]?: Uint8Array[];
 }
 
 interface ICertifier {
-    type: string; // id of the key type. Es. 'ecdsa_p384r1'
-    curve: string; // curve variant
-    value: Uint8Array; // actual value of the public key as 'raw'
+    type: string;
+    curve: string;
+    value: Uint8Array;
 }
 
 interface ICertMainData {
@@ -186,7 +287,7 @@ export class Certificate extends Signable {
 
     protected _dataToCertify: IDataToCertify = {};
 
-    protected _multiProof: Buffer[];
+    protected _multiProof: Uint8Array[];
 
     /**
      * @param dataToCertify - Full data set with keys and values. Needed only for certificate
@@ -202,8 +303,8 @@ export class Certificate extends Signable {
         this._data = {
             target: '',
             fields: [],
-            salt: Buffer.from([]),
-            root: Buffer.from([]),
+            salt: new Uint8Array([]),
+            root: new Uint8Array([]),
             certifier: new BaseECKey(EmptyKeyParams),
         };
         this._dataToCertify = dataToCertify;
@@ -211,83 +312,131 @@ export class Certificate extends Signable {
     }
 
     /** Certified fields (keys of data) */
-    public set fields(newFields: string[]) {
-        this._data.fields = newFields;
-    }
-
-    /** Certified fields (keys of data) */
-    public get fields(): string[] {
+    get fields(): string[] {
         return this._data.fields;
     }
 
-    /** Salt to append to data during merkle tree creation. */
-    public set salt(salt: Uint8Array) {
-        this._data.salt = Buffer.from(salt);
+    /** Certified fields (keys of data) */
+    set fields(newFields: string[]) {
+        this._data.fields = newFields;
+    }
+
+    setFields(newFields: string[]) {
+        this.fields = newFields;
+        return this;
     }
 
     /** Salt to append to data during merkle tree creation. */
-    public get salt(): Uint8Array {
-        return new Uint8Array(this._data.salt);
+    get salt(): Uint8Array {
+        return this._data.salt;
+    }
+
+    /** Salt to append to data during merkle tree creation. */
+    set salt(newSalt: Uint8Array) {
+        this._data.salt = newSalt;
+    }
+
+    /** Salt to append to data during merkle tree creation. */
+    get saltHex(): string {
+        return toHex(this.salt);
+    }
+
+    /** Salt to append to data during merkle tree creation. */
+    set saltHex(newSalt: string) {
+        this.salt = fromHex(newSalt);
+    }
+
+    /** Salt to append to data during merkle tree creation. */
+    setSalt(newSalt: Uint8Array | string) {
+        if (typeof newSalt === 'string') {
+            this.saltHex = newSalt;
+        } else {
+            this.salt = newSalt;
+        }
+        return this;
     }
 
     /** Merkle tree root */
-    public set root(root: Uint8Array) {
-        this._data.root = Buffer.from(root);
+    get root(): Uint8Array {
+        return this._data.root;
     }
 
     /** Merkle tree root */
-    public get root(): Uint8Array {
-        return new Uint8Array(this._data.root);
+    set root(newRoot: Uint8Array) {
+        this._data.root = newRoot;
+    }
+
+    /** Merkle tree root */
+    setRoot(newRoot: Uint8Array) {
+        this.root = newRoot;
+        return this;
     }
 
     /** Certifier's public key. Gets set automatically when signed. */
-    public set certifier(publicKey: BaseECKey) {
+    get certifier(): BaseECKey {
+        return this._data.certifier;
+    }
+
+    /** Certifier's public key. Gets set automatically when signed. */
+    set certifier(publicKey: BaseECKey) {
         this._data.certifier = publicKey;
     }
 
     /** Certifier's public key. Gets set automatically when signed. */
-    public get certifier(): BaseECKey {
-        return this._data.certifier;
+    setCertifier(publicKey: BaseECKey) {
+        this.certifier = publicKey;
+        return this;
     }
 
     /** Id of the account, whose data are getting certified */
-    public set target(target: string) {
-        this._data.target = target;
-    }
-
-    /** Id of the account, whose data are getting certified */
-    public get target(): string {
+    get target(): string {
         return this._data.target;
     }
 
+    /** Id of the account, whose data are getting certified */
+    set target(newTarget: string) {
+        this._data.target = newTarget;
+    }
+
+    /** Id of the account, whose data are getting certified */
+    setTarget(newTarget: string) {
+        this.target = newTarget;
+        return this;
+    }
+
     /** Full data set with keys and values. Needed only for certificate creation and derivation. */
-    public set dataToCertify(dataToCertify: IDataToCertify) {
+    get dataToCertify(): IDataToCertify {
+        return this._dataToCertify;
+    }
+
+    /** Full data set with keys and values. Needed only for certificate creation and derivation. */
+    set dataToCertify(dataToCertify: IDataToCertify) {
         this._dataToCertify = dataToCertify;
     }
 
     /** Full data set with keys and values. Needed only for certificate creation and derivation. */
-    public get dataToCertify(): IDataToCertify {
-        return this._dataToCertify;
+    setDataToCertify(dataToCertify: IDataToCertify) {
+        this.dataToCertify = dataToCertify;
+        return this;
     }
 
     /** Additional (not signed) data, needed for merkle tree reconstruction in partial (derived)
      * certificates. */
-    public set multiProof(multiProof: Uint8Array[]) {
-        const temp: Buffer[] = [];
-        for (let i = 0; i < multiProof.length; i += 1) {
-            temp.push(Buffer.from(multiProof[i]));
-        }
-        this._multiProof = temp;
+    get multiProof(): Uint8Array[] {
+        return this._multiProof;
     }
 
     /** Additional (not signed) data, needed for merkle tree reconstruction in partial (derived)
      * certificates. */
-    public get multiProof(): Uint8Array[] {
-        const result: Uint8Array[] = [];
-        for (let i = 0; i < this._multiProof.length; i += 1) {
-            result.push(new Uint8Array(this._multiProof[i]));
-        }
-        return result;
+    set multiProof(multiProof: Uint8Array[]) {
+        this._multiProof = multiProof;
+    }
+
+    /** Additional (not signed) data, needed for merkle tree reconstruction in partial (derived)
+     * certificates. */
+    setMultiProof(multiProof: Uint8Array[]) {
+        this.multiProof = multiProof;
+        return this;
     }
 
     /**
@@ -299,51 +448,52 @@ export class Certificate extends Signable {
      * @param generateSalt - when true, will generate missing salt automatically.
      * @returns - true, throws otherwise
      */
-    public create(fields: string[] = [], generateSalt: boolean = true): boolean {
-        const allKeys = Object.keys(this._dataToCertify).sort();
+    create(fields: string[] = [], generateSalt: boolean = true) {
+        const allKeys = Object.keys(this.dataToCertify).sort();
+
         // temp variable
-        let fieldsT = fields;
-        if (fieldsT.length === 0) {
-            fieldsT = allKeys;
+        let clearFields = fields.sort();
+        if (clearFields.length === 0) {
+            clearFields = allKeys;
         }
+
         const clearIndexes: number[] = [];
-        for (let i = 0; i < fieldsT.length; i += 1) {
-            const index: number = allKeys.indexOf(fieldsT[i]);
+        for (let i = 0; i < clearFields.length; i += 1) {
+            const index: number = allKeys.indexOf(clearFields[i]);
             if (index === -1) {
-                throw new Error(Errors.CERT_WRONG_FIELDS);
+                throw new Error(`${Errors.CERT_INVALID_FIELDS} "${clearFields[i]}" does not exist.`);
             }
-            if (clearIndexes.indexOf(index) === -1) {
+            if (clearIndexes[clearIndexes.length - 1] !== index) {
                 clearIndexes.push(index);
             }
         }
-        this._data.fields = allKeys;
-        if (this._data.salt.length === 0 && generateSalt) {
-            const s = new Uint8Array(DEF_SALT_BYTE_LEN);
-            WebCrypto.getRandomValues(s);
-            this._data.salt = Buffer.from(s);
+        this.fields = allKeys;
+        if (this.salt.length === 0 && generateSalt) {
+            const newSalt = new Uint8Array(DEF_SALT_BYTE_LEN);
+            WebCrypto.getRandomValues(newSalt);
+            this.salt = newSalt;
         }
-        const leaves: Buffer[] = [];
+        const leaves: Uint8Array[] = [];
         for (let i = 0; i < allKeys.length; i += 1) {
             leaves.push(createLeaf(allKeys[i], this._dataToCertify[allKeys[i]], this._data.salt));
         }
 
         const missingLeaves = missingSymmetryLeaves(leaves.length);
-        const allClear = clearIndexes.length === leaves.length;
+        const needMultiproof = clearIndexes.length !== leaves.length;
         if (missingLeaves) {
             const leaveToDuplicate = leaves[leaves.length - 1];
-            const idxStart = clearIndexes.length;
             for (let i = 0; i < missingLeaves; i += 1) {
                 leaves.push(leaveToDuplicate);
-                if (allClear) clearIndexes.push(idxStart + i);
             }
         }
         const merkleData = createMerkleTree(leaves, clearIndexes);
-        this._data.root = merkleData.root;
-        this._multiProof = [];
-        if (!allClear) {
-            this._multiProof = merkleData.multiProof;
+        this.root = merkleData.root;
+        if (needMultiproof) {
+            this.multiProof = merkleData.multiProof;
+        } else {
+            this.multiProof = [];
         }
-        return true;
+        return this;
     }
 
     /**
@@ -355,34 +505,34 @@ export class Certificate extends Signable {
             const resultObj: IUnnamedCert = [
                 this._typeTag,
                 [
-                    this._data.target,
-                    this._data.fields,
-                    this._data.salt,
-                    this._data.root,
+                    this.target,
+                    this.fields,
+                    this.salt,
+                    this.root,
                     [
                         '',
                         '',
-                        Buffer.from([]),
+                        new Uint8Array([]),
                     ],
                 ],
-                this._signature,
+                this.signature,
             ];
-            if (this._multiProof.length !== 0) {
-                resultObj[3] = this._multiProof;
+            if (this.multiProof.length !== 0) {
+                resultObj[3] = this.multiProof;
             }
-            if (this._data.certifier.paramsId === EKeyParamsIds.EMPTY) {
+            if (this.certifier.paramsId === EKeyParamsIds.EMPTY) {
                 return resolve(resultObj);
             }
-            this._data.certifier.getRaw()
+            this.certifier.getRaw()
                 .then((rawKeyBytes: Uint8Array) => {
-                    const undrscrIndex = this._data.certifier.paramsId.indexOf('_');
+                    const undrscrIndex = this.certifier.paramsId.indexOf('_');
                     if (undrscrIndex > -1) {
-                        resultObj[1][4][0] = this._data.certifier.paramsId.slice(0, undrscrIndex);
-                        resultObj[1][4][1] = this._data.certifier.paramsId.slice(undrscrIndex + 1);
+                        resultObj[1][4][0] = this.certifier.paramsId.slice(0, undrscrIndex);
+                        resultObj[1][4][1] = this.certifier.paramsId.slice(undrscrIndex + 1);
                     } else {
-                        resultObj[1][4][0] = this._data.certifier.paramsId;
+                        resultObj[1][4][0] = this.certifier.paramsId;
                     }
-                    resultObj[1][4][2] = Buffer.from(rawKeyBytes);
+                    resultObj[1][4][2] = rawKeyBytes;
                     return resolve(resultObj);
                 })
                 .catch((error: any) => {
@@ -395,34 +545,34 @@ export class Certificate extends Signable {
         return new Promise((resolve, reject) => {
             const resultObj: IUnnamedCertNoTag = [
                 [
-                    this._data.target,
-                    this._data.fields,
-                    this._data.salt,
-                    this._data.root,
+                    this.target,
+                    this.fields,
+                    this.salt,
+                    this.root,
                     [
                         '',
                         '',
-                        Buffer.from([]),
+                        new Uint8Array([]),
                     ],
                 ],
-                this._signature,
+                this.signature,
             ];
-            if (this._multiProof.length !== 0) {
-                resultObj[2] = this._multiProof;
+            if (this.multiProof.length !== 0) {
+                resultObj[2] = this.multiProof;
             }
-            if (this._data.certifier.paramsId === EKeyParamsIds.EMPTY) {
+            if (this.certifier.paramsId === EKeyParamsIds.EMPTY) {
                 return resolve(resultObj);
             }
-            this._data.certifier.getRaw()
+            this.certifier.getRaw()
                 .then((rawKeyBytes: Uint8Array) => {
-                    const undrscrIndex = this._data.certifier.paramsId.indexOf('_');
+                    const undrscrIndex = this.certifier.paramsId.indexOf('_');
                     if (undrscrIndex > -1) {
-                        resultObj[0][4][0] = this._data.certifier.paramsId.slice(0, undrscrIndex);
-                        resultObj[0][4][1] = this._data.certifier.paramsId.slice(undrscrIndex + 1);
+                        resultObj[0][4][0] = this.certifier.paramsId.slice(0, undrscrIndex);
+                        resultObj[0][4][1] = this.certifier.paramsId.slice(undrscrIndex + 1);
                     } else {
-                        resultObj[0][4][0] = this._data.certifier.paramsId;
+                        resultObj[0][4][0] = this.certifier.paramsId;
                     }
-                    resultObj[0][4][2] = Buffer.from(rawKeyBytes);
+                    resultObj[0][4][2] = rawKeyBytes;
                     return resolve(resultObj);
                 })
                 .catch((error: any) => {
@@ -435,11 +585,11 @@ export class Certificate extends Signable {
      * Converts certificate to an object with binary members represented by Buffers
      * @returns - object, throws otherwise
      */
-    public toObjectWithBuffers(): Promise<ICertBuffers> {
+    public toObject(): Promise<ICert> {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObject: IUnnamedCert) => {
-                    const resultObj: ICertBuffers = {
+                    const resultObj: ICert = {
                         type: unnamedObject[0],
                         data: {
                             target: unnamedObject[1][0],
@@ -456,43 +606,6 @@ export class Certificate extends Signable {
                     };
                     if (unnamedObject.length === 4) {
                         resultObj.multiProof = unnamedObject[3];
-                    }
-                    return resolve(resultObj);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Converts certificate to an object with binary members represented by Uint8Array
-     * @returns - object, throws otherwise
-     */
-    public toObject(): Promise<ICert> {
-        return new Promise((resolve, reject) => {
-            this.toObjectWithBuffers()
-                .then((objBuffers: ICertBuffers) => {
-                    const resultObj: ICert = {
-                        type: objBuffers.type,
-                        data: {
-                            target: objBuffers.data.target,
-                            fields: objBuffers.data.fields,
-                            salt: new Uint8Array(objBuffers.data.salt),
-                            root: new Uint8Array(objBuffers.data.root),
-                            certifier: {
-                                type: objBuffers.data.certifier.type,
-                                curve: objBuffers.data.certifier.curve,
-                                value: new Uint8Array(objBuffers.data.certifier.value),
-                            },
-                        },
-                        signature: new Uint8Array(objBuffers.signature),
-                    };
-                    if (typeof objBuffers.multiProof !== 'undefined') {
-                        resultObj.multiProof = [];
-                        objBuffers.multiProof!.forEach((elem) => {
-                            resultObj.multiProof!.push(new Uint8Array(elem));
-                        });
                     }
                     return resolve(resultObj);
                 })
@@ -524,11 +637,11 @@ export class Certificate extends Signable {
             if (typeof passedObj[0] !== 'string') {
                 passedObj.unshift(TYPE_TAG_VALUE);
             }
-            this._typeTag = passedObj[0];
-            this._data.target = passedObj[1][0];
-            this._data.fields = passedObj[1][1];
-            this._data.salt = passedObj[1][2];
-            this._data.root = passedObj[1][3];
+            this.typeTag = passedObj[0];
+            this.target = passedObj[1][0];
+            this.fields = passedObj[1][1];
+            this.salt = passedObj[1][2];
+            this.root = passedObj[1][3];
 
             let keyParamsId: string = passedObj[1][4][0];
             if (passedObj[1][4][1].length > 0) {
@@ -537,19 +650,19 @@ export class Certificate extends Signable {
             if (!mKeyPairParams.has(keyParamsId)) {
                 return reject(new Error(Errors.IMPORT_TYPE_ERROR));
             }
-            this._data.certifier = new BaseECKey(
+            this.certifier = new BaseECKey(
                 mKeyPairParams.get(keyParamsId)!.publicKey,
             );
-            this._signature = passedObj[2];
+            this.signature = passedObj[2];
             if (typeof passedObj[3] !== 'undefined') {
                 for (let i = 0; i < passedObj[3].length; i += 1) {
-                    this._multiProof.push(passedObj[3][i]);
+                    this.multiProof.push(passedObj[3][i]);
                 }
             }
-            if (this._data.certifier.paramsId === EKeyParamsIds.EMPTY) {
+            if (this.certifier.paramsId === EKeyParamsIds.EMPTY) {
                 return resolve(true);
             }
-            this._data.certifier.importBin(new Uint8Array(passedObj[1][4][2]))
+            this.certifier.importBin(new Uint8Array(passedObj[1][4][2]))
                 .then(() => {
                     return resolve(true);
                 })
@@ -561,10 +674,10 @@ export class Certificate extends Signable {
 
     public fromUnnamedObjectNoTag(passedObj: IUnnamedCertNoTag): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            this._data.target = passedObj[0][0];
-            this._data.fields = passedObj[0][1];
-            this._data.salt = passedObj[0][2];
-            this._data.root = passedObj[0][3];
+            this.target = passedObj[0][0];
+            this.fields = passedObj[0][1];
+            this.salt = passedObj[0][2];
+            this.root = passedObj[0][3];
 
             let keyParamsId: string = passedObj[0][4][0];
             if (passedObj[0][4][1].length > 0) {
@@ -573,19 +686,19 @@ export class Certificate extends Signable {
             if (!mKeyPairParams.has(keyParamsId)) {
                 return reject(new Error(Errors.IMPORT_TYPE_ERROR));
             }
-            this._data.certifier = new BaseECKey(
+            this.certifier = new BaseECKey(
                 mKeyPairParams.get(keyParamsId)!.publicKey,
             );
-            this._signature = passedObj[1];
+            this.signature = passedObj[1];
             if (typeof passedObj[2] !== 'undefined') {
                 for (let i = 0; i < passedObj[2].length; i += 1) {
                     this._multiProof.push(passedObj[2][i]);
                 }
             }
-            if (this._data.certifier.paramsId === EKeyParamsIds.EMPTY) {
+            if (this.certifier.paramsId === EKeyParamsIds.EMPTY) {
                 return resolve(true);
             }
-            this._data.certifier.importBin(new Uint8Array(passedObj[0][4][2]))
+            this.certifier.importBin(new Uint8Array(passedObj[0][4][2]))
                 .then(() => {
                     return resolve(true);
                 })
@@ -600,7 +713,7 @@ export class Certificate extends Signable {
      * @param passedObj - object with buffers
      * @returns - true, throws otherwise
      */
-    public fromObjectWithBuffers(passedObj: ICertBuffers): Promise<boolean> {
+    public fromObject(passedObj: ICert): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const unnamedObject: IUnnamedCert = [
                 TYPE_TAG_VALUE,
@@ -621,44 +734,6 @@ export class Certificate extends Signable {
                 unnamedObject.push(passedObj.multiProof);
             }
             this.fromUnnamedObject(unnamedObject)
-                .then((result: boolean) => {
-                    return resolve(result);
-                })
-                .catch((error: any) => {
-                    return reject(error);
-                });
-        });
-    }
-
-    /**
-     * Converts an object with Uint8Arrays to certificate
-     * @param passedObj - object with Uint8Arrays
-     * @returns - true, throws otherwise
-     */
-    public fromObject(passedObj: ICert): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            const objBuffers: ICertBuffers = {
-                type: TYPE_TAG_VALUE,
-                data: {
-                    target: passedObj.data.target,
-                    fields: passedObj.data.fields,
-                    salt: Buffer.from(passedObj.data.salt),
-                    root: Buffer.from(passedObj.data.root),
-                    certifier: {
-                        type: passedObj.data.certifier.type,
-                        curve: passedObj.data.certifier.curve,
-                        value: Buffer.from(passedObj.data.certifier.value),
-                    },
-                },
-                signature: Buffer.from(passedObj.signature),
-            };
-            if (typeof passedObj.multiProof !== 'undefined') {
-                objBuffers.multiProof = [];
-                passedObj.multiProof.forEach((elem) => {
-                    objBuffers.multiProof!.push(Buffer.from(elem));
-                });
-            }
-            this.fromObjectWithBuffers(objBuffers)
                 .then((result: boolean) => {
                     return resolve(result);
                 })
@@ -719,24 +794,30 @@ export class Certificate extends Signable {
                     if (!signatureIsValid) {
                         return resolve(signatureIsValid);
                     }
+
                     const clearKeys: string[] = Object.keys(clearData).sort();
-                    const allKeys = this._data.fields;
+                    const allKeys = this.fields;
                     allKeys.sort();
                     if (
                         clearKeys.length !== allKeys.length
                         && (
-                            this._multiProof.length === 0
+                            this.multiProof.length === 0
                             || clearKeys.length === 0
                         )
                     ) {
                         return resolve(false);
                     }
                     for (let i = 0; i < clearKeys.length; i += 1) {
-                        if (allKeys.indexOf(clearKeys[i]) === -1) {
-                            return reject(new Error(Errors.CERT_WRONG_FIELDS));
+                        if (allKeys.indexOf(clearKeys[i]) < 0) {
+                            return reject(
+                                new Error(
+                                    `${Errors.CERT_INVALID_FIELDS} "${clearKeys[i]}" does not exist.`,
+                                ),
+                            );
                         }
                     }
-                    const clearLeaves: Buffer[] = [];
+
+                    const clearLeaves: Uint8Array[] = [];
                     const clearIndexes: number[] = [];
                     for (let i = 0; i < allKeys.length; i += 1) {
                         if (clearKeys.indexOf(allKeys[i]) >= 0) {
@@ -745,16 +826,19 @@ export class Certificate extends Signable {
                                 createLeaf(
                                     allKeys[i],
                                     clearData[allKeys[i]],
-                                    this._data.salt,
+                                    this.salt,
                                 ),
                             );
                         }
                     }
 
+                    let totalLeaves = allKeys.length;
+                    const missingSymLeaves = missingSymmetryLeaves(allKeys.length);
+                    totalLeaves += missingSymLeaves;
+
                     // create missing leaves only if all data was provided.
                     // otherwise multiproof should contain missing links
                     if (clearIndexes.length === allKeys.length) {
-                        const missingSymLeaves = missingSymmetryLeaves(allKeys.length);
                         // do it only if passed tree is asymmetrical
                         if (missingSymLeaves) {
                             const leafToDublicate = clearLeaves[clearLeaves.length - 1];
@@ -766,17 +850,17 @@ export class Certificate extends Signable {
                         }
                     }
 
-                    let result = true;
+                    let result = false;
                     try {
                         result = verifyMerkleTree(
                             clearLeaves,
                             clearIndexes,
-                            (allKeys.length + missingSymmetryLeaves(allKeys.length)),
-                            this._data.root,
-                            this._multiProof,
+                            totalLeaves,
+                            this.root,
+                            this.multiProof,
                         );
                     } catch (error) {
-                        result = false;
+                        return resolve(false);
                     }
                     return resolve(result);
                 })

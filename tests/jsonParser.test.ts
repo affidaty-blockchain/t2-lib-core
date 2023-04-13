@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { hexEncode } from '../src/binConversions';
+import { toHex } from '../src/binConversions';
 import { bytesToObject } from '../src/utils';
 import { jsonParse } from '../src/json';
 
@@ -34,15 +34,15 @@ describe('parse', () => {
         } = jsonParse(jsonString);
 
         expect(parsedResult.binUTF8 instanceof Uint8Array).toBeTruthy();
-        expect(hexEncode(parsedResult.binUTF8)).toEqual('68656c6c6f');
+        expect(toHex(parsedResult.binUTF8)).toEqual('68656c6c6f');
         expect(parsedResult.binHex instanceof Uint8Array).toBeTruthy();
-        expect(hexEncode(parsedResult.binHex)).toEqual('00ff00ff');
+        expect(toHex(parsedResult.binHex)).toEqual('00ff00ff');
         expect(parsedResult.binB58 instanceof Uint8Array).toBeTruthy();
-        expect(hexEncode(parsedResult.binB58)).toEqual('01ff00ff');
+        expect(toHex(parsedResult.binB58)).toEqual('01ff00ff');
         expect(parsedResult.binB64 instanceof Uint8Array).toBeTruthy();
-        expect(hexEncode(parsedResult.binB64)).toEqual('02ff00ff');
+        expect(toHex(parsedResult.binB64)).toEqual('02ff00ff');
         expect(parsedResult.binB64Url instanceof Uint8Array).toBeTruthy();
-        expect(hexEncode(parsedResult.binB64Url)).toEqual('03ff00ff');
+        expect(toHex(parsedResult.binB64Url)).toEqual('03ff00ff');
 
         expect(parsedResult.u64Hex.toString(16)).toEqual('ffffffffffffffff');
         expect(parsedResult.u64Dec.toString(16)).toEqual('fffffffffffffffe');
@@ -54,7 +54,7 @@ describe('parse', () => {
         const parsedResult: {msgpackTest: Uint8Array} = jsonParse(jsonString);
 
         expect(parsedResult.msgpackTest instanceof Uint8Array).toBeTruthy();
-        expect(hexEncode(parsedResult.msgpackTest)).toEqual('83a36e756d2aa6737472696e67aa74657374537472696e67a662696e486578c40400ff00ff');
+        expect(toHex(parsedResult.msgpackTest)).toEqual('83a36e756d2aa6737472696e67aa74657374537472696e67a662696e486578c40400ff00ff');
 
         const decodedInternal = bytesToObject(parsedResult.msgpackTest);
 
@@ -63,6 +63,6 @@ describe('parse', () => {
         expect(typeof decodedInternal.string).toEqual('string');
         expect(decodedInternal.string).toEqual('testString');
         expect(decodedInternal.binHex instanceof Uint8Array).toBeTruthy();
-        expect(hexEncode(decodedInternal.binHex)).toEqual('00ff00ff');
+        expect(toHex(decodedInternal.binHex)).toEqual('00ff00ff');
     });
 });
