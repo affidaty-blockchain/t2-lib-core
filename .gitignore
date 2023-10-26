@@ -70,3 +70,4 @@ typings/
 # Misc
 package-lock.json
 dist
+docs/generated
