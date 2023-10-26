@@ -6,7 +6,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.4.2] - 2023-02-24
+## [2.4.4] - 2023-10-26
+
+### Added
+
+- TRINCI messages management
+
+## [2.4.2]
 
 ### Removed
 

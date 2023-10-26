@@ -73,3 +73,4 @@ export {
 } from './transaction/bulkTransaction';
 export { Delegation } from './delegation';
 export { Certificate } from './certificate';
+export * as Message from './messageFormat';
