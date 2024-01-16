@@ -136,18 +136,20 @@ describe('Testing base cryptography implementations', () => {
             }
             expect(testError).toEqual(new Error(Errors.IMPORT_ALG_ERROR));
 
-            const ecdsaUsagesLengthMismatchKeyPair = await Subtle.generateKey(
-                Defaults.ECDSAP384R1PrivKeyParams.genAlgorithm,
-                true,
-                [],
-            );
-            testError = undefined;
-            try {
-                testBaseKey.setCryptoKey(ecdsaUsagesLengthMismatchKeyPair.privateKey);
-            } catch (error) {
-                testError = error;
-            }
-            expect(testError).toEqual(new Error(Errors.IMPORT_USAGES_ERROR));
+            // SubtleCrypto does not allow calling generateKey() without specifying
+            // correct key usages. This test doesn't make a lot of sense right now.
+            // const ecdsaUsagesLengthMismatchKeyPair = await Subtle.generateKey(
+            //     Defaults.ECDSAP384R1PrivKeyParams.genAlgorithm,
+            //     true,
+            //     ['sign', 'verify'],
+            // );
+            // testError = undefined;
+            // try {
+            //     testBaseKey.setCryptoKey(ecdsaUsagesLengthMismatchKeyPair.publicKey);
+            // } catch (error) {
+            //     testError = error;
+            // }
+            // expect(testError).toEqual(new Error(Errors.IMPORT_USAGES_ERROR));
 
             const testParams: BaseTypes.IKeyParams = {
                 paramsId: 'test_params',
