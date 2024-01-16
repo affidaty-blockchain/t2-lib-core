@@ -27,7 +27,7 @@ export function toHex(data: Uint8Array): string {
 /**
 * Decodes binary data from hex string. Throws if string is not a valid hex.
 *
-* @param data - Binary data to encode
+* @param hexStr - Binary data to encode
 * @returns - hex string encoding data
 */
 export function fromHex(hexStr: string): Uint8Array {
@@ -56,7 +56,7 @@ export function toBase58(data: Uint8Array): string {
 /**
 * Decodes binary data from base58 string. Throws if string is not a valid base58.
 *
-* @param data - Binary data to encode
+* @param b58Str - Binary data to encode
 * @returns - base58 string encoding data
 */
 export function fromBase58(b58Str: string): Uint8Array {
@@ -79,13 +79,13 @@ export function toBase64(data: Uint8Array): string {
 /**
 * Decodes binary data from base64 string. Throws if string is not a valid base64.
 *
-* @param data - Binary data to encode
+* @param b64Str - Binary data to encode
 * @returns - base64 string encoding data
 */
-export function fromBase64(b58Str: string): Uint8Array {
-    if (b58Str.length <= 0) return new Uint8Array([]);
-    if (!b58Str.match(regexBase64)) throw new Error(Errors.NOT_B64);
-    return base64Dec(b58Str);
+export function fromBase64(b64Str: string): Uint8Array {
+    if (b64Str.length <= 0) return new Uint8Array([]);
+    if (!b64Str.match(regexBase64)) throw new Error(Errors.NOT_B64);
+    return base64Dec(b64Str);
 }
 
 /**
@@ -104,7 +104,7 @@ export function toBase64Url(data: Uint8Array): string {
 /**
 * Decodes binary data from base64url string. Throws if string is not a valid base64url.
 *
-* @param data - Binary data to encode
+* @param b58UrlStr - Binary data to encode
 * @returns - base64url string encoding data
 */
 export function fromBase64Url(b58UrlStr: string): Uint8Array {

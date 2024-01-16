@@ -230,7 +230,7 @@ export class Signable {
 
     /**
      * Tries to deserialize a signable from object with named properties.
-     * @param object - object to try to deserialize signable from
+     * @param passedObj - object to try to deserialize signable from
      * @returns - true on success, throws otherwise
      */
     fromObject(passedObj: ISignableObject): Promise<boolean> {

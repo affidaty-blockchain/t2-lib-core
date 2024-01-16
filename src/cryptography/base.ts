@@ -486,7 +486,7 @@ export function isCompressedCurvePoint(curvePoint: Uint8Array | ArrayBufferLike)
 /**
  * Converts an IEEE P1363 signature into ASN.1/DER.
  *
- * @param string $p1363 Binary IEEE P1363 signature.
+ * @param p1363 $p1363 Binary IEEE P1363 signature.
  */
 export function ieeeP1363ToAsn1(p1363: ArrayBufferLike | Uint8Array): any {
     const _p1363 = new Uint8Array(p1363);
