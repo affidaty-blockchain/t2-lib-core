@@ -1,4 +1,4 @@
-import { WebCrypto } from '../cryptography/webCrypto';
+import { WebCrypto, Subtle } from '../cryptography/webCrypto';
 import { fromHex, toHex } from '../binConversions';
 import {
     stringIsTrinciAccount,
@@ -516,6 +516,28 @@ export class CommonParentTxData {
                             objectToBytes(unnamedObject),
                         ),
                     );
+                })
+                .catch((error: any) => {
+                    return reject(error);
+                });
+        });
+    }
+
+    /** Computes sha384 of the serialized data structure
+     * @returns - sha384 of the serialized data structure
+     */
+    sha384(): Promise<Uint8Array> {
+        return new Promise((resolve, reject) => {
+            this.toUnnamedObject()
+                .then((unnamedObject: ICommonParentTxDataUnnamedObject) => {
+                    // console.log(`Data: [${Buffer.from(objectToBytes(unnamedObject))}]`)
+                    Subtle.digest('SHA-384', objectToBytes(unnamedObject))
+                        .then((sha384: ArrayBuffer) => {
+                            return resolve(new Uint8Array(sha384));
+                        })
+                        .catch((error: any) => {
+                            return reject(error);
+                        });
                 })
                 .catch((error: any) => {
                     return reject(error);

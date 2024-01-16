@@ -450,4 +450,20 @@ export class BaseTransaction extends Signable {
                 });
         });
     }
+
+    /**
+     * Computes the SHA-384 hashh which can be signed externally and signature can be appended to the transaction
+     * @returns - SHA-384 hash of the transaction
+     */
+    public getSha384(): Promise<Uint8Array> {
+        return new Promise((resolve, reject) => {
+            this._data.sha384()
+                .then((hash) => {
+                    return resolve(hash);
+                })
+                .catch((error: any) => {
+                    return reject(error);
+                });
+        });
+    }
 }
