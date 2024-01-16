@@ -167,4 +167,12 @@ describe('UnitaryTransaction', () => {
         expect(await tx2.toBase58()).toEqual(await tx.toBase58());
         expect(tx2.getTicket()).resolves.toEqual(expectedTicket);
     });
+    test('sha384', async () => {
+        const txB58 = 'NDRb94nqEZDCQdmPSfK4Ukg6cYBxjC8Bd22uuFADce9o7awuK6tdkSQXFJ5wbG3ZpPVVgGH1aVV9bnRPrNw7jBTDaqcCciCMPXqhXD7BLosvUW3PPyYg5jcHKQ2rYj4Rqbm2fTAXyxNSnmRhcMBNUQLm3F2fimKQUiier17oYKkwWD914ppLLjJ9VVVGETnayVqxbHpxrHRpnAEQmJ4Buujo93qTa7uKYUVb5a66D8RTVYrtQP7EgWsQhCnd5HyUi5kWLKVF8rAHMR4FzoDEM7q1Z63sKmjhxh9nGWqBMHDKzgTBofmfrN4P2dF89p8C5kucYsKuSq131eqdN872b1mcyAgTiYKBSdgGTrTdTdkJPaRKss5YNArVTh6duk97AeLph3WMBTfRXrFK42LiRHEkVTa4MYobZzKnCcHexMaso8z9yLqjsLnojJYTWBizpxtPRuWU6WPL4JjTUjsRimmr1objf7GDAph9ZmEj6JiQgTuUQDaotZUNKZcsSmw1j1nBy7rsA7vK14P2Rx5pXRCFhr4Ky5riVwNyRCcTs5by1REMxcUWrqZPtGuABW6PjPz6SZetHve8tBezudme4G4q4kcEbuNDyaFaaYdn1Fpk7HkmZcNDGQZph8XLnGrD2gQSabUHNfF221MPATF1yGyXnqr9PaT53yTmCX6np3KsnRzKnbgajhTuhJuki5WR59Dm5L5xEc7Lukog74LDMGMovAsjh2Ca2YTvpoDCybJedumkAEXTpQohBux9r6c5atZ9NQ4f2YtBAGp3';
+
+        const tx = new UnitaryTransaction();
+        await tx.fromBase58(txB58);
+        const hash = await tx.getSha384();
+        expect(Buffer.from(hash).toString('hex')).toEqual('c4da6f72512386018f2dd344ef0beefaeedc3bf8b30c5121c5819851a89beeccd7c4d3c0d3e4a524370fb728747206e5');
+    });
 });

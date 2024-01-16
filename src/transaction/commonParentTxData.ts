@@ -530,7 +530,6 @@ export class CommonParentTxData {
         return new Promise((resolve, reject) => {
             this.toUnnamedObject()
                 .then((unnamedObject: ICommonParentTxDataUnnamedObject) => {
-                    // console.log(`Data: [${Buffer.from(objectToBytes(unnamedObject))}]`)
                     Subtle.digest('SHA-384', objectToBytes(unnamedObject))
                         .then((sha384: ArrayBuffer) => {
                             return resolve(new Uint8Array(sha384));
