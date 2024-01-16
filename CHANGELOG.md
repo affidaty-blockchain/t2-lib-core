@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.5.0] - 2024-01-16
+
+### Added
+
+- `.getSha384()` method to transaction class to get transaction's SHA-384 hash that can be signed externally.
+
 ## [2.4.4] - 2023-10-26
 
 ### Added
