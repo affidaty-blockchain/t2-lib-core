@@ -67,7 +67,7 @@ export class Transaction extends BaseTransaction {
         schema: string = BaseTxData.defaultSchema,
         hash: TKeyGenAlgorithmValidHashValues = defaultSignHash,
     ) {
-        super(hash);
+        super(schema, hash);
         this.schemaClassMap = SCHEMA_TO_DATA_CLASS_MAP;
         if (this.schemaClassMap.has(schema)) {
             this._data = this.schemaClassMap.get(schema)!();
