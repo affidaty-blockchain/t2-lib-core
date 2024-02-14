@@ -1,7 +1,7 @@
 // import { MerkleTree } from 'merkletreejs';
 import * as Errors from './errors';
 import { WebCrypto } from './cryptography/webCrypto';
-import { toHex, fromHex } from './binConversions';
+import { hexEncode, hexDecode } from './binConversions';
 import {
     sha256,
     numRange,
@@ -134,7 +134,7 @@ function createMerkleTree(
 }
 
 function createLeaf(valueKey: string, value: string, salt: Uint8Array): Uint8Array {
-    const leafStr = `${value}${valueKey}${toHex(salt)}`;
+    const leafStr = `${value}${valueKey}${hexEncode(salt)}`;
     const hash = sha256(new TextEncoder().encode(leafStr));
     return hash;
 }
@@ -198,7 +198,7 @@ function verifyMerkleTree(
         if (!nextLayer.length) break;
         currLayer = nextLayer;
     }
-    return toHex(treeLayers[treeLayers.length - 1][0]) === toHex(root);
+    return hexEncode(treeLayers[treeLayers.length - 1][0]) === hexEncode(root);
 }
 
 interface ICertMainDataInternal {
@@ -338,12 +338,12 @@ export class Certificate extends Signable {
 
     /** Salt to append to data during merkle tree creation. */
     get saltHex(): string {
-        return toHex(this.salt);
+        return hexEncode(this.salt);
     }
 
     /** Salt to append to data during merkle tree creation. */
     set saltHex(newSalt: string) {
-        this.salt = fromHex(newSalt);
+        this.salt = hexDecode(newSalt);
     }
 
     /** Salt to append to data during merkle tree creation. */

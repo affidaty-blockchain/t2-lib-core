@@ -1,4 +1,4 @@
-import { fromHex } from '../../src/binConversions';
+import { hexDecode } from '../../src/binConversions';
 import { Account } from '../../src/account';
 import {
     // TxSchemas,
@@ -38,19 +38,19 @@ describe('BulkNodeTransaction', () => {
         expect(tx.networkName).toEqual(txTestData.network);
         tx.nonceHex = txTestData.nonceHex;
         expect(tx.nonceHex).toEqual(txTestData.nonceHex);
-        expect(tx.nonce).toEqual(fromHex(txTestData.nonceHex));
+        expect(tx.nonce).toEqual(hexDecode(txTestData.nonceHex));
         tx.smartContractHashHex = txTestData.contractHashHex;
-        expect(tx.smartContractHash).toEqual(fromHex(txTestData.contractHashHex));
+        expect(tx.smartContractHash).toEqual(hexDecode(txTestData.contractHashHex));
         expect(tx.smartContractHashHex).toEqual(txTestData.contractHashHex);
         tx.smartContractMethod = txTestData.contractMethod;
         expect(tx.smartContractMethod).toEqual(txTestData.contractMethod);
         tx.smartContractMethodArgsHex = txTestData.contractArgsHex;
         expect(tx.smartContractMethodArgsHex).toEqual(txTestData.contractArgsHex);
-        expect(tx.smartContractMethodArgsBytes).toEqual(fromHex(txTestData.contractArgsHex));
+        expect(tx.smartContractMethodArgsBytes).toEqual(hexDecode(txTestData.contractArgsHex));
         tx.signerPublicKey = signerAcc.keyPair.publicKey;
         expect(tx.signerPublicKey).toEqual(signerAcc.keyPair.publicKey);
         tx.dependsOnHex = txTestData.dependsOnHex;
-        expect(tx.dependsOn).toEqual(fromHex(txTestData.dependsOnHex));
+        expect(tx.dependsOn).toEqual(hexDecode(txTestData.dependsOnHex));
         expect(tx.dependsOnHex).toEqual(txTestData.dependsOnHex);
         expectedTicket = await tx.getTicket();
     });
@@ -132,7 +132,7 @@ describe('BulkNodeTransaction', () => {
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsBytes(fromHex(txTestData.contractArgsHex))
+            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex))
             .setDependsOn(txTestData.dependsOnHex);
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();
@@ -158,7 +158,7 @@ describe('BulkNodeTransaction', () => {
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsBytes(fromHex(txTestData.contractArgsHex))
+            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex))
             .setDependsOn(txTestData.dependsOnHex);
         await tx.sign(signerAcc.keyPair.privateKey);
         expect(tx.verify()).resolves.toBeTruthy();

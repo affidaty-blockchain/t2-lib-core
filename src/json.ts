@@ -5,10 +5,10 @@ import { objectToBytes } from './utils';
 import {
     regexDigits,
     regexHex,
-    fromHex,
-    fromBase58,
-    fromBase64,
-    fromBase64Url,
+    hexDecode,
+    base58Decode,
+    base64Decode,
+    base64UrlDecode,
 } from './binConversions';
 
 export const customValueProcessors: {[key: string]: {[key: string]: (value: string) => any}} = {
@@ -17,16 +17,16 @@ export const customValueProcessors: {[key: string]: {[key: string]: (value: stri
             return new TextEncoder().encode(val);
         },
         hex: (val: string) => {
-            return fromHex(val);
+            return hexDecode(val);
         },
         b58: (val: string) => {
-            return fromBase58(val);
+            return base58Decode(val);
         },
         b64: (val: string) => {
-            return fromBase64(val);
+            return base64Decode(val);
         },
         b64url: (val: string) => {
-            return fromBase64Url(val);
+            return base64UrlDecode(val);
         },
     },
     u64: {

@@ -1,4 +1,4 @@
-import { fromHex } from '../../src/binConversions';
+import { hexDecode } from '../../src/binConversions';
 import { Account } from '../../src/account';
 import { BulkRootTransaction } from '../../src/transaction/bulkRootTransaction';
 import { BulkNodeTransaction } from '../../src/transaction/bulkNodeTransaction';
@@ -67,7 +67,7 @@ describe('BulkTransaction', () => {
         expect(() => { bulkTx.networkName = 'netw'; }).toThrow();
         expect(() => { return bulkTx.networkName; }).toThrow();
         expect(() => { bulkTx.setNetworkName('net'); }).toThrow();
-        expect(() => { bulkTx.nonce = fromHex('ff00ff00ff00ff00'); }).toThrow();
+        expect(() => { bulkTx.nonce = hexDecode('ff00ff00ff00ff00'); }).toThrow();
         expect(() => { return bulkTx.nonce; }).toThrow();
         expect(() => { bulkTx.nonceHex = 'ff00ff00ff00ff00'; }).toThrow();
         expect(() => { return bulkTx.nonceHex; }).toThrow();

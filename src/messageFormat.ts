@@ -1,4 +1,4 @@
-import { toHex, fromHex } from './binConversions';
+import { hexEncode, hexDecode } from './binConversions';
 import { bytesToObject, objectToBytes } from './utils';
 import { IBaseTxUnnamedObject } from './transaction/baseTransaction';
 
@@ -185,14 +185,14 @@ export class TrinciMessage {
             typeof messageArray[0] !== 'string'
             || typeof MsgStructs[parseInt(messageArray[0], 10)] === 'undefined'
         ) {
-            throw new Error(`Unknown message type. Bytes received: ${toHex(messageBytes)}`);
+            throw new Error(`Unknown message type. Bytes received: ${hexEncode(messageBytes)}`);
         }
         this.msgTypeValue = parseInt(messageArray[0], 10);
         this.bodyOrder = MsgStructs[this.msgTypeValue].bodyOrder;
         if (
             messageArray.length !== (MsgStructs[this.msgTypeValue].bodyOrder.length + 1)
         ) {
-            throw new Error(`Unknown message type. Bytes received: ${toHex(messageBytes)}`);
+            throw new Error(`Unknown message type. Bytes received: ${hexEncode(messageBytes)}`);
         }
         // starting from the second element as the first is the message type identifier
         for (let i = 1; i < messageArray.length; i += 1) {
@@ -261,7 +261,7 @@ export namespace stdTrinciMessages {
     export function getTransaction(
         ticket: string,
     ): TrinciMessage {
-        const binTicket = fromHex(ticket);
+        const binTicket = hexDecode(ticket);
         return new TrinciMessage(MessageTypes.GetTransactionRequest, {
             ticket: binTicket,
             destination: null,
@@ -271,7 +271,7 @@ export namespace stdTrinciMessages {
     export function getReceipt(
         ticket: string,
     ): TrinciMessage {
-        const binTicket = fromHex(ticket);
+        const binTicket = hexDecode(ticket);
         return new TrinciMessage(MessageTypes.GetReceiptRequest, {
             ticket: binTicket,
         });
@@ -316,9 +316,9 @@ export namespace stdTrinciMessages {
     ): TrinciMessage {
         return new TrinciMessage(MessageTypes.TransactionEvent, {
             eventDataArray: [
-                fromHex(emitterTx),
+                hexDecode(emitterTx),
                 emitterAccount,
-                fromHex(emitterContract),
+                hexDecode(emitterContract),
                 eventName,
                 eventData,
             ],

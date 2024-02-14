@@ -7,7 +7,7 @@ import {
 } from '@msgpack/msgpack';
 import {
     regexBase58,
-    fromBase58,
+    base58Decode,
 } from './binConversions';
 
 const regexValidAccChars = /^[a-zA-Z0-9-_#]+$/;
@@ -27,7 +27,7 @@ export function stringIsTrinciAccount(accountId: string): boolean {
     if (accountId === 'TRINCI') return true;
     if (accountId.charAt(0) === '#') return regexValidAccChars.test(accountId);
     if (!accountId.match(regexBase58)) return false;
-    const bytes = fromBase58(accountId);
+    const bytes = base58Decode(accountId);
     if (bytes.length !== 34) return false;
     if (bytes[0] !== 0x12 || bytes[1] !== 0x20) return false;
     return true;

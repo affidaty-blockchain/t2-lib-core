@@ -1,4 +1,4 @@
-import { fromHex } from '../../src/binConversions';
+import { hexDecode } from '../../src/binConversions';
 import { Account } from '../../src/account';
 import {
     SignableTypeTags,
@@ -36,7 +36,7 @@ describe('BulkRootTransaction', () => {
         expect(tx.networkName).toEqual(txTestData.network);
         tx.nonceHex = txTestData.nonceHex;
         expect(tx.nonceHex).toEqual(txTestData.nonceHex);
-        expect(tx.nonce).toEqual(fromHex(txTestData.nonceHex));
+        expect(tx.nonce).toEqual(hexDecode(txTestData.nonceHex));
         tx.signerPublicKey = signerAcc.keyPair.publicKey;
         expect(tx.signerPublicKey).toEqual(signerAcc.keyPair.publicKey);
         expect(tx.sign(signerAcc.keyPair.privateKey)).rejects.toBeDefined();
@@ -75,15 +75,15 @@ describe('BulkRootTransaction', () => {
         expect(tx.networkName).toEqual(txTestData.network);
         tx.nonceHex = txTestData.nonceHex;
         expect(tx.nonceHex).toEqual(txTestData.nonceHex);
-        expect(tx.nonce).toEqual(fromHex(txTestData.nonceHex));
+        expect(tx.nonce).toEqual(hexDecode(txTestData.nonceHex));
         tx.smartContractHashHex = txTestData.contractHashHex;
-        expect(tx.smartContractHash).toEqual(fromHex(txTestData.contractHashHex));
+        expect(tx.smartContractHash).toEqual(hexDecode(txTestData.contractHashHex));
         expect(tx.smartContractHashHex).toEqual(txTestData.contractHashHex);
         tx.smartContractMethod = txTestData.contractMethod;
         expect(tx.smartContractMethod).toEqual(txTestData.contractMethod);
         tx.smartContractMethodArgsHex = txTestData.contractArgsHex;
         expect(tx.smartContractMethodArgsHex).toEqual(txTestData.contractArgsHex);
-        expect(tx.smartContractMethodArgsBytes).toEqual(fromHex(txTestData.contractArgsHex));
+        expect(tx.smartContractMethodArgsBytes).toEqual(hexDecode(txTestData.contractArgsHex));
         tx.signerPublicKey = signerAcc.keyPair.publicKey;
         expect(tx.signerPublicKey).toEqual(signerAcc.keyPair.publicKey);
         expectedTicket = await tx.getTicket();
@@ -151,7 +151,7 @@ describe('BulkRootTransaction', () => {
             .setNonce(txTestData.nonceHex)
             .setSmartContractHash(txTestData.contractHashHex)
             .setSmartContractMethod(txTestData.contractMethod)
-            .setSmartContractMethodArgsBytes(fromHex(txTestData.contractArgsHex))
+            .setSmartContractMethodArgsBytes(hexDecode(txTestData.contractArgsHex))
             .setSignerPublicKey(signerAcc.keyPair.publicKey);
         expect(tx.getTicket()).resolves.toEqual(expectedTicket);
         expect(tx.typeTag).toEqual(SignableTypeTags.BULK_ROOT_TX);

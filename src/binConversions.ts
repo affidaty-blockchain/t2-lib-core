@@ -17,7 +17,7 @@ export const regexBase64Url = /^[A-Za-z0-9\-_]*$/g;
 * @param data - Binary data to encode
 * @returns - hex string encoding data
 */
-export function toHex(data: Uint8Array): string {
+export function hexEncode(data: Uint8Array): string {
     if (data.length <= 0) return '';
     return data.reduce((acc: string, val: number) => {
         return `${acc}${val.toString(16).padStart(2, '0')}`;
@@ -30,7 +30,7 @@ export function toHex(data: Uint8Array): string {
 * @param hexStr - Binary data to encode
 * @returns - hex string encoding data
 */
-export function fromHex(hexStr: string): Uint8Array {
+export function hexDecode(hexStr: string): Uint8Array {
     if (hexStr.length <= 0) return new Uint8Array(0);
     if (!hexStr.match(regexHex)) throw new Error(Errors.NOT_HEX);
     return new Uint8Array(
@@ -48,7 +48,7 @@ export function fromHex(hexStr: string): Uint8Array {
 * @param data - Binary data to encode
 * @returns - base58 string encoding data
 */
-export function toBase58(data: Uint8Array): string {
+export function base58Encode(data: Uint8Array): string {
     if (data.length <= 0) return '';
     return bs58Enc(data);
 }
@@ -59,7 +59,7 @@ export function toBase58(data: Uint8Array): string {
 * @param b58Str - Binary data to encode
 * @returns - base58 string encoding data
 */
-export function fromBase58(b58Str: string): Uint8Array {
+export function base58Decode(b58Str: string): Uint8Array {
     if (b58Str.length <= 0) return new Uint8Array(0);
     if (!b58Str.match(regexBase58)) throw new Error(Errors.NOT_B58);
     return bs58Dec(b58Str);
@@ -71,7 +71,7 @@ export function fromBase58(b58Str: string): Uint8Array {
 * @param data - Binary data to encode
 * @returns - base64 string encoding data
 */
-export function toBase64(data: Uint8Array): string {
+export function base64Encode(data: Uint8Array): string {
     if (data.length <= 0) return '';
     return base64Enc(data);
 }
@@ -82,7 +82,7 @@ export function toBase64(data: Uint8Array): string {
 * @param b64Str - Binary data to encode
 * @returns - base64 string encoding data
 */
-export function fromBase64(b64Str: string): Uint8Array {
+export function base64Decode(b64Str: string): Uint8Array {
     if (b64Str.length <= 0) return new Uint8Array([]);
     if (!b64Str.match(regexBase64)) throw new Error(Errors.NOT_B64);
     return base64Dec(b64Str);
@@ -94,9 +94,9 @@ export function fromBase64(b64Str: string): Uint8Array {
 * @param data - Binary data to encode
 * @returns - base64url string encoding data
 */
-export function toBase64Url(data: Uint8Array): string {
+export function base64UrlEncode(data: Uint8Array): string {
     if (data.length <= 0) return '';
-    const b64 = toBase64(data);
+    const b64 = base64Encode(data);
     const pIdx = b64.indexOf('='); // padding index
     return b64.replace(/[+]/g, '-').replace(/[/]/g, '_').substring(0, pIdx >= 0 ? pIdx : undefined);
 }
@@ -107,10 +107,10 @@ export function toBase64Url(data: Uint8Array): string {
 * @param b58UrlStr - Binary data to encode
 * @returns - base64url string encoding data
 */
-export function fromBase64Url(b58UrlStr: string): Uint8Array {
+export function base64UrlDecode(b58UrlStr: string): Uint8Array {
     if (b58UrlStr.length <= 0) return new Uint8Array([]);
     if (!b58UrlStr.match(regexBase64Url)) throw new Error(Errors.NOT_B64URL);
-    return fromBase64(
+    return base64Decode(
         b58UrlStr
             .replace(/[-]/g, '+')
             .replace(/[_]/g, '/')

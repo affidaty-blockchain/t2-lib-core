@@ -3,8 +3,8 @@ import { modPow } from '../bigIntModArith';
 import * as baseTypes from './baseTypes';
 import * as Errors from '../errors';
 import {
-    fromHex,
-    toHex,
+    hexDecode,
+    hexEncode,
 } from '../binConversions';
 import { Subtle } from './webCrypto';
 import {
@@ -324,7 +324,7 @@ export function verifyDataSignature(
     key: BaseKey,
     data: Uint8Array,
     signature: Uint8Array,
-    hashAlgorithm: baseTypes.TKeyGenAlgorithmValidHashValues = DEF_SIGN_HASH_ALGORITHM,
+    hashAlgorithm?: baseTypes.TKeyGenAlgorithmValidHashValues,
 ): Promise<boolean> {
     return new Promise((resolve, reject) => {
         if (!hashAlgorithm && !key.keyParams.genAlgorithm!.hash) {
@@ -441,7 +441,7 @@ export function decompressRawCurvePoint(
 ): Uint8Array {
     const u8CompPubKey = new Uint8Array(compPubKey);
     // isolating X bytes
-    const x = BigInt(`0x${toHex(u8CompPubKey.subarray(1))}`);
+    const x = BigInt(`0x${hexEncode(u8CompPubKey.subarray(1))}`);
     // getting Y parity value
     const signY = BigInt(u8CompPubKey[0] - 2);
 
@@ -469,7 +469,7 @@ export function decompressRawCurvePoint(
         y = p - y;
     }
     const fullCurvePointHex = `04${x.toString(16).padStart(96)}${y.toString(16).padStart(96)}`;
-    return fromHex(fullCurvePointHex);
+    return hexDecode(fullCurvePointHex);
 }
 
 export function isCompressedCurvePoint(curvePoint: Uint8Array | ArrayBufferLike): boolean {

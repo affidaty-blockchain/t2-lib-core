@@ -1,8 +1,8 @@
 import {
-    toBase58,
-    fromBase58,
-    toHex,
-    fromHex,
+    base58Encode,
+    base58Decode,
+    hexEncode,
+    hexDecode,
 } from './binConversions';
 import {
     objectToBytes,
@@ -94,11 +94,11 @@ export class Signable {
     }
 
     get signatureHex(): string {
-        return toHex(this.signature);
+        return hexEncode(this.signature);
     }
 
     set signatureHex(signatureHex: string) {
-        this.signature = fromHex(signatureHex);
+        this.signature = hexDecode(signatureHex);
     }
 
     /** Data signature */
@@ -189,7 +189,7 @@ export class Signable {
         return new Promise((resolve, reject) => {
             this.toBytes()
                 .then((bytes: Uint8Array) => {
-                    return resolve(toBase58(bytes));
+                    return resolve(base58Encode(bytes));
                 })
                 .catch((error: any) => {
                     return reject(error);
@@ -277,7 +277,7 @@ export class Signable {
      */
     fromBase58(b58: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            this.fromBytes(fromBase58(b58))
+            this.fromBytes(base58Decode(b58))
                 .then((result) => {
                     return resolve(result);
                 })
