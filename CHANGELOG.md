@@ -1,10 +1,24 @@
 
-# Change Log
+# ChangeLog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [2.6.0] - not published
+
+### Added
+- New RSA parameters: RS256 (RSASSA-PKCS1-v1_5). New params can be found at `CryptoDefaults.RS2562048KeyPairParams`
+- `jsonStringify()` function to stringify json objects with BigInts and binaries into a more human-readable format whic can be later parsed by `jsonParse()`
+
+### Changed
+- binary transcoding utilities (to/from hex, base64, base64Url, base58) renamed. E.g: `base58Encode()`, `base58Decode()`, `hexEncode()`, `hexDecode` etc...
+- when instantiating a new RSA key object, it will be of type RS256(RSASSA-PKCS1-v1_5) instead of RSA-OAEP
+
+### Fixed
+- fixed `TRINCI` not being recognized as a valid account id
+- When no explicit hash was given to the signature creation/verification functions, they now get it from passed key instead of always defaulting to `SHA-384` 
 
 ## [2.5.0] - 2024-01-16
 
