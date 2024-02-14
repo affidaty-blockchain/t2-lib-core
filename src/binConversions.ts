@@ -107,13 +107,13 @@ export function base64UrlEncode(data: Uint8Array): string {
 * @param b58UrlStr - Binary data to encode
 * @returns - base64url string encoding data
 */
-export function base64UrlDecode(b58UrlStr: string): Uint8Array {
-    if (b58UrlStr.length <= 0) return new Uint8Array([]);
-    if (!b58UrlStr.match(regexBase64Url)) throw new Error(Errors.NOT_B64URL);
+export function base64UrlDecode(b64UrlStr: string): Uint8Array {
+    if (b64UrlStr.length <= 0) return new Uint8Array([]);
+    if (!b64UrlStr.match(regexBase64Url)) throw new Error(Errors.NOT_B64URL);
     return base64Decode(
-        b58UrlStr
+        b64UrlStr
             .replace(/[-]/g, '+')
             .replace(/[_]/g, '/')
-            .padEnd(Math.ceil(b58UrlStr.length / 4) * 4, '='),
+            .padEnd(Math.ceil(b64UrlStr.length / 4) * 4, '='),
     );
 }
