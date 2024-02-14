@@ -13,7 +13,6 @@ import {
 } from '../utils';
 import {
     EmptyKeyParams,
-    DEF_SIGN_HASH_ALGORITHM,
 } from './cryptoDefaults';
 
 type TecKeyBinFormat = 'oct' | 'der' | 'pem';
@@ -284,7 +283,7 @@ export class BaseKey {
 export function signData(
     key: BaseKey,
     data: Uint8Array,
-    hashAlgorithm: baseTypes.TKeyGenAlgorithmValidHashValues = DEF_SIGN_HASH_ALGORITHM,
+    hashAlgorithm?: baseTypes.TKeyGenAlgorithmValidHashValues,
 ): Promise<Uint8Array> {
     return new Promise((resolve, reject) => {
         if (!hashAlgorithm && !key.keyParams.genAlgorithm!.hash) {
