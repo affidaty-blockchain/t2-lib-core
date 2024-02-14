@@ -40,13 +40,13 @@ describe('testing blind signature', () => {
             pubKey,
         );
 
-        // authority applies a salt to received data
+        // Authority applies a salt to received data
         const blindedSaltedData = await addSalt(blindedData, salt, pubKey);
-        // Signs it with it's private key and sends it back to client
+        // Authority signs salted data with it's private key and sends it back to client
         const blindedSaltedSignature = await blindSign(blindedSaltedData, privKey);
 
         // clients can now remove the blinding from the received signature
-        // and use it to send the anonimous vote
+        // and use it to send the anonymous vote
         const unblindedSaltedSignature = await removeBlinding(
             blindedSaltedSignature,
             blindingFactor,

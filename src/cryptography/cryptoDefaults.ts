@@ -21,6 +21,7 @@ export const EKeyParamsIds = {
     ECDSAP256R1: 'ecdsa_secp256r1',
     ECDHP384R1: 'ecdh_secp384r1',
     RSAOAEP384: 'rsa_oaep_384',
+    RS256: 'rsa_rs256',
     EMPTY: '',
 };
 
@@ -164,6 +165,41 @@ export const RSAOAEP384PrivKeyParams: IKeyParams = {
 export const RSAOAEP384KeyPairParams: IKeyPairParams = {
     publicKey: RSAOAEP384PubKeyParams,
     privateKey: RSAOAEP384PrivKeyParams,
+    get usages(): TKeyUsages {
+        return arrayUnion([this.publicKey.usages!, this.privateKey.usages!]);
+    },
+};
+
+/** Params set for RS256 2048 bit public key */
+export const RS2562048PubKeyParams: IKeyParams = {
+    paramsId: EKeyParamsIds.RS256,
+    genAlgorithm: {
+        name: 'RSASSA-PKCS1-v1_5',
+        modulusLength: 4096,
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        hash: 'SHA-256',
+    },
+    usages: ['verify'],
+    type: 'public',
+};
+
+/** Params set for RS256 2048 bit private key */
+export const RS2562048PrivKeyParams: IKeyParams = {
+    paramsId: EKeyParamsIds.RS256,
+    genAlgorithm: {
+        name: 'RSASSA-PKCS1-v1_5',
+        modulusLength: 4096,
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        hash: 'SHA-256',
+    },
+    usages: ['sign'],
+    type: 'private',
+};
+
+/** Params set for RS256 2048 bit key pair */
+export const RS2562048KeyPairParams: IKeyPairParams = {
+    publicKey: RS2562048PubKeyParams,
+    privateKey: RS2562048PrivKeyParams,
     get usages(): TKeyUsages {
         return arrayUnion([this.publicKey.usages!, this.privateKey.usages!]);
     },

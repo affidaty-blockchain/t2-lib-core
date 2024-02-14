@@ -1,7 +1,7 @@
 import { Subtle } from './webCrypto';
 import { IKeyPairParams } from './baseTypes';
 import { IBaseKeyPair } from './base';
-import { RSAOAEP384KeyPairParams as defaultParams } from './cryptoDefaults';
+import { RS2562048KeyPairParams as defaultParams } from './cryptoDefaults';
 import { RSAKey } from './RSAKey';
 
 export interface IRSAKeyPair extends IBaseKeyPair {

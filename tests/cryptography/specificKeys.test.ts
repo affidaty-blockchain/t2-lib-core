@@ -4,6 +4,7 @@ import { ECDHKeyPair } from '../../src/cryptography/ECDHKeyPair';
 import { ECDSAKey } from '../../src/cryptography/ECDSAKey';
 import { ECDSAKeyPair } from '../../src/cryptography/ECDSAKeyPair';
 import { RSAKeyPair } from '../../src/cryptography/RSAKeyPair';
+import { signData, verifyDataSignature } from '../../src/cryptography/base';
 
 describe('Testing specific keys classes', () => {
     test('Testing ECDSA classes', async () => {
@@ -96,8 +97,22 @@ describe('Testing specific keys classes', () => {
         const rsaPubKeySPKI = await rsaKeyPair.publicKey.getSPKI();
         const rsaPrivKeyPKCS8 = await rsaKeyPair.privateKey.getPKCS8();
         const rsaPubKeyJWK = await rsaKeyPair.publicKey.getJWK();
+        const rsaPrivKeyJWK = await rsaKeyPair.privateKey.getJWK();
         expect(rsaPubKeySPKI.length).toBeGreaterThan(0);
         expect(rsaPrivKeyPKCS8.length).toBeGreaterThan(0);
         expect(rsaPubKeyJWK.kty).toEqual('RSA');
+        expect(rsaPubKeyJWK.alg).toEqual('RS256');
+        expect(rsaPrivKeyJWK.kty).toEqual('RSA');
+        expect(rsaPrivKeyJWK.alg).toEqual('RS256');
+
+        const data = new Uint8Array([0xff, 0x00, 0xff, 0x00, 0xcc]);
+        const wrongData = new Uint8Array([0xff, 0x00, 0xff, 0x00, 0x00]);
+        const signature = await signData(rsaKeyPair.privateKey, data);
+        expect(
+            await verifyDataSignature(rsaKeyPair.publicKey, data, signature),
+        ).toBeTruthy();
+        expect(
+            await verifyDataSignature(rsaKeyPair.publicKey, wrongData, signature),
+        ).toBeFalsy();
     });
 });
