@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 import { hexEncode } from '../src/binConversions';
 import { bytesToObject } from '../src/utils';
-import { jsonParse } from '../src/json';
+import { jsonParse, jsonStringify } from '../src/json';
 
 describe('parse', () => {
-    test('standart json parse', async () => {
+    test('standard json parse', async () => {
         const jsonString = '{"bool": true, "num": 42, "null": null, "string": "testString", "arr": [true, 42, null, "testString"], "obj": {"bool": false, "num": 42, "string": "testString"}}';
         const parsedResult = jsonParse(jsonString);
 
@@ -64,5 +64,57 @@ describe('parse', () => {
         expect(decodedInternal.string).toEqual('testString');
         expect(decodedInternal.binHex instanceof Uint8Array).toBeTruthy();
         expect(hexEncode(decodedInternal.binHex)).toEqual('00ff00ff');
+    });
+});
+
+describe('stringify', () => {
+    test('standard json', async () => {
+        const obj = {
+            bool: true,
+            num: 42,
+            null: null,
+            string: 'testString',
+            arr: [
+                true, 42, null, 'testString',
+            ],
+            obj: {
+                bool: false,
+                num: 42,
+                string: 'testString',
+            },
+        };
+        const jsonString = jsonStringify(obj);
+        expect(jsonString).toEqual('{"bool":true,"num":42,"null":null,"string":"testString","arr":[true,42,null,"testString"],"obj":{"bool":false,"num":42,"string":"testString"}}');
+    });
+    test('u64', async () => {
+        const obj = {
+            num: BigInt('0xffffffffffffffff'),
+        };
+
+        let jsonString = jsonStringify(obj);
+        expect(jsonString).toEqual('{"num":"$:u64:dec:18446744073709551615"}');
+
+        jsonString = jsonStringify(obj, { u64: 'dec' });
+        expect(jsonString).toEqual('{"num":"$:u64:dec:18446744073709551615"}');
+
+        jsonString = jsonStringify(obj, { u64: 'hex' });
+        expect(jsonString).toEqual('{"num":"$:u64:hex:ffffffffffffffff"}');
+    });
+    test('bin', async () => {
+        const obj = {
+            bin: new Uint8Array([0xff, 0x00, 0xff, 0xcc]),
+        };
+
+        let jsonString = jsonStringify(obj);
+        expect(jsonString).toEqual('{"bin":"$:bin:hex:ff00ffcc"}');
+
+        jsonString = jsonStringify(obj, { bin: 'b58' });
+        expect(jsonString).toEqual('{"bin":"$:bin:b58:7X4BKy"}');
+
+        jsonString = jsonStringify(obj, { bin: 'b64' });
+        expect(jsonString).toEqual('{"bin":"$:bin:b64:/wD/zA=="}');
+
+        jsonString = jsonStringify(obj, { bin: 'b64url' });
+        expect(jsonString).toEqual('{"bin":"$:bin:b64url:_wD_zA"}');
     });
 });

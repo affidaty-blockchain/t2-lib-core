@@ -6,10 +6,16 @@ import {
     regexDigits,
     regexHex,
     hexDecode,
+    hexEncode,
     base58Decode,
+    base58Encode,
     base64Decode,
+    base64Encode,
     base64UrlDecode,
+    base64UrlEncode,
 } from './binConversions';
+
+const MAX_U64 = BigInt('0xffffffffffffffff');
 
 export const customValueProcessors: {[key: string]: {[key: string]: (value: string) => any}} = {
     bin: {
@@ -35,8 +41,8 @@ export const customValueProcessors: {[key: string]: {[key: string]: (value: stri
                 throw new Error(Errors.NOT_DEC);
             }
             const result = BigInt(val);
-            if (result < BigInt(0) || result > BigInt('0xffffffffffffffff')) {
-                throw new Error('Value out of bounds.');
+            if (result < BigInt(0) || result > MAX_U64) {
+                throw new Error('U64 value out of bounds.');
             }
             return result;
         },
@@ -130,5 +136,78 @@ export function jsonParse(jsonStr: string): any {
             }
             return resultValue;
         },
+    );
+}
+
+interface IJSONStringifyOptions {
+    /** Default: `hex`. Binary type (ArrayBufferView) encoding. Example result: `"$:bin:hex:ff00ff00cc"` */
+    bin?: 'utf8' | 'hex' | 'b58' | 'b64' | 'b64url',
+    /** Default: `dec`. BigInt type encoding. Values exceeding max U64 not allowed (use bin instead). Example result: `"$:u64:dec:164963846205223"`. */
+    u64?: 'dec' | 'hex',
+}
+
+/**
+ * Works just like regular JSON.stringify(), but values of binary or BigInt types will be encoded into strings parsable by our custom jsonParse function.
+ * Thrown when BigInt value exceeds max U64 integer. Consider transforming it into binary first.
+ * @param obj - Object to stringify
+ * @param options - Stringifization options
+ * @param space - Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read
+ */
+export function jsonStringify(
+    obj: any,
+    options?: IJSONStringifyOptions | null,
+    space?: string | number,
+): string {
+    return JSON.stringify(
+        obj,
+        (key, value) => {
+            let encodedValue = '$:';
+            let tempBinValue: Uint8Array;
+            switch (true) {
+                case (typeof value === 'bigint'):
+
+                    encodedValue += 'u64:';
+
+                    if (value > MAX_U64) throw new Error(`BigInt value out of bounds for key "${key}"`);
+
+                    if (!options || !options.u64 || options.u64 === 'dec') {
+                        encodedValue += `dec:${value.toString(10)}`;
+                    } else if (options.u64 === 'hex') {
+                        encodedValue += `hex:${value.toString(16)}`;
+                    } else {
+                        throw new Error(`Unknown u64 encoding: "${options.u64}"; available options: "dec", "hex"`);
+                    }
+
+                    return encodedValue;
+
+                case (ArrayBuffer.isView(value)):
+
+                    encodedValue += 'bin:';
+                    tempBinValue = new Uint8Array(value.buffer);
+
+                    switch (true) {
+                        case (!options || !options.bin || options.bin === 'hex'):
+                            encodedValue += `hex:${hexEncode(tempBinValue)}`;
+                            break;
+                        case (options!.bin === 'b58'):
+                            encodedValue += `b58:${base58Encode(tempBinValue)}`;
+                            break;
+                        case (options!.bin === 'b64'):
+                            encodedValue += `b64:${base64Encode(tempBinValue)}`;
+                            break;
+                        case (options!.bin === 'b64url'):
+                            encodedValue += `b64url:${base64UrlEncode(tempBinValue)}`;
+                            break;
+                        default:
+                            throw new Error(`Unknown u64 encoding: "${options.bin}"; available options: "hex", "b58", "b64", "b64url"`);
+                    }
+
+                    return encodedValue;
+
+                default:
+                    return value;
+            }
+        },
+        space,
     );
 }
