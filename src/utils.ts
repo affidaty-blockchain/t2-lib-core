@@ -24,6 +24,7 @@ export function xor(a: boolean, b: boolean): boolean {
 
 export function stringIsTrinciAccount(accountId: string): boolean {
     if (typeof accountId !== 'string' || accountId.length < 2) return false;
+    if (accountId === 'TRINCI') return true;
     if (accountId.charAt(0) === '#') return regexValidAccChars.test(accountId);
     if (!accountId.match(regexBase58)) return false;
     const bytes = fromBase58(accountId);
