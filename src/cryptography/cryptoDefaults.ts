@@ -48,6 +48,7 @@ export const ECDSAP384R1PubKeyParams: IKeyParams = {
     genAlgorithm: {
         name: 'ECDSA',
         namedCurve: 'P-384',
+        hash: 'SHA-384',
     },
     usages: ['verify'],
     type: 'public',
@@ -59,6 +60,7 @@ export const ECDSAP384R1PrivKeyParams: IKeyParams = {
     genAlgorithm: {
         name: 'ECDSA',
         namedCurve: 'P-384',
+        hash: 'SHA-384',
     },
     usages: ['sign'],
     type: 'private',
@@ -79,6 +81,7 @@ export const ECDSAP256R1PubKeyParams: IKeyParams = {
     genAlgorithm: {
         name: 'ECDSA',
         namedCurve: 'P-256',
+        hash: 'SHA-256',
     },
     usages: ['verify'],
     type: 'public',
@@ -90,6 +93,7 @@ export const ECDSAP256R1PrivKeyParams: IKeyParams = {
     genAlgorithm: {
         name: 'ECDSA',
         namedCurve: 'P-256',
+        hash: 'SHA-256',
     },
     usages: ['sign'],
     type: 'private',

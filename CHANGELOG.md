@@ -6,7 +6,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.6.0] - not published
+## [2.6.1] - 2024-03-18
+
+### Fxed
+- added default hash type to ECDSA keys parameters
+
+## [2.6.0] - 2024-02-15
 
 ### Added
 - New RSA parameters: RS256 (RSASSA-PKCS1-v1_5). New params can be found at `CryptoDefaults.RS2562048KeyPairParams`
