@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.6.1] - 2024-03-18
 
 ### Fxed
+- fixed "Unknown key type" error when importing transaction without a signer public key
+
+## [2.6.1] - 2024-03-18
+
+### Fxed
 - added default hash type to ECDSA keys parameters
 
 ## [2.6.0] - 2024-02-15

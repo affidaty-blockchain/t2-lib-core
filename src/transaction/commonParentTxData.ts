@@ -427,7 +427,7 @@ export class CommonParentTxData {
 
     /* Signer's public key. */
     set signerPublicKey(publicKey: BaseECKey) {
-        if (publicKey.type !== 'public') {
+        if (publicKey.type !== 'public' && publicKey.type !== 'undefined') {
             throw new Error('Unknown key type.');
         }
         this._signerPubKey = publicKey;
